@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="core.h" />
     <ClInclude Include="editor.h" />
+    <ClInclude Include="Engine.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="include\imgui-sfml\imconfig-SFML.h" />
     <ClInclude Include="include\imgui-sfml\imgui-SFML.h" />
