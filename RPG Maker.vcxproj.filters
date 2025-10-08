@@ -31,6 +31,12 @@
     <Filter Include="Fichiers sources\run">
       <UniqueIdentifier>{ad7ca300-ac8d-4f66-bc94-6adf14fed574}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\engine">
+      <UniqueIdentifier>{6b0f6388-a9df-481c-91f4-060dd1bb80a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\engine">
+      <UniqueIdentifier>{6c548adb-d023-4cfc-b5db-e715508ed7ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui.cpp">
@@ -56,6 +62,12 @@
     </ClCompile>
     <ClCompile Include="core.cpp">
       <Filter>Fichiers sources\run</Filter>
+    </ClCompile>
+    <ClCompile Include="tile.cpp">
+      <Filter>Fichiers sources\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="grid.cpp">
+      <Filter>Fichiers sources\engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +100,12 @@
     </ClInclude>
     <ClInclude Include="core.h">
       <Filter>Fichiers d%27en-tête\run</Filter>
+    </ClInclude>
+    <ClInclude Include="grid.h">
+      <Filter>Fichiers d%27en-tête\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="tile.h">
+      <Filter>Fichiers d%27en-tête\engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
