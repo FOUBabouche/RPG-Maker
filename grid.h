@@ -6,7 +6,7 @@
 #endif
 
 #include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
 #include <vector>
 
 #include "tile.h"
@@ -21,8 +21,8 @@ public:
 
 	bool FindAt(sf::Vector2u position);
 
-	void Draw(sf::RenderWindow& window);
-	void DrawGrid(sf::RenderWindow& window);
+	void Draw(sf::RenderTarget& window);
+	void DrawGrid(sf::RenderTarget& window);
 private:
 	std::vector<std::vector<std::unique_ptr<Tile>>> m_tiles;
 	sf::Vector2u m_tileSize;

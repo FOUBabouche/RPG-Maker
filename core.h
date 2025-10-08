@@ -18,6 +18,7 @@ public:
 private:
 	static sf::RenderWindow window;
 	static sf::Clock deltaClock;
+	static float deltaTime;
 };
 
 #endif

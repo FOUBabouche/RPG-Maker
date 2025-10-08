@@ -132,6 +132,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="core.cpp" />
+    <ClCompile Include="engine.cpp" />
+    <ClCompile Include="engineView.cpp" />
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="imgui-SFML.cpp" />
     <ClCompile Include="imgui.cpp" />
@@ -146,7 +148,8 @@
   <ItemGroup>
     <ClInclude Include="core.h" />
     <ClInclude Include="editor.h" />
-    <ClInclude Include="Engine.h" />
+    <ClInclude Include="engine.h" />
+    <ClInclude Include="engineView.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="include\imgui-sfml\imconfig-SFML.h" />
     <ClInclude Include="include\imgui-sfml\imgui-SFML.h" />

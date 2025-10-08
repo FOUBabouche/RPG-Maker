@@ -78,6 +78,12 @@
     <ClCompile Include="imgui_widgets.cpp">
       <Filter>Fichiers sources\imgui</Filter>
     </ClCompile>
+    <ClCompile Include="engine.cpp">
+      <Filter>Fichiers sources\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engineView.cpp">
+      <Filter>Fichiers sources\editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\imgui-sfml\imconfig-SFML.h">
@@ -119,8 +125,11 @@
     <ClInclude Include="include\imgui\imstb_truetype.h">
       <Filter>Fichiers d%27en-tête\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Engine.h">
+    <ClInclude Include="engine.h">
       <Filter>Fichiers d%27en-tête\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engineView.h">
+      <Filter>Fichiers d%27en-tête\editor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

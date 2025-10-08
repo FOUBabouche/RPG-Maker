@@ -55,7 +55,7 @@ bool Grid::FindAt(sf::Vector2u position)
 	return false;
 }
 
-void Grid::Draw(sf::RenderWindow& window)
+void Grid::Draw(sf::RenderTarget& window)
 {
 	for (auto&& x : m_tiles) {
 		for (auto&& y : x)
@@ -70,19 +70,19 @@ void Grid::Draw(sf::RenderWindow& window)
 	}
 }
 
-void Grid::DrawGrid(sf::RenderWindow& window)
+void Grid::DrawGrid(sf::RenderTarget& window)
 {
 	sf::VertexArray grid(sf::PrimitiveType::Lines);
 
-	for (float x = 0.f; x <= 800; x += m_tileSize.x) {
+	for (float x = 0.f; x <= window.getSize().x; x += m_tileSize.x) {
 		grid.append({ sf::Vector2f(x, 0.f), sf::Color(100, 100, 100)});
-		grid.append({ sf::Vector2f(x, 600), sf::Color(100, 100, 100) });
+		grid.append({ sf::Vector2f(x, window.getSize().y), sf::Color(100, 100, 100) });
 	}
 
 	// Lignes horizontales
-	for (float y = 0.f; y <= 600; y += m_tileSize.y) {
+	for (float y = 0.f; y <= window.getSize().y; y += m_tileSize.y) {
 		grid.append({ sf::Vector2f(0.f, y), sf::Color(100, 100, 100)});
-		grid.append({ sf::Vector2f(800, y), sf::Color(100, 100, 100) });
+		grid.append({ sf::Vector2f(window.getSize().x, y), sf::Color(100, 100, 100) });
 	}
 
 	window.draw(grid);

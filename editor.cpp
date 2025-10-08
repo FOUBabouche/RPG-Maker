@@ -6,11 +6,12 @@
 void Editor::Start() {
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-
 }
 
-void Editor::Update() {
+void Editor::Update(Engine& engine) {
 	ImGui::DockSpaceOverViewport(0U,ImGui::GetMainViewport());
+
+	engineWin.Draw(engine);
 
 	ImGui::Begin("Editor");
 

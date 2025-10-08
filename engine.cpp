@@ -8,7 +8,11 @@ void Engine::Event(std::optional<sf::Event> event) {
 
 }
 
-void Engine::Render(sf::RenderWindow& window) {
-	grid.DrawGrid(window);
-	grid.Draw(window);
+void Engine::Update(float dt) {
+
+}
+
+void Engine::Render(sf::RenderTexture& render) {
+	grid.DrawGrid(render);
+	grid.Draw(render);
 }
