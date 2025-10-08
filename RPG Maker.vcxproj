@@ -140,10 +140,12 @@
     <ClCompile Include="imgui_tables.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="editor.cpp" />
     <ClCompile Include="tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.h" />
+    <ClInclude Include="editor.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="include\imgui-sfml\imconfig-SFML.h" />
     <ClInclude Include="include\imgui-sfml\imgui-SFML.h" />

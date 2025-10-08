@@ -2,10 +2,12 @@
 #include <imgui-SFML.h>
 #include <imgui.h>
 
+#include "editor.h"
+
 sf::RenderWindow Core::window;
 sf::Clock Core::deltaClock;
 
-Grid grid({ 20, 20 });
+Grid grid{ {16, 16} };
 
 void Core::Init() {
     Start();
