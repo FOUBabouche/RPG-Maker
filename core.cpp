@@ -9,6 +9,8 @@ sf::Clock Core::deltaClock;
 
 Grid grid{ {16, 16} };
 
+Editor editor;
+
 void Core::Init() {
     Start();
     while (window.isOpen()) {
@@ -22,6 +24,9 @@ void Core::Start()
 {
 	window.create(sf::VideoMode({ 800, 600 }), "RPG Maker");
 	ImGui::SFML::Init(window);
+
+    editor.Start();
+
     grid.SetTile({ 0, 0 }, sf::Color::Red, nullptr);
     grid.SetTile({ 4, 0 }, sf::Color::Blue, nullptr);
     grid.SetTile({ 3, 0 }, sf::Color::Green, nullptr);
@@ -43,6 +48,8 @@ void Core::Event()
 void Core::Update()
 {
     ImGui::SFML::Update(window, deltaClock.restart());
+
+    editor.Update();
 }
 
 void Core::Render() {

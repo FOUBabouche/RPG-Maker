@@ -45,21 +45,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="imgui.cpp">
-      <Filter>Fichiers sources\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_demo.cpp">
-      <Filter>Fichiers sources\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_draw.cpp">
-      <Filter>Fichiers sources\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_tables.cpp">
-      <Filter>Fichiers sources\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_widgets.cpp">
-      <Filter>Fichiers sources\imgui</Filter>
-    </ClCompile>
     <ClCompile Include="imgui-SFML.cpp">
       <Filter>Fichiers sources\imgui\sfml</Filter>
     </ClCompile>
@@ -78,6 +63,21 @@
     <ClCompile Include="editor.cpp">
       <Filter>Fichiers sources\editor</Filter>
     </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>Fichiers sources\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>Fichiers sources\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>Fichiers sources\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
+      <Filter>Fichiers sources\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>Fichiers sources\imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\imgui-sfml\imconfig-SFML.h">
@@ -88,6 +88,18 @@
     </ClInclude>
     <ClInclude Include="include\imgui-sfml\imgui-SFML_export.h">
       <Filter>Fichiers d%27en-tête\imgui\sfml</Filter>
+    </ClInclude>
+    <ClInclude Include="core.h">
+      <Filter>Fichiers d%27en-tête\run</Filter>
+    </ClInclude>
+    <ClInclude Include="grid.h">
+      <Filter>Fichiers d%27en-tête\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="tile.h">
+      <Filter>Fichiers d%27en-tête\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="editor.h">
+      <Filter>Fichiers d%27en-tête\editor</Filter>
     </ClInclude>
     <ClInclude Include="include\imgui\imconfig.h">
       <Filter>Fichiers d%27en-tête\imgui</Filter>
@@ -106,18 +118,6 @@
     </ClInclude>
     <ClInclude Include="include\imgui\imstb_truetype.h">
       <Filter>Fichiers d%27en-tête\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="core.h">
-      <Filter>Fichiers d%27en-tête\run</Filter>
-    </ClInclude>
-    <ClInclude Include="grid.h">
-      <Filter>Fichiers d%27en-tête\engine</Filter>
-    </ClInclude>
-    <ClInclude Include="tile.h">
-      <Filter>Fichiers d%27en-tête\engine</Filter>
-    </ClInclude>
-    <ClInclude Include="editor.h">
-      <Filter>Fichiers d%27en-tête\editor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
