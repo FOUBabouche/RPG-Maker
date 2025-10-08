@@ -7,8 +7,6 @@
 sf::RenderWindow Core::window;
 sf::Clock Core::deltaClock;
 
-Grid grid{ {16, 16} };
-
 Editor editor;
 
 void Core::Init() {
@@ -26,13 +24,6 @@ void Core::Start()
 	ImGui::SFML::Init(window);
 
     editor.Start();
-
-    grid.SetTile({ 0, 0 }, sf::Color::Red, nullptr);
-    grid.SetTile({ 4, 0 }, sf::Color::Blue, nullptr);
-    grid.SetTile({ 3, 0 }, sf::Color::Green, nullptr);
-    grid.SetTile({ 0, 0 }, sf::Color::Green, nullptr);
-    grid.RemoveTile({ 4, 0 });
-    grid.RemoveTile({4, 0});
 }
 
 void Core::Event()
@@ -54,9 +45,6 @@ void Core::Update()
 
 void Core::Render() {
     window.clear();
-
-    grid.DrawGrid(window);
-    grid.Draw(window);
 
     ImGui::SFML::Render(window);
     window.display();

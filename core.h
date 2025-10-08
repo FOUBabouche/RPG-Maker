@@ -8,8 +8,6 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
 
-#include "grid.h"
-
 class Core {
 public:
 	static void Init();
