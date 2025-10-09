@@ -15,7 +15,7 @@ void Editor::Update(Engine& engine) {
 	engineWin.Draw(engine, camera);
 	camera.SetRenderTarget(engineWin);
 
-	std::cout << engineWin.GetMousePos(camera).x << " " << engineWin.GetMousePos(camera).y << std::endl;
+	engineWin.GetMousePos(camera);
 
 	ImGui::Begin("Editor");
 

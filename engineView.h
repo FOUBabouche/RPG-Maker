@@ -22,6 +22,7 @@ public:
 private:
 	std::unique_ptr<sf::RenderTexture> renderTexture;
 	ImVec2 imageSize;
+	ImVec2 renderPos;
 };
 
 #endif
