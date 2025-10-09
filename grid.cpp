@@ -70,19 +70,19 @@ void Grid::Draw(sf::RenderTarget& window)
 	}
 }
 
-void Grid::DrawGrid(sf::RenderTarget& window)
+void Grid::DrawGrid(sf::RenderTarget& window, Camera& camera)
 {
 	sf::VertexArray grid(sf::PrimitiveType::Lines);
 
-	for (float x = 0.f; x <= window.getSize().x; x += m_tileSize.x) {
+	for (float x = 0.f; x <= camera.GetView().getSize().x; x += m_tileSize.x) {
 		grid.append({ sf::Vector2f(x, 0.f), sf::Color(100, 100, 100)});
-		grid.append({ sf::Vector2f(x, window.getSize().y), sf::Color(100, 100, 100) });
+		grid.append({ sf::Vector2f(x, camera.GetView().getSize().y), sf::Color(100, 100, 100) });
 	}
 
 	// Lignes horizontales
-	for (float y = 0.f; y <= window.getSize().y; y += m_tileSize.y) {
+	for (float y = 0.f; y <= camera.GetView().getSize().y; y += m_tileSize.y) {
 		grid.append({ sf::Vector2f(0.f, y), sf::Color(100, 100, 100)});
-		grid.append({ sf::Vector2f(window.getSize().x, y), sf::Color(100, 100, 100) });
+		grid.append({ sf::Vector2f(camera.GetView().getSize().x, y), sf::Color(100, 100, 100) });
 	}
 
 	window.draw(grid);

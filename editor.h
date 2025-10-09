@@ -2,6 +2,7 @@
 #define EDITOR_H
 
 #include "engineView.h"
+#include "camera.h"
 
 class Editor {
 public:
@@ -10,6 +11,7 @@ public:
 	void Update(Engine& engine);
 private:
 	EngineView engineWin;
+	Camera camera;
 };
 
 #endif

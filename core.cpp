@@ -2,17 +2,8 @@
 #include <imgui-SFML.h>
 #include <imgui.h>
 
-#include "editor.h"
-#include "engine.h"
 
-sf::RenderWindow Core::window;
-sf::Clock Core::deltaClock;
-float Core::deltaTime = 0;
-
-Editor editor;
-Engine engine;
-
-void Core::Init() {
+Core::Core(){
     Start();
     while (window.isOpen()) {
         Event();

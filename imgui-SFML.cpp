@@ -776,7 +776,7 @@ void Image(const sf::Texture& texture, const sf::Vector2f& size, const sf::Color
 {
     ImTextureID textureID = convertGLTextureHandleToImTextureID(texture.getNativeHandle());
 
-    ImGui::Image(textureID, toImVec2(size), ImVec2(0, 0), ImVec2(1, 1), toImColor(tintColor), toImColor(borderColor));
+    ImGui::Image(textureID, toImVec2(size), ImVec2(0, 1), ImVec2(1, 0), toImColor(tintColor), toImColor(borderColor));
 }
 
 /////////////// Image Overloads for sf::RenderTexture
@@ -791,8 +791,8 @@ void Image(const sf::RenderTexture& texture, const sf::Vector2f& size, const sf:
 
     ImGui::Image(textureID,
                  toImVec2(size),
-                 ImVec2(0, 1),
-                 ImVec2(1, 0), // flipped vertically,
+                 ImVec2(0, 0),
+                 ImVec2(1, 1), // flipped vertically,
                                // because textures in
                                // sf::RenderTexture are
                                // stored this way

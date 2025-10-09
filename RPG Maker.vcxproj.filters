@@ -84,6 +84,9 @@
     <ClCompile Include="engineView.cpp">
       <Filter>Fichiers sources\editor</Filter>
     </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>Fichiers sources\engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\imgui-sfml\imconfig-SFML.h">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="engineView.h">
       <Filter>Fichiers d%27en-tête\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Fichiers d%27en-tête\engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

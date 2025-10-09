@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="camera.cpp" />
     <ClCompile Include="core.cpp" />
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="engineView.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="tile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="camera.h" />
     <ClInclude Include="core.h" />
     <ClInclude Include="editor.h" />
     <ClInclude Include="engine.h" />

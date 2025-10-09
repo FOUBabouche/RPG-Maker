@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "tile.h"
+#include "camera.h"
 
 class Grid {
 public:
@@ -22,7 +23,7 @@ public:
 	bool FindAt(sf::Vector2u position);
 
 	void Draw(sf::RenderTarget& window);
-	void DrawGrid(sf::RenderTarget& window);
+	void DrawGrid(sf::RenderTarget& window, Camera& camera);
 private:
 	std::vector<std::vector<std::unique_ptr<Tile>>> m_tiles;
 	sf::Vector2u m_tileSize;
