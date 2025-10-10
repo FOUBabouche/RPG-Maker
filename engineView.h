@@ -19,6 +19,7 @@ public:
 	sf::Vector2f GetMousePos(Camera& camera) const;
 
 	std::unique_ptr<sf::RenderTexture>& getRender(void);
+	bool isHover(void) const;
 
 	sf::Vector2f getAvailSize();
 
@@ -28,6 +29,7 @@ private:
 	ImVec2 imageSize;
 	ImVec2 renderPos;
 
+	ImGuiWindowFlags flags = 0;
 	bool renderIsHovered;
 };
 

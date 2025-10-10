@@ -8,6 +8,8 @@
 #include "engineView.h"
 #include "camera.h"
 
+#include <SFML/Graphics/Texture.hpp>
+
 class Editor {
 public:
 	void Start();
@@ -16,6 +18,7 @@ public:
 private:
 	EngineView engineWin;
 	Camera camera;
+	sf::Texture placeHolder;
 };
 
 #endif

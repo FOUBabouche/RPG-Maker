@@ -7,6 +7,8 @@
 void Editor::Start() {
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
+	placeHolder.loadFromFile("Placeholder.png");
 }
 
 void Editor::Update(Engine& engine) {
@@ -18,7 +20,14 @@ void Editor::Update(Engine& engine) {
 	engineWin.GetMousePos(camera);
 
 	sf::Vector2u mPos = engine.grid.GetMouseToGridPos(engineWin.GetMousePos(camera));
-	std::cout << mPos.x << " " << mPos.y << std::endl;
+	//std::cout << mPos.x << " " << mPos.y << std::endl;
+
+	if (ImGui::IsMouseClicked(ImGuiMouseButton_Left, true)) {
+		engine.grid.SetTile(mPos, sf::Color::Red, &placeHolder);
+	}
+	if (ImGui::IsMouseClicked(ImGuiMouseButton_Right, true)) {
+		engine.grid.RemoveTile(mPos);
+	}
 
 	ImGui::Begin("Editor");
 

@@ -28,6 +28,11 @@ std::unique_ptr<sf::RenderTexture>& EngineView::getRender(void)
 	return renderTexture;
 }
 
+bool EngineView::isHover(void) const
+{
+	return renderIsHovered;
+}
+
 sf::Vector2f EngineView::getAvailSize()
 {
 	return imageSize;
@@ -38,19 +43,29 @@ void EngineView::Draw(Engine& engine, Camera& camera) {
 	engine.Render(*renderTexture.get(), camera);
 	renderTexture.get()->display();
 
-	ImGuiWindowFlags flags = 0;
+	
 
-	ImGui::Begin("Scene", 0, flags);
-	imageSize = ImGui::GetContentRegionAvail();
-	renderTexture.get()->resize(imageSize);
-	sf::Sprite sprite{ renderTexture.get()->getTexture() };
-	ImGui::Image(renderTexture.get()->getTexture(), imageSize);
-	renderIsHovered = ImGui::IsItemHovered();
-	if (renderIsHovered) {
-		flags |= ImGuiWindowFlags_NoMove;
+	if (ImGui::Begin("Scene", 0, flags)) {
+		if (ImGui::BeginMenuBar()) {
+			if (ImGui::BeginMenu("play")) {
+
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenuBar();
+		}
+		ImGui::Separator();
+		imageSize = ImGui::GetContentRegionAvail();
+		renderTexture.get()->resize(imageSize);
+		sf::Sprite sprite{ renderTexture.get()->getTexture() };
+		ImGui::Image(renderTexture.get()->getTexture(), imageSize);
+		renderIsHovered = ImGui::IsItemHovered();
+		if (renderIsHovered) {
+			flags = ImGuiWindowFlags_NoMove;
+		}
+		else flags = 0;
+		renderPos = ImGui::GetItemRectMin();
+		ImGui::End();
 	}
-	else flags = 0;
-	renderPos = ImGui::GetItemRectMin();
-	ImGui::End();
+	
 }
 
