@@ -1,6 +1,10 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
+#ifndef SFML_STATIC
+#define SFML_STATIC
+#endif
+
 #include "engineView.h"
 #include "camera.h"
 

@@ -20,6 +20,7 @@ public:
 	void SetTile(sf::Vector2u position, sf::Color color, sf::Texture* texture);
 	void RemoveTile(sf::Vector2u position);
 
+	sf::Vector2u GetMouseToGridPos(sf::Vector2f mousePos);
 	bool FindAt(sf::Vector2u position);
 
 	void Draw(sf::RenderTarget& window);

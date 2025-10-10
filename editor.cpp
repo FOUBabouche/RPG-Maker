@@ -17,6 +17,9 @@ void Editor::Update(Engine& engine) {
 
 	engineWin.GetMousePos(camera);
 
+	sf::Vector2u mPos = engine.grid.GetMouseToGridPos(engineWin.GetMousePos(camera));
+	std::cout << mPos.x << " " << mPos.y << std::endl;
+
 	ImGui::Begin("Editor");
 
 	ImGui::BeginTabBar("TabBar");

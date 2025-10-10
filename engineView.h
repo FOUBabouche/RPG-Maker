@@ -1,6 +1,10 @@
 #ifndef ENGINE_VIEW_H
 #define ENGINE_VIEW_H
 
+#ifndef SFML_STATIC
+#define SFML_STATIC
+#endif
+
 #include "engine.h"
 #include "camera.h"
 
@@ -23,6 +27,8 @@ private:
 	std::unique_ptr<sf::RenderTexture> renderTexture;
 	ImVec2 imageSize;
 	ImVec2 renderPos;
+
+	bool renderIsHovered;
 };
 
 #endif

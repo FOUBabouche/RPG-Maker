@@ -1,6 +1,7 @@
 #include "grid.h"
 
 #include <iostream>
+#include <cmath>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 
@@ -44,6 +45,11 @@ void Grid::RemoveTile(sf::Vector2u position)
 				return;
 			}
 	std::cout << "No Tile Here: " << position.x << " " << position.y << std::endl;
+}
+
+sf::Vector2u Grid::GetMouseToGridPos(sf::Vector2f mousePos)
+{
+	return sf::Vector2u(std::floor(mousePos.x / m_tileSize.x), std::floor(mousePos.y / m_tileSize.y));
 }
 
 bool Grid::FindAt(sf::Vector2u position)
