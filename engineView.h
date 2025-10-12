@@ -16,7 +16,7 @@ class EngineView {
 public:
 	EngineView();
 
-	sf::Vector2f GetMousePos(Camera& camera) const;
+	sf::Vector2f GetMousePos(sf::Vector2f viewPortPos) const;
 
 	std::unique_ptr<sf::RenderTexture>& getRender(void);
 	bool isHover(void) const;

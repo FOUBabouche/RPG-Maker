@@ -11,21 +11,40 @@ void Editor::Start() {
 	placeHolder.loadFromFile("Placeholder.png");
 }
 
+void Editor::Event(std::optional<sf::Event> event) {
+	if (const auto mouse = event->getIf<sf::Event::MouseButtonPressed>()) {
+		if (mouse->button == sf::Mouse::Button::Left) {
+			leftPressed = true;
+		}
+		if (mouse->button == sf::Mouse::Button::Right) {
+			rightPressed = true;
+		}
+	}
+	if (const auto mouse = event->getIf<sf::Event::MouseButtonReleased>()) {
+		if (mouse->button == sf::Mouse::Button::Left) {
+			leftPressed = false;
+		}
+		if (mouse->button == sf::Mouse::Button::Right) {
+			rightPressed = false;
+		}
+	}
+}
+
 void Editor::Update(Engine& engine) {
 	ImGui::DockSpaceOverViewport(0U,ImGui::GetMainViewport());
 
 	engineWin.Draw(engine, camera);
-	camera.SetRenderTarget(engineWin);
+	camera.SetRenderTarget(*engineWin.getRender().get(), engineWin.getAvailSize());
 
-	engineWin.GetMousePos(camera);
+	engineWin.GetMousePos(camera.GetView().getViewport().position);
 
-	sf::Vector2u mPos = engine.grid.GetMouseToGridPos(engineWin.GetMousePos(camera));
+	sf::Vector2u mPos = engine.grid.GetCoordToGridPos(engineWin.GetMousePos(camera.GetView().getViewport().position));
 	//std::cout << mPos.x << " " << mPos.y << std::endl;
 
-	if (ImGui::IsMouseClicked(ImGuiMouseButton_Left, true)) {
+	if (leftPressed) {
 		engine.grid.SetTile(mPos, sf::Color::Red, &placeHolder);
 	}
-	if (ImGui::IsMouseClicked(ImGuiMouseButton_Right, true)) {
+	if (rightPressed) {
 		engine.grid.RemoveTile(mPos);
 	}
 

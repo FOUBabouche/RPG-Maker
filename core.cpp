@@ -30,6 +30,7 @@ void Core::Event()
         if (event->is<sf::Event::Closed>())
             window.close();
         engine.Event(event);
+        editor.Event(event);
     }
 }
 

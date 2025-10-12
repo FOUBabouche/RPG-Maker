@@ -17,5 +17,5 @@ void Engine::Update(float dt) {
 
 void Engine::Render(sf::RenderTexture& render, Camera& camera) {
 	grid.Draw(render);
-	grid.DrawGrid(render, camera);
+	grid.DrawGrid(render, camera.GetView().getSize());
 }

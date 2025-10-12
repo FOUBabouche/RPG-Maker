@@ -137,5 +137,8 @@
     <ClInclude Include="camera.h">
       <Filter>Fichiers d%27en-tête\engine</Filter>
     </ClInclude>
+    <ClInclude Include="brush.h">
+      <Filter>Fichiers d%27en-tête\editor</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

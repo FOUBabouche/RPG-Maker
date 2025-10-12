@@ -9,4 +9,8 @@ private:
 	unsigned int m_size;
 };
 
+class Paint {
+
+};
+
 #endif

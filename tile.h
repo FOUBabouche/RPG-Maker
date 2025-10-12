@@ -13,22 +13,23 @@
 class Tile
 {
 public:
-	Tile() = default;
+	Tile();
+	~Tile() = default;
 	Tile(sf::Vector2u position, sf::Vector2u size, sf::Texture* texture);
 	Tile(sf::Vector2u position, sf::Vector2u size, sf::Color color,sf::Texture* texture);
 	Tile(Tile& tile);
 
-	sf::Vector2u GetPosition();
-	sf::Vector2u GetSize();
+	sf::Vector2u GetPosition() const;
+	sf::Vector2u GetSize() const;
 
-	sf::Texture* getTexture();
-	sf::Color getColor();
+	sf::Texture* getTexture() const;
+	sf::Color getColor() const;
 
 private:
 	sf::Vector2u m_position;
 	sf::Vector2u m_size;
 	sf::Color m_color;
-	std::unique_ptr<sf::Texture> m_texture;
+	std::unique_ptr<sf::Texture> m_texture = nullptr;
 };
 
 #endif
