@@ -16,6 +16,6 @@ void Engine::Update(float dt) {
 }
 
 void Engine::Render(sf::RenderTexture& render, Camera& camera) {
-	grid.Draw(render);
-	grid.DrawGrid(render, camera.GetView().getSize());
+	grid.Draw(render, camera.GetZoom());
+	grid.DrawGrid(render, (sf::Vector2f)render.getSize(), camera.GetZoom());
 }

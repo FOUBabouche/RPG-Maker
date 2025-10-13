@@ -11,12 +11,16 @@
 class EngineView;
 class Camera {
 public:
+	Camera() = default;
 	sf::View GetView(void) const;
+	float GetZoom(void) const;
+	void SetZoom(float zoom);
 
 	void Update(float dt);
 	void SetRenderTarget(sf::RenderTexture& render, sf::Vector2f renderSize);
 private:
 	sf::View view;
+	float m_zoom;
 };
 
 #endif

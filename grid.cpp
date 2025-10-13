@@ -58,14 +58,14 @@ bool Grid::FindAt(sf::Vector2u position)
 	return false;
 }
 
-void Grid::Draw(sf::RenderTarget& window)
+void Grid::Draw(sf::RenderTarget& window, float zoom)
 {
 	for (auto&& x : m_tiles) {
 		for (auto&& y : x)
 		{
 			if (!y) continue;
-			sf::RectangleShape shape((sf::Vector2f)y.get()->GetSize());
-			shape.setPosition(sf::Vector2f(y.get()->GetPosition().x * y.get()->GetSize().x, y.get()->GetPosition().y * y.get()->GetSize().y));
+			sf::RectangleShape shape((sf::Vector2f)y.get()->GetSize() * zoom);
+			shape.setPosition(sf::Vector2f(y.get()->GetPosition().x * y.get()->GetSize().x * zoom, y.get()->GetPosition().y * y.get()->GetSize().y * zoom));
 			if (y.get()->getTexture() != nullptr)
 				shape.setTexture(y.get()->getTexture());
 			shape.setFillColor(y.get()->getColor());
@@ -74,19 +74,19 @@ void Grid::Draw(sf::RenderTarget& window)
 	}
 }
 
-void Grid::DrawGrid(sf::RenderTarget& window, sf::Vector2f cameraSize)
+void Grid::DrawGrid(sf::RenderTarget& window, sf::Vector2f renderSize, float zoom)
 {
 	sf::VertexArray grid(sf::PrimitiveType::Lines);
 
-	for (float x = 0.f; x <= cameraSize.x; x += m_tileSize.x) {
+	for (float x = 0.f; x <= renderSize.x; x += m_tileSize.x * zoom) {
 		grid.append({ sf::Vector2f(x, 0.f), sf::Color(100, 100, 100)});
-		grid.append({ sf::Vector2f(x, cameraSize.y), sf::Color(100, 100, 100) });
+		grid.append({ sf::Vector2f(x, renderSize.y), sf::Color(100, 100, 100) });
 	}
 
 	// Lignes horizontales
-	for (float y = 0.f; y <= cameraSize.y; y += m_tileSize.y) {
+	for (float y = 0.f; y <= renderSize.y; y += m_tileSize.y * zoom) {
 		grid.append({ sf::Vector2f(0.f, y), sf::Color(100, 100, 100)});
-		grid.append({ sf::Vector2f(cameraSize.x, y), sf::Color(100, 100, 100) });
+		grid.append({ sf::Vector2f(renderSize.x, y), sf::Color(100, 100, 100) });
 	}
 
 	window.draw(grid);

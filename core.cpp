@@ -43,7 +43,7 @@ void Core::Update()
     ImGui::SFML::Update(window, time);
 
     engine.Update(deltaTime);
-    editor.Update(engine);
+    editor.Update(engine, deltaTime);
 }
 
 void Core::Render() {

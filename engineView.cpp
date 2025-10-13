@@ -9,7 +9,7 @@ EngineView::EngineView()
 }
 
 // Sans le zoom de la cam
-sf::Vector2f EngineView::GetMousePos(sf::Vector2f viewPortPos) const
+sf::Vector2f EngineView::GetMousePos(sf::Vector2f viewPortPos, float zoom) const
 {
 	if (renderIsHovered) {
 		ImVec2 windowMousePos = ImGui::GetMousePos();
@@ -17,7 +17,7 @@ sf::Vector2f EngineView::GetMousePos(sf::Vector2f viewPortPos) const
 		// on le mets en dessous du ImGui::Image(...);
 		ImVec2 renderLocalPos = { windowMousePos.x - renderPos.x, windowMousePos.y - renderPos.y };
 
-		return { renderLocalPos.x + viewPortPos.x, renderLocalPos.y + viewPortPos.y };
+		return sf::Vector2f(renderLocalPos.x + viewPortPos.x, renderLocalPos.y + viewPortPos.y)/zoom;
 	}
 	return sf::Vector2f();
 }

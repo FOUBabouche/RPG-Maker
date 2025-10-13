@@ -11,18 +11,29 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <optional>
 
+enum Tools {
+	Move,
+	Paint,
+	Erase
+};
+
 class Editor {
 public:
 	void Start();
 
 	void Event(std::optional<sf::Event> event);
-	void Update(Engine& engine);
+	void Update(Engine& engine, float deltaTime);
 private:
 	EngineView engineWin;
 	Camera camera;
-	sf::Texture placeHolder;
+	float zoom = 1;
+	Tools tool;
 	bool leftPressed = false;
 	bool rightPressed = false;
+
+private:
+	sf::Texture placeHolder;
+	sf::Texture moveButton;
 };
 
 #endif

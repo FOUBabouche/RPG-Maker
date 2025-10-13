@@ -6,8 +6,18 @@ sf::View Camera::GetView(void) const
 	return view;
 }
 
-void Camera::Update(float dt) {
+float Camera::GetZoom(void) const
+{
+	return m_zoom;
+}
 
+void Camera::SetZoom(float zoom)
+{
+	m_zoom = zoom;
+}
+
+void Camera::Update(float dt) {
+	view.zoom(m_zoom);
 }
 
 void Camera::SetRenderTarget(sf::RenderTexture& render, sf::Vector2f renderSize)
