@@ -34,6 +34,8 @@ private:
 private:
 	sf::Texture placeHolder;
 	sf::Texture moveButton;
+	sf::Texture paintButton;
+	sf::Texture eraseButton;
 };
 
 #endif

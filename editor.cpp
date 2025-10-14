@@ -9,26 +9,26 @@ void Editor::Start() {
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	placeHolder.loadFromFile("Placeholder.png");
-	
+	moveButton.loadFromFile("MoveButton.png");
+	paintButton.loadFromFile("PaintButton.png");
+	eraseButton.loadFromFile("EraseButton.png");
 }
 
 void Editor::Event(std::optional<sf::Event> event) {
-	if (tool == Paint) {
-		if (const auto mouse = event->getIf<sf::Event::MouseButtonPressed>()) {
-			if (mouse->button == sf::Mouse::Button::Left) {
-				leftPressed = true;
-			}
-			if (mouse->button == sf::Mouse::Button::Right) {
-				rightPressed = true;
-			}
+	if (const auto mouse = event->getIf<sf::Event::MouseButtonPressed>()) {
+		if (mouse->button == sf::Mouse::Button::Left) {
+			leftPressed = true;
 		}
-		if (const auto mouse = event->getIf<sf::Event::MouseButtonReleased>()) {
-			if (mouse->button == sf::Mouse::Button::Left) {
-				leftPressed = false;
-			}
-			if (mouse->button == sf::Mouse::Button::Right) {
-				rightPressed = false;
-			}
+		if (mouse->button == sf::Mouse::Button::Right) {
+			rightPressed = true;
+		}
+	}
+	if (const auto mouse = event->getIf<sf::Event::MouseButtonReleased>()) {
+		if (mouse->button == sf::Mouse::Button::Left) {
+			leftPressed = false;
+		}
+		if (mouse->button == sf::Mouse::Button::Right) {
+			rightPressed = false;
 		}
 	}
 
@@ -59,17 +59,25 @@ void Editor::Update(Engine& engine, float deltaTime) {
 	//std::cout << mPos.x << " " << mPos.y << std::endl;
 
 	if (leftPressed) {
-		engine.grid.SetTile(mPos, sf::Color::Red, &placeHolder);
-	}
-	if (rightPressed) {
-		engine.grid.RemoveTile(mPos);
+		if(tool == Paint)engine.grid.SetTile(mPos, sf::Color::Red, &placeHolder);
+		if (tool == Erase)engine.grid.RemoveTile(mPos);
 	}
 
 	ImGui::Begin("Editor");
 
-	ImGui::BeginTabBar("TabBar");
+	if(ImGui::ImageButton("move", moveButton, { 32, 32 })) {
+		tool = Move;
+	}
+	ImGui::SameLine();
+	if (ImGui::ImageButton("paint", paintButton, { 32, 32 })) {
+		tool = Paint;
+	}
+	ImGui::SameLine();
+	if(ImGui::ImageButton("erase", eraseButton, { 32, 32 })) {
+		tool = Erase;
+	}
 
-	ImGui::ImageButton("move", )
+	ImGui::BeginTabBar("TabBar");
 
 	if (ImGui::TabItemButton("Map Palette")) {
 

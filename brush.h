@@ -17,7 +17,7 @@ public:
 	sf::Texture* GetTexture(void) const;
 	ImVec4 GetColor(void) const;
 
-	virtual void click();
+	virtual void click() {};
 protected:
 	unsigned int m_size;
 	std::unique_ptr<sf::Texture> m_currentTexture;
