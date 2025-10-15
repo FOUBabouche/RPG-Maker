@@ -16,6 +16,11 @@ void Camera::SetZoom(float zoom)
 	m_zoom = zoom;
 }
 
+void Camera::SetPosition(sf::Vector2f position)
+{
+	view = sf::View({ position, {view.getSize().x, view.getSize().y}});
+}
+
 void Camera::Update(float dt) {
 	view.zoom(m_zoom);
 }

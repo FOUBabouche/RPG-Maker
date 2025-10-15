@@ -134,6 +134,7 @@
     <ClCompile Include="brush.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="core.cpp" />
+    <ClCompile Include="eMath.cpp" />
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="engineView.cpp" />
     <ClCompile Include="grid.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="core.h" />
     <ClInclude Include="editor.h" />
+    <ClInclude Include="eMath.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="engineView.h" />
     <ClInclude Include="grid.h" />

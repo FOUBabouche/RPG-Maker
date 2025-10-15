@@ -90,6 +90,9 @@
     <ClCompile Include="brush.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="eMath.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\imgui-sfml\imconfig-SFML.h">
@@ -145,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="paint.h">
       <Filter>Fichiers d%27en-tête\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="eMath.h">
+      <Filter>Fichiers d%27en-tête\engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

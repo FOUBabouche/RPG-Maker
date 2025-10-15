@@ -26,10 +26,12 @@ public:
 private:
 	EngineView engineWin;
 	Camera camera;
+	sf::Vector2f lastMousePos;
 	float zoom = 1;
 	Tools tool;
 	bool leftPressed = false;
 	bool rightPressed = false;
+	bool canBeANewPos = true;
 
 private:
 	sf::Texture placeHolder;

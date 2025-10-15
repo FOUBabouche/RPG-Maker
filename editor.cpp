@@ -1,4 +1,5 @@
 #include "editor.h"
+#include "eMath.h"
 
 #include <imgui-SFML.h>
 #include <imgui.h>
@@ -26,6 +27,7 @@ void Editor::Event(std::optional<sf::Event> event) {
 	if (const auto mouse = event->getIf<sf::Event::MouseButtonReleased>()) {
 		if (mouse->button == sf::Mouse::Button::Left) {
 			leftPressed = false;
+			canBeANewPos = true;
 		}
 		if (mouse->button == sf::Mouse::Button::Right) {
 			rightPressed = false;
@@ -53,14 +55,21 @@ void Editor::Update(Engine& engine, float deltaTime) {
 	camera.Update(deltaTime);
 	camera.SetRenderTarget(*engineWin.getRender().get(), engineWin.getAvailSize());
 
-	engineWin.GetMousePos(camera.GetView().getViewport().position, camera.GetZoom());
+	sf::Vector2f mousePos = engineWin.GetMousePos(camera.GetView().getViewport().position, camera.GetZoom());
 
-	sf::Vector2u mPos = engine.grid.GetCoordToGridPos(engineWin.GetMousePos(camera.GetView().getViewport().position, camera.GetZoom()));
+	sf::Vector2u mousePosOnGrid = engine.grid.GetCoordToGridPos(engineWin.GetMousePos(camera.GetView().getViewport().position, camera.GetZoom()));
 	//std::cout << mPos.x << " " << mPos.y << std::endl;
 
-	if (leftPressed) {
-		if(tool == Paint)engine.grid.SetTile(mPos, sf::Color::Red, &placeHolder);
-		if (tool == Erase)engine.grid.RemoveTile(mPos);
+	if (leftPressed && engineWin.isHover()) {
+		if (canBeANewPos) {
+			lastMousePos = mousePos;
+			canBeANewPos = false;
+		}
+		if (tool == Move) {
+			camera.SetPosition({ lastMousePos.x + distance(mousePos, lastMousePos) , lastMousePos.y + distance(mousePos, lastMousePos) });
+		}
+		if(tool == Paint)engine.grid.SetTile(mousePosOnGrid, sf::Color::Red, &placeHolder);
+		if (tool == Erase)engine.grid.RemoveTile(mousePosOnGrid);
 	}
 
 	ImGui::Begin("Editor");
