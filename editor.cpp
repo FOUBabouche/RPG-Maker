@@ -51,7 +51,7 @@ void Editor::Event(std::optional<sf::Event> event) {
 		if (const auto wheel = event->getIf<sf::Event::MouseWheelScrolled>()) {
 			if (wheel->delta < 0) {
 				zoom -= 0.05f;
-				if (zoom <= 0)
+				if (zoom <= 0.05f)
 					zoom = 0.05f;
 			}
 			if (wheel->delta > 0) {
