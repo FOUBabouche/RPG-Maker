@@ -11,8 +11,10 @@ Grid::Grid(sf::Vector2u tileSize)
 	m_tileSize = tileSize;
 }
 
-void Grid::SetTile(sf::Vector2u position, sf::Color color, sf::Texture* texture)
+void Grid::SetTile(sf::Vector2u position, sf::Color color, sf::Texture* texture, sf::IntRect uvSize)
 {
+	if (position.x < 0 || position.y < 0) return;
+
 	if (m_tiles.size() <= position.x) {
 		m_tiles.resize(position.x + 1);
 	}
@@ -21,8 +23,7 @@ void Grid::SetTile(sf::Vector2u position, sf::Color color, sf::Texture* texture)
 		m_tiles[position.x].resize(position.y + 1);
 	}
 
-
-	m_tiles[position.x][position.y] = std::make_unique<Tile>(position, m_tileSize, color, texture);
+	m_tiles[position.x][position.y] = std::make_unique<Tile>(position, m_tileSize, color, texture, uvSize);
 }
 
 void Grid::RemoveTile(sf::Vector2u position)
@@ -74,19 +75,22 @@ void Grid::Draw(sf::RenderTarget& window, float zoom)
 	}
 }
 
-void Grid::DrawGrid(sf::RenderTarget& window, sf::Vector2f renderSize, float zoom)
+void Grid::DrawGrid(sf::RenderTarget& window, sf::Vector2f renderSize, sf::Vector2f cameraPos,float zoom)
 {
 	sf::VertexArray grid(sf::PrimitiveType::Lines);
 
-	for (float x = 0.f; x <= renderSize.x; x += m_tileSize.x * zoom) {
-		grid.append({ sf::Vector2f(x, 0.f), sf::Color(100, 100, 100)});
-		grid.append({ sf::Vector2f(x, renderSize.y), sf::Color(100, 100, 100) });
+	float startX = std::floor(cameraPos.x / (m_tileSize.x * zoom)) / (m_tileSize.x * zoom);
+	float startY = std::floor(cameraPos.y / (m_tileSize.y * zoom)) / (m_tileSize.y * zoom);
+
+	for (float x = startX; x <= cameraPos.x + renderSize.x ; x += m_tileSize.x * zoom) {
+		grid.append({ sf::Vector2f(x, cameraPos.y), sf::Color(100, 100, 100)});
+		grid.append({ sf::Vector2f(x, cameraPos.y + renderSize.y), sf::Color(100, 100, 100) });
 	}
 
 	// Lignes horizontales
-	for (float y = 0.f; y <= renderSize.y; y += m_tileSize.y * zoom) {
-		grid.append({ sf::Vector2f(0.f, y), sf::Color(100, 100, 100)});
-		grid.append({ sf::Vector2f(renderSize.x, y), sf::Color(100, 100, 100) });
+	for (float y = startY; y <= cameraPos.y + renderSize.y; y += m_tileSize.y * zoom) {
+		grid.append({ sf::Vector2f(cameraPos.x, y), sf::Color(100, 100, 100)});
+		grid.append({ sf::Vector2f(cameraPos.x + renderSize.x, y), sf::Color(100, 100, 100) });
 	}
 
 	window.draw(grid);

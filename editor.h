@@ -21,6 +21,7 @@ enum Tools {
 class Editor {
 public:
 	Editor();
+	~Editor();
 	void Start();
 
 	void Event(std::optional<sf::Event> event);
@@ -38,8 +39,10 @@ private:
 	bool rightPressed = false;
 	bool canBeANewPos = true;
 
+	bool brushWinIsOpen = false;
+
 private:
-	sf::Texture placeHolder;
+	sf::Texture* placeHolder;
 	sf::Texture moveButton;
 	sf::Texture paintButton;
 	sf::Texture eraseButton;

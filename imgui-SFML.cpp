@@ -779,6 +779,13 @@ void Image(const sf::Texture& texture, const sf::Vector2f& size, const sf::Color
     ImGui::Image(textureID, toImVec2(size), ImVec2(0, 1), ImVec2(1, 0), toImColor(tintColor), toImColor(borderColor));
 }
 
+ void Image(const sf::Texture& texture, const sf::Vector2f& size, const ImVec2& uv0, const ImVec2& uv1, const sf::Color& tintColor, const sf::Color& borderColor)
+{
+     ImTextureID textureID = convertGLTextureHandleToImTextureID(texture.getNativeHandle());
+
+     ImGui::Image(textureID, toImVec2(size), uv0, uv1, toImColor(tintColor), toImColor(borderColor));
+}
+
 /////////////// Image Overloads for sf::RenderTexture
 void Image(const sf::RenderTexture& texture, const sf::Color& tintColor, const sf::Color& borderColor)
 {

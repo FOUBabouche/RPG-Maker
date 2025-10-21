@@ -8,20 +8,22 @@ Tile::Tile()
 	m_texture = nullptr;
 }
 
-Tile::Tile(sf::Vector2u position, sf::Vector2u size, sf::Texture* texture)
+Tile::Tile(sf::Vector2u position, sf::Vector2u size, sf::Texture* texture, sf::IntRect uv)
 {
 	m_position = position;
 	m_size = size;
 	m_color = sf::Color::White;
+	m_uv = uv;
 	if(texture)
 		m_texture = std::make_unique<sf::Texture>(*texture);
 }
 
-Tile::Tile(sf::Vector2u position, sf::Vector2u size, sf::Color color, sf::Texture* texture)
+Tile::Tile(sf::Vector2u position, sf::Vector2u size, sf::Color color, sf::Texture* texture, sf::IntRect uv)
 {
 	m_position = position;
 	m_size = size;
 	m_color = color;
+	m_uv = uv;
 	if(texture)
 		m_texture = std::make_unique<sf::Texture>(*texture);
 }
@@ -42,6 +44,11 @@ sf::Vector2u Tile::GetPosition()const
 sf::Vector2u Tile::GetSize()const
 {
 	return m_size;
+}
+
+sf::IntRect Tile::getUV() const
+{
+	return m_uv;
 }
 
 sf::Texture* Tile::getTexture()const

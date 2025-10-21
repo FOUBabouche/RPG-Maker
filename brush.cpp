@@ -7,12 +7,17 @@ void Brush::SetSize(unsigned int size)
 
 void Brush::SetTexure(sf::Texture* texture)
 {
-	//m_currentTexture = std::make_unique<sf::Texture>(texture);
+	m_currentTexture.reset(texture);
 }
 
 void Brush::SetColor(sf::Color color)
 {
 	m_color = color;
+}
+
+void Brush::SetUV(sf::IntRect uv)
+{
+	m_uv = uv;
 }
 
 unsigned int Brush::GetSize(void) const {
@@ -24,7 +29,12 @@ sf::Texture* Brush::GetTexture(void) const
 	return m_currentTexture.get();
 }
 
-sf::Color Brush::GetColor(void)
+sf::IntRect Brush::GetUV(void) const
+{
+	return m_uv;
+}
+
+sf::Color Brush::GetColor(void) const
 {
 	return m_color;
 }
