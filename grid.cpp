@@ -1,6 +1,8 @@
 #include "grid.h"
 
 #include <iostream>
+#include <cmath>
+#include <stdexcept>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 
@@ -9,41 +11,43 @@ Grid::Grid(sf::Vector2u tileSize)
 	m_tileSize = tileSize;
 }
 
-void Grid::SetTile(sf::Vector2u position, sf::Color color, sf::Texture* texture)
+void Grid::SetTile(sf::Vector2u position, sf::Color color, sf::Texture* texture, sf::IntRect uvSize)
 {
-	Tile tile = Tile(position, m_tileSize, color, texture);
-	if (position.x >= m_tiles.size()) {
-		m_tiles.push_back(std::vector<std::unique_ptr<Tile>>());
-		if (position.y >= m_tiles[m_tiles.size()-1].size()) {
-			m_tiles[m_tiles.size() - 1].push_back(std::make_unique<Tile>(tile));
-		}
-		else {
-			m_tiles[m_tiles.size() - 1].insert(m_tiles[m_tiles.size() - 1].begin(), std::make_unique<Tile>(tile));
-		}
+	if (position.x < 0 || position.y < 0) return;
+
+	if (m_tiles.size() <= position.x) {
+		m_tiles.resize(position.x + 1);
 	}
-	else if (position.x == m_tiles.size()) {
-		m_tiles[position.x][position.y].reset(&tile);
+
+	if (m_tiles[position.x].size() <= position.y) {
+		m_tiles[position.x].resize(position.y + 1);
 	}
-	else {
-		m_tiles.insert(m_tiles.begin()+position.x, std::vector<std::unique_ptr<Tile>>());
-		if (position.y >= m_tiles[m_tiles.size() - 1].size()) {
-			m_tiles[m_tiles.size() - 1].push_back(std::make_unique<Tile>(tile));
-		}
-		else {
-			m_tiles[m_tiles.size() - 1].insert(m_tiles[m_tiles.size() - 1].begin(), std::make_unique<Tile>(tile));
-		}
-	}
+
+	m_tiles[position.x][position.y] = std::make_unique<Tile>(position, m_tileSize, color, texture, uvSize);
 }
 
 void Grid::RemoveTile(sf::Vector2u position)
 {
-	for (size_t x = 0; x < m_tiles.size(); x++)
-		for (size_t y = 0; y < m_tiles[x].size(); y++)
-			if (m_tiles[x][y].get()->GetPosition() == position) {
-				m_tiles[x].erase(m_tiles[x].begin()+y);
-				return;
-			}
-	std::cout << "No Tile Here: " << position.x << " " << position.y << std::endl;
+	if (position.x >= m_tiles.size() || position.y >= m_tiles[position.x].size())return;
+
+	auto& tilePtr = m_tiles[position.x][position.y];
+	if (tilePtr && tilePtr->GetPosition() == position) {
+		tilePtr.reset(); // Remplace par nullptr
+		// Optionnel : nettoyage de la colonne si elle ne contient que des nullptr
+		bool empty = true;
+		for (const auto& t : m_tiles[position.x]) {
+			if (t) { empty = false; break; }
+		}
+		if (empty) {
+			m_tiles[position.x].clear();
+		}
+		return;
+	}
+}
+
+sf::Vector2u Grid::GetCoordToGridPos(sf::Vector2f mousePos)
+{
+	return sf::Vector2u(std::floor(mousePos.x / m_tileSize.x), std::floor(mousePos.y / m_tileSize.y));
 }
 
 bool Grid::FindAt(sf::Vector2u position)
@@ -55,13 +59,14 @@ bool Grid::FindAt(sf::Vector2u position)
 	return false;
 }
 
-void Grid::Draw(sf::RenderWindow& window)
+void Grid::Draw(sf::RenderTarget& window, float zoom)
 {
 	for (auto&& x : m_tiles) {
 		for (auto&& y : x)
 		{
-			sf::RectangleShape shape((sf::Vector2f)y.get()->GetSize());
-			shape.setPosition(sf::Vector2f(y.get()->GetPosition().x * y.get()->GetSize().x, y.get()->GetPosition().y * y.get()->GetSize().y));
+			if (!y) continue;
+			sf::RectangleShape shape((sf::Vector2f)y.get()->GetSize() * zoom);
+			shape.setPosition(sf::Vector2f(y.get()->GetPosition().x * y.get()->GetSize().x * zoom, y.get()->GetPosition().y * y.get()->GetSize().y * zoom));
 			if (y.get()->getTexture() != nullptr)
 				shape.setTexture(y.get()->getTexture());
 			shape.setFillColor(y.get()->getColor());
@@ -70,19 +75,22 @@ void Grid::Draw(sf::RenderWindow& window)
 	}
 }
 
-void Grid::DrawGrid(sf::RenderWindow& window)
+void Grid::DrawGrid(sf::RenderTarget& window, sf::Vector2f renderSize, sf::Vector2f cameraPos,float zoom)
 {
 	sf::VertexArray grid(sf::PrimitiveType::Lines);
 
-	for (float x = 0.f; x <= 800; x += m_tileSize.x) {
-		grid.append({ sf::Vector2f(x, 0.f), sf::Color(100, 100, 100)});
-		grid.append({ sf::Vector2f(x, 600), sf::Color(100, 100, 100) });
+	float startX = std::floor(cameraPos.x / (m_tileSize.x * zoom)) / (m_tileSize.x * zoom);
+	float startY = std::floor(cameraPos.y / (m_tileSize.y * zoom)) / (m_tileSize.y * zoom);
+
+	for (float x = startX; x <= cameraPos.x + renderSize.x ; x += m_tileSize.x * zoom) {
+		grid.append({ sf::Vector2f(x, cameraPos.y), sf::Color(100, 100, 100)});
+		grid.append({ sf::Vector2f(x, cameraPos.y + renderSize.y), sf::Color(100, 100, 100) });
 	}
 
 	// Lignes horizontales
-	for (float y = 0.f; y <= 600; y += m_tileSize.y) {
-		grid.append({ sf::Vector2f(0.f, y), sf::Color(100, 100, 100)});
-		grid.append({ sf::Vector2f(800, y), sf::Color(100, 100, 100) });
+	for (float y = startY; y <= cameraPos.y + renderSize.y; y += m_tileSize.y * zoom) {
+		grid.append({ sf::Vector2f(cameraPos.x, y), sf::Color(100, 100, 100)});
+		grid.append({ sf::Vector2f(cameraPos.x + renderSize.x, y), sf::Color(100, 100, 100) });
 	}
 
 	window.draw(grid);

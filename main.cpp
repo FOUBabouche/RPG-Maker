@@ -2,6 +2,6 @@
 
 int main()
 {
-    Core::Init();
+    Core core;
     return 0;
 }

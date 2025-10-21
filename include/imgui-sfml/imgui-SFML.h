@@ -10,6 +10,7 @@
 #include <optional>
 
 #include "imgui-SFML_export.h"
+#include "imgui/imgui.h"
 
 namespace sf
 {
@@ -77,6 +78,12 @@ IMGUI_SFML_API void Image(const sf::Texture&  texture,
                           const sf::Vector2f& size,
                           const sf::Color&    tintColor   = sf::Color::White,
                           const sf::Color&    borderColor = sf::Color::Transparent);
+IMGUI_SFML_API void Image(const sf::Texture& texture,
+                          const sf::Vector2f& size,
+                          const ImVec2& uv0,
+                          const ImVec2& uv1,
+                          const sf::Color& tintColor = sf::Color::White,
+                          const sf::Color& borderColor = sf::Color::Transparent);
 
 // Image overloads for sf::RenderTexture
 IMGUI_SFML_API void Image(const sf::RenderTexture& texture,

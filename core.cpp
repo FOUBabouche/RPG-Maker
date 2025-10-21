@@ -2,30 +2,24 @@
 #include <imgui-SFML.h>
 #include <imgui.h>
 
-sf::RenderWindow Core::window;
-sf::Clock Core::deltaClock;
 
-Grid grid({ 20, 20 });
-
-void Core::Init() {
+Core::Core(){
     Start();
     while (window.isOpen()) {
         Event();
         Update();
         Render();
     }
+    ImGui::SFML::Shutdown();
 }
 
 void Core::Start()
 {
 	window.create(sf::VideoMode({ 800, 600 }), "RPG Maker");
 	ImGui::SFML::Init(window);
-    grid.SetTile({ 0, 0 }, sf::Color::Red, nullptr);
-    grid.SetTile({ 4, 0 }, sf::Color::Blue, nullptr);
-    grid.SetTile({ 3, 0 }, sf::Color::Green, nullptr);
-    grid.SetTile({ 0, 0 }, sf::Color::Green, nullptr);
-    grid.RemoveTile({ 4, 0 });
-    grid.RemoveTile({4, 0});
+
+    engine.Start();
+    editor.Start();
 }
 
 void Core::Event()
@@ -35,19 +29,25 @@ void Core::Event()
         ImGui::SFML::ProcessEvent(window, *event);
         if (event->is<sf::Event::Closed>())
             window.close();
+        engine.Event(event);
+        editor.Event(event);
     }
 }
 
 void Core::Update()
 {
-    ImGui::SFML::Update(window, deltaClock.restart());
+    sf::Time time = deltaClock.restart();
+    deltaTime = time.asSeconds();
+
+
+    ImGui::SFML::Update(window, time);
+
+    engine.Update(deltaTime);
+    editor.Update(engine, deltaTime);
 }
 
 void Core::Render() {
     window.clear();
-
-    grid.DrawGrid(window);
-    grid.Draw(window);
 
     ImGui::SFML::Render(window);
     window.display();

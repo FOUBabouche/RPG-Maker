@@ -37,23 +37,14 @@
     <Filter Include="Fichiers sources\engine">
       <UniqueIdentifier>{6c548adb-d023-4cfc-b5db-e715508ed7ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\editor">
+      <UniqueIdentifier>{a1b924dc-aa58-4e74-b577-082a91374e45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\editor">
+      <UniqueIdentifier>{d11b4310-fbac-4c46-9c65-a31ba6f9bf9b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="imgui.cpp">
-      <Filter>Fichiers sources\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_demo.cpp">
-      <Filter>Fichiers sources\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_draw.cpp">
-      <Filter>Fichiers sources\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_tables.cpp">
-      <Filter>Fichiers sources\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_widgets.cpp">
-      <Filter>Fichiers sources\imgui</Filter>
-    </ClCompile>
     <ClCompile Include="imgui-SFML.cpp">
       <Filter>Fichiers sources\imgui\sfml</Filter>
     </ClCompile>
@@ -69,6 +60,39 @@
     <ClCompile Include="grid.cpp">
       <Filter>Fichiers sources\engine</Filter>
     </ClCompile>
+    <ClCompile Include="editor.cpp">
+      <Filter>Fichiers sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>Fichiers sources\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>Fichiers sources\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>Fichiers sources\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
+      <Filter>Fichiers sources\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>Fichiers sources\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="engine.cpp">
+      <Filter>Fichiers sources\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engineView.cpp">
+      <Filter>Fichiers sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>Fichiers sources\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="brush.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="eMath.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\imgui-sfml\imconfig-SFML.h">
@@ -79,6 +103,18 @@
     </ClInclude>
     <ClInclude Include="include\imgui-sfml\imgui-SFML_export.h">
       <Filter>Fichiers d%27en-tête\imgui\sfml</Filter>
+    </ClInclude>
+    <ClInclude Include="core.h">
+      <Filter>Fichiers d%27en-tête\run</Filter>
+    </ClInclude>
+    <ClInclude Include="grid.h">
+      <Filter>Fichiers d%27en-tête\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="tile.h">
+      <Filter>Fichiers d%27en-tête\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="editor.h">
+      <Filter>Fichiers d%27en-tête\editor</Filter>
     </ClInclude>
     <ClInclude Include="include\imgui\imconfig.h">
       <Filter>Fichiers d%27en-tête\imgui</Filter>
@@ -98,13 +134,22 @@
     <ClInclude Include="include\imgui\imstb_truetype.h">
       <Filter>Fichiers d%27en-tête\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="core.h">
-      <Filter>Fichiers d%27en-tête\run</Filter>
-    </ClInclude>
-    <ClInclude Include="grid.h">
+    <ClInclude Include="engine.h">
       <Filter>Fichiers d%27en-tête\engine</Filter>
     </ClInclude>
-    <ClInclude Include="tile.h">
+    <ClInclude Include="engineView.h">
+      <Filter>Fichiers d%27en-tête\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Fichiers d%27en-tête\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="brush.h">
+      <Filter>Fichiers d%27en-tête\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="paint.h">
+      <Filter>Fichiers d%27en-tête\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="eMath.h">
       <Filter>Fichiers d%27en-tête\engine</Filter>
     </ClInclude>
   </ItemGroup>

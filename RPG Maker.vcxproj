@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -131,7 +131,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="brush.cpp" />
+    <ClCompile Include="camera.cpp" />
     <ClCompile Include="core.cpp" />
+    <ClCompile Include="eMath.cpp" />
+    <ClCompile Include="engine.cpp" />
+    <ClCompile Include="engineView.cpp" />
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="imgui-SFML.cpp" />
     <ClCompile Include="imgui.cpp" />
@@ -140,10 +145,17 @@
     <ClCompile Include="imgui_tables.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="editor.cpp" />
     <ClCompile Include="tile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="brush.h" />
+    <ClInclude Include="camera.h" />
     <ClInclude Include="core.h" />
+    <ClInclude Include="editor.h" />
+    <ClInclude Include="eMath.h" />
+    <ClInclude Include="engine.h" />
+    <ClInclude Include="engineView.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="include\imgui-sfml\imconfig-SFML.h" />
     <ClInclude Include="include\imgui-sfml\imgui-SFML.h" />
@@ -154,6 +166,7 @@
     <ClInclude Include="include\imgui\imstb_rectpack.h" />
     <ClInclude Include="include\imgui\imstb_textedit.h" />
     <ClInclude Include="include\imgui\imstb_truetype.h" />
+    <ClInclude Include="paint.h" />
     <ClInclude Include="tile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
