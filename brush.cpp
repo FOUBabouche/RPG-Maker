@@ -10,7 +10,7 @@ void Brush::SetTexure(sf::Texture* texture)
 	//m_currentTexture = std::make_unique<sf::Texture>(texture);
 }
 
-void Brush::SetColor(ImVec4 color)
+void Brush::SetColor(sf::Color color)
 {
 	m_color = color;
 }
@@ -24,7 +24,7 @@ sf::Texture* Brush::GetTexture(void) const
 	return m_currentTexture.get();
 }
 
-ImVec4 Brush::GetColor(void) const
+sf::Color Brush::GetColor(void)
 {
 	return m_color;
 }

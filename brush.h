@@ -3,7 +3,7 @@
 
 #include <memory>
 #include <SFML/Graphics/Texture.hpp>
-#include <imgui.h>
+#include <SFML/Graphics/Color.hpp>
 
 class Brush {
 public:
@@ -11,17 +11,17 @@ public:
 
 	void SetSize(unsigned int size);
 	void SetTexure(sf::Texture* texture);
-	void SetColor(ImVec4 color);
+	void SetColor(sf::Color color);
 
 	unsigned int GetSize(void) const;
 	sf::Texture* GetTexture(void) const;
-	ImVec4 GetColor(void) const;
+	sf::Color GetColor(void);
 
 	virtual void click() {};
 protected:
 	unsigned int m_size;
 	std::unique_ptr<sf::Texture> m_currentTexture;
-	ImVec4 m_color;
+	sf::Color m_color = sf::Color::White;
 };
 
 #endif

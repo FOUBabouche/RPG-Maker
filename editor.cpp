@@ -5,6 +5,12 @@
 #include <imgui.h>
 #include <iostream>
 
+
+Editor::Editor()
+{
+	col = new float[4] {0, 0, 0, 0};
+}
+
 void Editor::Start() {
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -52,13 +58,11 @@ void Editor::Update(Engine& engine, float deltaTime) {
 	camera.SetZoom(zoom);
 
 	engineWin.Draw(engine, camera);
-	camera.Update(deltaTime);
 	camera.SetRenderTarget(*engineWin.getRender().get(), engineWin.getAvailSize());
 
-	sf::Vector2f mousePos = engineWin.GetMousePos(camera.GetView().getViewport().position, camera.GetZoom());
+	sf::Vector2f mousePos = engineWin.GetMousePos(camera.GetView().getCenter(), camera.GetView().getSize(), zoom);
 
-	sf::Vector2u mousePosOnGrid = engine.grid.GetCoordToGridPos(engineWin.GetMousePos(camera.GetView().getViewport().position, camera.GetZoom()));
-	//std::cout << mPos.x << " " << mPos.y << std::endl;
+	sf::Vector2u mousePosOnGrid = engine.grid.GetCoordToGridPos(mousePos);
 
 	if (leftPressed && engineWin.isHover()) {
 		if (canBeANewPos) {
@@ -66,9 +70,11 @@ void Editor::Update(Engine& engine, float deltaTime) {
 			canBeANewPos = false;
 		}
 		if (tool == Move) {
-			camera.SetPosition({ lastMousePos.x + distance(mousePos, lastMousePos) , lastMousePos.y + distance(mousePos, lastMousePos) });
+			sf::Vector2f deltaPos = lastMousePos - mousePos;
+			camera.SetPosition(camera.GetView().getCenter() + deltaPos);
+			engineWin.getRender().get()->setView(camera.GetView());
 		}
-		if(tool == Paint)engine.grid.SetTile(mousePosOnGrid, sf::Color::Red, &placeHolder);
+		if(tool == Paint)engine.grid.SetTile(mousePosOnGrid, brush.GetColor(), &placeHolder);
 		if (tool == Erase)engine.grid.RemoveTile(mousePosOnGrid);
 	}
 
@@ -84,6 +90,13 @@ void Editor::Update(Engine& engine, float deltaTime) {
 	ImGui::SameLine();
 	if(ImGui::ImageButton("erase", eraseButton, { 32, 32 })) {
 		tool = Erase;
+	}
+
+	if (tool == Paint) {
+		if (ImGui::ColorPicker4("Brush Color", col)) {
+			brush.SetColor({ static_cast<uint8_t>(col[0] * 255), static_cast<uint8_t>(col[1] * 255), static_cast<uint8_t>(col[2] * 255), static_cast<uint8_t>(col[3] * 255) });
+		}
+		
 	}
 
 	ImGui::BeginTabBar("TabBar");

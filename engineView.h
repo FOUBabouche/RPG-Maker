@@ -16,11 +16,12 @@ class EngineView {
 public:
 	EngineView();
 
-	sf::Vector2f GetMousePos(sf::Vector2f viewPortPos, float zoom) const;
+	sf::Vector2f GetMousePos(sf::Vector2f cameraPos, sf::Vector2f cameraSize, float zoom) const;
 
 	std::unique_ptr<sf::RenderTexture>& getRender(void);
 	bool isHover(void) const;
 
+	sf::Vector2f getRenderPos();
 	sf::Vector2f getAvailSize();
 
 	void Draw(Engine& engine, Camera& camera);

@@ -9,17 +9,14 @@ EngineView::EngineView()
 }
 
 // Sans le zoom de la cam
-sf::Vector2f EngineView::GetMousePos(sf::Vector2f viewPortPos, float zoom) const
+sf::Vector2f EngineView::GetMousePos(sf::Vector2f cameraPosition, sf::Vector2f cameraSize, float zoom) const
 {
-	if (renderIsHovered) {
-		ImVec2 windowMousePos = ImGui::GetMousePos();
-		// RenderPos = renderPos = ImGui::GetItemRectMin();
-		// on le mets en dessous du ImGui::Image(...);
-		ImVec2 renderLocalPos = { windowMousePos.x - renderPos.x, windowMousePos.y - renderPos.y };
+	ImVec2 windowMousePos = ImGui::GetMousePos();
+	// RenderPos = renderPos = ImGui::GetItemRectMin();
+	// on le mets en dessous du ImGui::Image(...);
+	sf::Vector2f renderLocalPos = { windowMousePos.x - renderPos.x, windowMousePos.y - renderPos.y };
 
-		return sf::Vector2f(renderLocalPos.x + viewPortPos.x, renderLocalPos.y + viewPortPos.y)/zoom;
-	}
-	return sf::Vector2f();
+	return (renderLocalPos + (cameraPosition - sf::Vector2f(cameraSize.x / 2, cameraSize.y / 2))) / zoom;
 }
 
 std::unique_ptr<sf::RenderTexture>& EngineView::getRender(void)
@@ -30,6 +27,11 @@ std::unique_ptr<sf::RenderTexture>& EngineView::getRender(void)
 bool EngineView::isHover(void) const
 {
 	return renderIsHovered;
+}
+
+sf::Vector2f EngineView::getRenderPos()
+{
+	return renderPos;
 }
 
 sf::Vector2f EngineView::getAvailSize()

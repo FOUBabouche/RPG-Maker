@@ -7,7 +7,9 @@ class Paint : Brush {
 public:
 	Paint() = default;
 
-
+	void click() override {
+		return; // Code...
+	}
 };
 
 #endif

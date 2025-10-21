@@ -7,6 +7,7 @@
 
 #include "engineView.h"
 #include "camera.h"
+#include "brush.h"
 
 #include <SFML/Graphics/Texture.hpp>
 #include <optional>
@@ -19,16 +20,20 @@ enum Tools {
 
 class Editor {
 public:
+	Editor();
 	void Start();
 
 	void Event(std::optional<sf::Event> event);
 	void Update(Engine& engine, float deltaTime);
 private:
+	
 	EngineView engineWin;
 	Camera camera;
 	sf::Vector2f lastMousePos;
 	float zoom = 1;
 	Tools tool;
+	Brush brush;
+	float* col;
 	bool leftPressed = false;
 	bool rightPressed = false;
 	bool canBeANewPos = true;

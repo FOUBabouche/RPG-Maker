@@ -18,15 +18,11 @@ void Camera::SetZoom(float zoom)
 
 void Camera::SetPosition(sf::Vector2f position)
 {
-	view = sf::View({ position, {view.getSize().x, view.getSize().y}});
-}
-
-void Camera::Update(float dt) {
-	view.zoom(m_zoom);
+	view.setCenter(position);
 }
 
 void Camera::SetRenderTarget(sf::RenderTexture& render, sf::Vector2f renderSize)
 {
-	view = sf::View{ sf::FloatRect({0, 0}, {renderSize.x, renderSize.y})};
+	view.setSize(renderSize);
 	render.setView(view);
 }

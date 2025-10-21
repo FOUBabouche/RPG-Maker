@@ -19,7 +19,6 @@ public:
 	sf::View GetView(void) const;
 	float GetZoom(void) const;
 
-	void Update(float dt);
 	void SetRenderTarget(sf::RenderTexture& render, sf::Vector2f renderSize);
 private:
 	sf::View view;
