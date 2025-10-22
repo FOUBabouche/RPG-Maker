@@ -152,5 +152,8 @@
     <ClInclude Include="eMath.h">
       <Filter>Fichiers d%27en-tête\engine</Filter>
     </ClInclude>
+    <ClInclude Include="tool.h">
+      <Filter>Fichiers d%27en-tête\editor</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

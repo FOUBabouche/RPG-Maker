@@ -1,9 +1,11 @@
 #include "editor.h"
 #include "eMath.h"
+#include "tool.h"
+
+#include <iostream>
 
 #include <imgui-SFML.h>
 #include <imgui.h>
-#include <iostream>
 
 
 Editor::Editor()
@@ -20,9 +22,10 @@ void Editor::Start() {
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	placeHolder = new sf::Texture("Placeholder.png");
-	moveButton.loadFromFile("MoveButton.png");
-	paintButton.loadFromFile("PaintButton.png");
-	eraseButton.loadFromFile("EraseButton.png");
+	moveButton = new sf::Texture("MoveButton.png");
+	paintButton = new sf::Texture("PaintButton.png");
+	eraseButton = new sf::Texture("EraseButton.png");
+	textureButton = new sf::Texture("TextureButton.png");
 
 	brush.SetTexure(placeHolder);
 	brush.SetUV({ {0, 0}, {(int)brush.GetTexture()->getSize().x, (int)brush.GetTexture()->getSize().y} });
@@ -105,21 +108,54 @@ void Editor::Update(Engine& engine, float deltaTime) {
 		}
 	}
 
+	if (tool == SelectTexture) {
+		if (selectTextureWinIsOpen)
+		{
+			if (ImGui::Begin("Texture Palette", &selectTextureWinIsOpen)) {
+				if(ImGui::Button("Add Texture")) {
+					texturesPaths.push_back(getFilePathByDialog());
+					currentTexturePath = texturesPaths[texturesPaths.size()-1];
+				}
+				if (texturesPaths.size() > 0) {
+					if (ImGui::BeginCombo("Texture List", currentTexturePath.c_str())) {
+						for (size_t i = 0; i < texturesPaths.size(); i++)
+						{ 
+							bool is_selected = (currentTexturePath == texturesPaths[i]);
+							if (ImGui::Selectable(texturesPaths[i].c_str(), is_selected)) {
+								currentTexturePath = texturesPaths[i];
+							}
+						}
+						ImGui::EndCombo();
+					}
+
+					ImGui::SeparatorText("Current Texture");
+
+					// IMAGE DE LA TEXTURE MA GUEULE
+				}
+
+				ImGui::End();
+			}
+		}
+	}
+
 	ImGui::Begin("Tools");
 
-	if(ImGui::ImageButton("move", moveButton, { 32, 32 })) {
+	if(ImGui::ImageButton("move", *moveButton, { 32, 32 })) {
 		tool = Move;
-		brushWinIsOpen = false;
 	}
 	ImGui::SameLine();
-	if (ImGui::ImageButton("paint", paintButton, { 32, 32 })) {
+	if (ImGui::ImageButton("paint", *paintButton, { 32, 32 })) {
 		tool = Paint;
 		brushWinIsOpen = true;
 	}
 	ImGui::SameLine();
-	if(ImGui::ImageButton("erase", eraseButton, { 32, 32 })) {
+	if(ImGui::ImageButton("erase", *eraseButton, { 32, 32 })) {
 		tool = Erase;
-		brushWinIsOpen = false;
+	}
+	ImGui::SameLine();
+	if (ImGui::ImageButton("textureSelect", *textureButton, { 32, 32 })) {
+		tool = SelectTexture;
+		selectTextureWinIsOpen = true;
 	}
 
 	ImGui::End();

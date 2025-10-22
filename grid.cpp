@@ -23,7 +23,8 @@ void Grid::SetTile(sf::Vector2u position, sf::Color color, sf::Texture* texture,
 		m_tiles[position.x].resize(position.y + 1);
 	}
 
-	m_tiles[position.x][position.y] = std::make_unique<Tile>(position, m_tileSize, color, texture, uvSize);
+	Tile tile = Tile(position, m_tileSize, color, texture, uvSize);
+	m_tiles[position.x][position.y] = tile;
 }
 
 void Grid::RemoveTile(sf::Vector2u position)
@@ -31,12 +32,12 @@ void Grid::RemoveTile(sf::Vector2u position)
 	if (position.x >= m_tiles.size() || position.y >= m_tiles[position.x].size())return;
 
 	auto& tilePtr = m_tiles[position.x][position.y];
-	if (tilePtr && tilePtr->GetPosition() == position) {
-		tilePtr.reset(); // Remplace par nullptr
+	if (tilePtr.GetPosition() == position) {
+		tilePtr = (Tile&)Tile(); // Remplace par nullptr
 		// Optionnel : nettoyage de la colonne si elle ne contient que des nullptr
 		bool empty = true;
-		for (const auto& t : m_tiles[position.x]) {
-			if (t) { empty = false; break; }
+		for (auto& t : m_tiles[position.x]) {
+			if (t != (Tile&)Tile()) { empty = false; break; }
 		}
 		if (empty) {
 			m_tiles[position.x].clear();
@@ -54,7 +55,7 @@ bool Grid::FindAt(sf::Vector2u position)
 {
 	for (auto&& x : m_tiles)
 		for (auto&& y : x)
-			if (y.get()->GetPosition() == position)
+			if (y.GetPosition() == position)
 				return true;
 	return false;
 }
@@ -64,12 +65,12 @@ void Grid::Draw(sf::RenderTarget& window, float zoom)
 	for (auto&& x : m_tiles) {
 		for (auto&& y : x)
 		{
-			if (!y) continue;
-			sf::RectangleShape shape((sf::Vector2f)y.get()->GetSize() * zoom);
-			shape.setPosition(sf::Vector2f(y.get()->GetPosition().x * y.get()->GetSize().x * zoom, y.get()->GetPosition().y * y.get()->GetSize().y * zoom));
-			if (y.get()->getTexture() != nullptr)
-				shape.setTexture(y.get()->getTexture());
-			shape.setFillColor(y.get()->getColor());
+			if (y == (Tile&)Tile()) continue;
+			sf::RectangleShape shape((sf::Vector2f)y.GetSize() * zoom);
+			shape.setPosition(sf::Vector2f(y.GetPosition().x * y.GetSize().x * zoom, y.GetPosition().y * y.GetSize().y * zoom));
+			if (y.getTexture() != nullptr)
+				shape.setTexture(y.getTexture());
+			shape.setFillColor(y.getColor());
 			window.draw(shape);
 		}
 	}

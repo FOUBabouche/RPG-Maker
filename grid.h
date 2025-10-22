@@ -26,7 +26,7 @@ public:
 	void Draw(sf::RenderTarget& window, float zoom);
 	void DrawGrid(sf::RenderTarget& window, sf::Vector2f cameraSize, sf::Vector2f cameraPos, float zoom);
 private:
-	std::vector<std::vector<std::unique_ptr<Tile>>> m_tiles;
+	std::vector<std::vector<Tile>> m_tiles;
 	sf::Vector2u m_tileSize;
 
 };

@@ -2,7 +2,7 @@
 
 Tile::Tile()
 {
-	m_position = {0, 0};
+	m_position = {(unsigned int) - 1, (unsigned int)-1};
 	m_size = {16, 16};
 	m_color = sf::Color::White;
 	m_texture = nullptr;
@@ -15,7 +15,7 @@ Tile::Tile(sf::Vector2u position, sf::Vector2u size, sf::Texture* texture, sf::I
 	m_color = sf::Color::White;
 	m_uv = uv;
 	if(texture)
-		m_texture = std::make_unique<sf::Texture>(*texture);
+		m_texture = texture;
 }
 
 Tile::Tile(sf::Vector2u position, sf::Vector2u size, sf::Color color, sf::Texture* texture, sf::IntRect uv)
@@ -25,15 +25,15 @@ Tile::Tile(sf::Vector2u position, sf::Vector2u size, sf::Color color, sf::Textur
 	m_color = color;
 	m_uv = uv;
 	if(texture)
-		m_texture = std::make_unique<sf::Texture>(*texture);
+		m_texture = texture;
 }
 
-Tile::Tile(Tile& tile)
+Tile::Tile(const Tile& tile)
 {
 	m_position = tile.m_position;
 	m_size = tile.m_size;
 	m_color = tile.m_color;
-	m_texture.reset(tile.m_texture.get());
+	m_texture = tile.m_texture;
 }
 
 sf::Vector2u Tile::GetPosition()const
@@ -53,10 +53,33 @@ sf::IntRect Tile::getUV() const
 
 sf::Texture* Tile::getTexture()const
 {
-	return m_texture.get();
+	return m_texture;
 }
 
 sf::Color Tile::getColor()const
 {
 	return m_color;
+}
+
+Tile& Tile::operator=(const Tile& tile)
+{
+	m_position = tile.m_position;
+	m_size = tile.m_size;
+	m_color = tile.m_color;
+	m_texture = tile.m_texture;
+	return *this;
+}
+
+bool Tile::operator==(Tile& tile)
+{
+	return (m_position == tile.m_position &&
+			m_size == tile.m_size &&
+			m_color == tile.m_color &&
+			m_texture == tile.m_texture &&
+			m_uv == tile.m_uv);
+}
+
+bool Tile::operator!=(Tile& tile)
+{
+	return !(*this == tile);
 }

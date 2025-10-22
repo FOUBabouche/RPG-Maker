@@ -15,7 +15,8 @@
 enum Tools {
 	Move,
 	Paint,
-	Erase
+	Erase,
+	SelectTexture
 };
 
 class Editor {
@@ -27,7 +28,7 @@ public:
 	void Event(std::optional<sf::Event> event);
 	void Update(Engine& engine, float deltaTime);
 private:
-	
+	// Other
 	EngineView engineWin;
 	Camera camera;
 	sf::Vector2f lastMousePos;
@@ -40,12 +41,18 @@ private:
 	bool canBeANewPos = true;
 
 	bool brushWinIsOpen = false;
+	bool selectTextureWinIsOpen = false;
+
+	std::string currentTexturePath;
+	std::vector<std::string> texturesPaths;
 
 private:
+	// UI
 	sf::Texture* placeHolder;
-	sf::Texture moveButton;
-	sf::Texture paintButton;
-	sf::Texture eraseButton;
+	sf::Texture* moveButton;
+	sf::Texture* paintButton;
+	sf::Texture* eraseButton;
+	sf::Texture* textureButton;
 };
 
 #endif
