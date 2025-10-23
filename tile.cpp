@@ -34,6 +34,7 @@ Tile::Tile(const Tile& tile)
 	m_size = tile.m_size;
 	m_color = tile.m_color;
 	m_texture = tile.m_texture;
+	m_uv = tile.m_uv;
 }
 
 sf::Vector2u Tile::GetPosition()const
@@ -67,6 +68,7 @@ Tile& Tile::operator=(const Tile& tile)
 	m_size = tile.m_size;
 	m_color = tile.m_color;
 	m_texture = tile.m_texture;
+	m_uv = tile.m_uv;
 	return *this;
 }
 

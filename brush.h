@@ -7,11 +7,11 @@
 
 class Brush {
 public:
-	Brush() = default;
-	~Brush() = default;
+	Brush();
+	~Brush();
 
 	void SetSize(unsigned int size);
-	void SetTexure(sf::Texture* texture);
+	void SetTexture(sf::Texture& texture);
 	void SetColor(sf::Color color);
 	void SetUV(sf::IntRect uv);
 
@@ -23,7 +23,7 @@ public:
 	virtual void click() {};
 protected:
 	unsigned int m_size;
-	std::unique_ptr<sf::Texture> m_currentTexture;
+	sf::Texture* m_currentTexture;
 	sf::Color m_color = sf::Color::White;
 	sf::IntRect m_uv;
 };

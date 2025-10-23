@@ -1,13 +1,24 @@
 #include "brush.h"
 
+
+Brush::Brush()
+{
+	m_currentTexture = new sf::Texture;
+}
+
+Brush::~Brush()
+{
+	delete m_currentTexture;
+}
+
 void Brush::SetSize(unsigned int size)
 {
 	m_size = size;
 }
 
-void Brush::SetTexure(sf::Texture* texture)
+void Brush::SetTexture(sf::Texture& texture)
 {
-	m_currentTexture.reset(texture);
+	*m_currentTexture = texture;
 }
 
 void Brush::SetColor(sf::Color color)
@@ -26,7 +37,7 @@ unsigned int Brush::GetSize(void) const {
 
 sf::Texture* Brush::GetTexture(void) const
 {
-	return m_currentTexture.get();
+	return m_currentTexture;
 }
 
 sf::IntRect Brush::GetUV(void) const

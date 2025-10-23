@@ -28,8 +28,9 @@ void Editor::Start() {
 	paintButton = new sf::Texture("PaintButton.png");
 	eraseButton = new sf::Texture("EraseButton.png");
 	textureButton = new sf::Texture("TextureButton.png");
+	currentTexture = new sf::Texture();
 
-	brush.SetTexure(placeHolder);
+	brush.SetTexture(*placeHolder);
 	brush.SetUV({ {0, 0}, {(int)brush.GetTexture()->getSize().x, (int)brush.GetTexture()->getSize().y} });
 }
 
@@ -103,7 +104,8 @@ void Editor::Update(Engine& engine, float deltaTime) {
 					brush.SetColor({ static_cast<uint8_t>(col[0] * 255), static_cast<uint8_t>(col[1] * 255), static_cast<uint8_t>(col[2] * 255), 255 });
 				}
 				ImGui::SeparatorText("Current Texture");
-				ImGui::Image(*brush.GetTexture(), { 128 , 128 }, {0, 0}, {1, 1});
+				sf::Sprite preview(*brush.GetTexture(), brush.GetUV());
+				ImGui::Image(preview, {128, 128});
 
 				ImGui::End();
 			}
@@ -113,11 +115,28 @@ void Editor::Update(Engine& engine, float deltaTime) {
 	if (tool == Paint) {
 		if (selectTextureWinIsOpen)
 		{
+			ImGui::SeparatorText("Tile Size");
+			ImGui::Text("X: ");
+			ImGui::SameLine();
+			int tileSizeX = (int)engine.grid.getTileSize().x;
+			if (ImGui::InputInt("##X: ", &tileSizeX)) {
+				
+			}
+			ImGui::Text("Y: ");
+			ImGui::SameLine();
+			int tileSizeY = (int)engine.grid.getTileSize().y;
+			if (ImGui::InputInt("##Y: ", &tileSizeY)) {
+
+			}
+
+			engine.grid.setTileSize({(unsigned int)tileSizeX, (unsigned int)tileSizeY});
+
 			if (ImGui::Begin("Texture Palette", &selectTextureWinIsOpen)) {
 				if(ImGui::Button("Add Texture")) {
 					texturesPaths.push_back(getFilePathByDialog());
 					currentTexturePath = texturesPaths[texturesPaths.size()-1];
-					currentTexture = new sf::Texture(currentTexturePath);
+					*currentTexture = sf::Texture(currentTexturePath);
+					brush.SetTexture(*currentTexture);
 				}
 				if (texturesPaths.size() > 0) {
 					if (ImGui::BeginCombo("Texture List", currentTexturePath.c_str())) {
@@ -126,7 +145,8 @@ void Editor::Update(Engine& engine, float deltaTime) {
 							bool is_selected = (currentTexturePath == texturesPaths[i]);
 							if (ImGui::Selectable(texturesPaths[i].c_str(), is_selected)) {
 								currentTexturePath = texturesPaths[i];
-								currentTexture = new sf::Texture(currentTexturePath);
+								*currentTexture = sf::Texture(currentTexturePath);
+								brush.SetTexture(*currentTexture);
 							}
 						}
 						ImGui::EndCombo();
@@ -143,7 +163,9 @@ void Editor::Update(Engine& engine, float deltaTime) {
 							ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
 							ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.f, 0.f, 0.f, 0.f));
 							ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.f));
-							ImGui::ImageButton(std::string(std::to_string(x)+" "+ std::to_string(y)).c_str(), texturePart, {(float)engine.grid.getTileSize().x,(float)engine.grid.getTileSize().y}, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+							if (ImGui::ImageButton(std::string(std::to_string(x) + " " + std::to_string(y)).c_str(), texturePart, { (float)engine.grid.getTileSize().x,(float)engine.grid.getTileSize().y })) {
+								brush.SetUV({ {y, x}, {(int)engine.grid.getTileSize().x, (int)engine.grid.getTileSize().y} });
+							}
 							ImGui::PopStyleColor(3);
 							ImGui::SameLine();
 						}

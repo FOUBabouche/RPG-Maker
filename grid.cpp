@@ -16,6 +16,11 @@ sf::Vector2u Grid::getTileSize(void) const
 	return m_tileSize;
 }
 
+void Grid::setTileSize(sf::Vector2u tileSize)
+{
+	m_tileSize = tileSize;
+}
+
 void Grid::SetTile(sf::Vector2u position, sf::Color color, sf::Texture* texture, sf::IntRect uvSize)
 {
 	if (position.x < 0 || position.y < 0) return;
@@ -28,7 +33,7 @@ void Grid::SetTile(sf::Vector2u position, sf::Color color, sf::Texture* texture,
 		m_tiles[position.x].resize(position.y + 1);
 	}
 
-	Tile tile = Tile(position, m_tileSize, color, texture, uvSize);
+	Tile tile = Tile(position, m_tileSize, color, new sf::Texture(*texture), uvSize);
 	m_tiles[position.x][position.y] = tile;
 }
 
@@ -67,14 +72,16 @@ bool Grid::FindAt(sf::Vector2u position)
 
 void Grid::Draw(sf::RenderTarget& window, float zoom)
 {
-	for (auto&& x : m_tiles) {
-		for (auto&& y : x)
+	for (auto x : m_tiles) {
+		for (auto y : x)
 		{
 			if (y == (Tile&)Tile()) continue;
 			sf::RectangleShape shape((sf::Vector2f)y.GetSize() * zoom);
 			shape.setPosition(sf::Vector2f(y.GetPosition().x * y.GetSize().x * zoom, y.GetPosition().y * y.GetSize().y * zoom));
-			if (y.getTexture() != nullptr)
+			if (y.getTexture() != nullptr) {
 				shape.setTexture(y.getTexture());
+				shape.setTextureRect(y.getUV());
+			}
 			shape.setFillColor(y.getColor());
 			window.draw(shape);
 		}
