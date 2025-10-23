@@ -17,6 +17,8 @@ public:
 	Grid() = default;
 	Grid(sf::Vector2u tileSize);
 
+	sf::Vector2u getTileSize(void) const;
+
 	void SetTile(sf::Vector2u position, sf::Color color, sf::Texture* texture, sf::IntRect uvSize);
 	void RemoveTile(sf::Vector2u position);
 

@@ -15,8 +15,7 @@
 enum Tools {
 	Move,
 	Paint,
-	Erase,
-	SelectTexture
+	Erase
 };
 
 class Editor {
@@ -45,6 +44,7 @@ private:
 
 	std::string currentTexturePath;
 	std::vector<std::string> texturesPaths;
+	sf::Texture* currentTexture;
 
 private:
 	// UI

@@ -4,6 +4,7 @@
 
 #include <iostream>
 
+#include <SFML/Graphics/Sprite.hpp>
 #include <imgui-SFML.h>
 #include <imgui.h>
 
@@ -15,6 +16,7 @@ Editor::Editor()
 
 Editor::~Editor() {
 	delete[]col;
+	delete currentTexture;
 }
 
 void Editor::Start() {
@@ -108,21 +110,23 @@ void Editor::Update(Engine& engine, float deltaTime) {
 		}
 	}
 
-	if (tool == SelectTexture) {
+	if (tool == Paint) {
 		if (selectTextureWinIsOpen)
 		{
 			if (ImGui::Begin("Texture Palette", &selectTextureWinIsOpen)) {
 				if(ImGui::Button("Add Texture")) {
 					texturesPaths.push_back(getFilePathByDialog());
 					currentTexturePath = texturesPaths[texturesPaths.size()-1];
+					currentTexture = new sf::Texture(currentTexturePath);
 				}
 				if (texturesPaths.size() > 0) {
 					if (ImGui::BeginCombo("Texture List", currentTexturePath.c_str())) {
 						for (size_t i = 0; i < texturesPaths.size(); i++)
-						{ 
+						{
 							bool is_selected = (currentTexturePath == texturesPaths[i]);
 							if (ImGui::Selectable(texturesPaths[i].c_str(), is_selected)) {
 								currentTexturePath = texturesPaths[i];
+								currentTexture = new sf::Texture(currentTexturePath);
 							}
 						}
 						ImGui::EndCombo();
@@ -131,6 +135,21 @@ void Editor::Update(Engine& engine, float deltaTime) {
 					ImGui::SeparatorText("Current Texture");
 
 					// IMAGE DE LA TEXTURE MA GUEULE
+					for (int x = 0; x < currentTexture->getSize().x; x += engine.grid.getTileSize().x)
+					{
+						for (int y = 0; y < currentTexture->getSize().y; y += engine.grid.getTileSize().y)
+						{
+							sf::Sprite texturePart(*currentTexture, { {y, x}, {(int)engine.grid.getTileSize().x,(int)engine.grid.getTileSize().y} });
+							ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
+							ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.f, 0.f, 0.f, 0.f));
+							ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.f));
+							ImGui::ImageButton(std::string(std::to_string(x)+" "+ std::to_string(y)).c_str(), texturePart, {(float)engine.grid.getTileSize().x,(float)engine.grid.getTileSize().y}, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+							ImGui::PopStyleColor(3);
+							ImGui::SameLine();
+						}
+						ImGui::NewLine();
+					}
+
 				}
 
 				ImGui::End();
@@ -154,7 +173,8 @@ void Editor::Update(Engine& engine, float deltaTime) {
 	}
 	ImGui::SameLine();
 	if (ImGui::ImageButton("textureSelect", *textureButton, { 32, 32 })) {
-		tool = SelectTexture;
+		tool = Paint;
+		brushWinIsOpen = true;
 		selectTextureWinIsOpen = true;
 	}
 

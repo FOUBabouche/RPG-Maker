@@ -11,6 +11,11 @@ Grid::Grid(sf::Vector2u tileSize)
 	m_tileSize = tileSize;
 }
 
+sf::Vector2u Grid::getTileSize(void) const
+{
+	return m_tileSize;
+}
+
 void Grid::SetTile(sf::Vector2u position, sf::Color color, sf::Texture* texture, sf::IntRect uvSize)
 {
 	if (position.x < 0 || position.y < 0) return;
