@@ -16,7 +16,11 @@ Editor::Editor()
 
 Editor::~Editor() {
 	delete[]col;
-	delete currentTexture;
+	for (size_t i = 0; i < textures.size(); i++)
+	{
+		delete textures[i];
+	}
+	textures.clear();
 }
 
 void Editor::Start() {
@@ -30,7 +34,7 @@ void Editor::Start() {
 	textureButton = new sf::Texture("TextureButton.png");
 	currentTexture = new sf::Texture();
 
-	brush.SetTexture(*placeHolder);
+	brush.SetTexture(placeHolder);
 	brush.SetUV({ {0, 0}, {(int)brush.GetTexture()->getSize().x, (int)brush.GetTexture()->getSize().y} });
 }
 
@@ -100,6 +104,20 @@ void Editor::Update(Engine& engine, float deltaTime) {
 		if(brushWinIsOpen)
 		{
 			if (ImGui::Begin("Brush", &brushWinIsOpen)) {
+				ImGui::SeparatorText("Grid Properties");
+				ImGui::Text("X: ");
+				ImGui::SameLine();
+				int tileSizeX = (int)engine.grid.getTileSize().x;
+				if (ImGui::InputInt("##X: ", &tileSizeX)) {
+					engine.grid.setTileSize({ (unsigned int)tileSizeX, engine.grid.getTileSize().y });
+				}
+				ImGui::Text("Y: ");
+				ImGui::SameLine();
+				int tileSizeY = (int)engine.grid.getTileSize().y;
+				if (ImGui::InputInt("##Y: ", &tileSizeY)) {
+					engine.grid.setTileSize({ engine.grid.getTileSize().x, (unsigned int)tileSizeY });
+				}
+				ImGui::SeparatorText("Brush Properties");
 				if (ImGui::ColorPicker3("Brush Color", col, 0)) {
 					brush.SetColor({ static_cast<uint8_t>(col[0] * 255), static_cast<uint8_t>(col[1] * 255), static_cast<uint8_t>(col[2] * 255), 255 });
 				}
@@ -115,28 +133,13 @@ void Editor::Update(Engine& engine, float deltaTime) {
 	if (tool == Paint) {
 		if (selectTextureWinIsOpen)
 		{
-			ImGui::SeparatorText("Tile Size");
-			ImGui::Text("X: ");
-			ImGui::SameLine();
-			int tileSizeX = (int)engine.grid.getTileSize().x;
-			if (ImGui::InputInt("##X: ", &tileSizeX)) {
-				
-			}
-			ImGui::Text("Y: ");
-			ImGui::SameLine();
-			int tileSizeY = (int)engine.grid.getTileSize().y;
-			if (ImGui::InputInt("##Y: ", &tileSizeY)) {
-
-			}
-
-			engine.grid.setTileSize({(unsigned int)tileSizeX, (unsigned int)tileSizeY});
-
 			if (ImGui::Begin("Texture Palette", &selectTextureWinIsOpen)) {
 				if(ImGui::Button("Add Texture")) {
 					texturesPaths.push_back(getFilePathByDialog());
 					currentTexturePath = texturesPaths[texturesPaths.size()-1];
-					*currentTexture = sf::Texture(currentTexturePath);
-					brush.SetTexture(*currentTexture);
+					textures.push_back(new sf::Texture(currentTexturePath));
+					currentTexture = textures[textures.size() - 1];
+					brush.SetTexture(textures[textures.size() - 1]);
 				}
 				if (texturesPaths.size() > 0) {
 					if (ImGui::BeginCombo("Texture List", currentTexturePath.c_str())) {
@@ -145,8 +148,8 @@ void Editor::Update(Engine& engine, float deltaTime) {
 							bool is_selected = (currentTexturePath == texturesPaths[i]);
 							if (ImGui::Selectable(texturesPaths[i].c_str(), is_selected)) {
 								currentTexturePath = texturesPaths[i];
-								*currentTexture = sf::Texture(currentTexturePath);
-								brush.SetTexture(*currentTexture);
+								currentTexture = textures[i];
+								brush.SetTexture(textures[i]);
 							}
 						}
 						ImGui::EndCombo();

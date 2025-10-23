@@ -31,7 +31,7 @@ private:
 	EngineView engineWin;
 	Camera camera;
 	sf::Vector2f lastMousePos;
-	float zoom = 1;
+	float zoom = 3;
 	Tools tool;
 	Brush brush;
 	float* col;
@@ -43,6 +43,7 @@ private:
 	bool selectTextureWinIsOpen = false;
 
 	std::string currentTexturePath;
+	std::vector<sf::Texture*> textures;
 	std::vector<std::string> texturesPaths;
 	sf::Texture* currentTexture;
 

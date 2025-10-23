@@ -3,7 +3,7 @@
 Tile::Tile()
 {
 	m_position = {(unsigned int) - 1, (unsigned int)-1};
-	m_size = {16, 16};
+	m_size = { (unsigned int)-1, (unsigned int)-1};
 	m_color = sf::Color::White;
 	m_texture = nullptr;
 }
@@ -26,6 +26,11 @@ Tile::Tile(sf::Vector2u position, sf::Vector2u size, sf::Color color, sf::Textur
 	m_uv = uv;
 	if(texture)
 		m_texture = texture;
+}
+
+void Tile::SetSize(sf::Vector2u size)
+{
+	m_size = size;
 }
 
 Tile::Tile(const Tile& tile)
@@ -83,5 +88,9 @@ bool Tile::operator==(Tile& tile)
 
 bool Tile::operator!=(Tile& tile)
 {
-	return !(*this == tile);
+	return !(m_position == tile.m_position &&
+		m_size == tile.m_size &&
+		m_color == tile.m_color &&
+		m_texture == tile.m_texture &&
+		m_uv == tile.m_uv);
 }

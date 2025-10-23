@@ -19,11 +19,15 @@ sf::Vector2u Grid::getTileSize(void) const
 void Grid::setTileSize(sf::Vector2u tileSize)
 {
 	m_tileSize = tileSize;
+	for (auto& x : m_tiles)
+		for (auto& y : x)
+			if (y != (Tile&)Tile()) y.SetSize(tileSize);
 }
 
-void Grid::SetTile(sf::Vector2u position, sf::Color color, sf::Texture* texture, sf::IntRect uvSize)
+void Grid::SetTile(sf::Vector2u position, sf::Color color, sf::Texture* texture, sf::IntRect uv)
 {
 	if (position.x < 0 || position.y < 0) return;
+	
 
 	if (m_tiles.size() <= position.x) {
 		m_tiles.resize(position.x + 1);
@@ -33,7 +37,8 @@ void Grid::SetTile(sf::Vector2u position, sf::Color color, sf::Texture* texture,
 		m_tiles[position.x].resize(position.y + 1);
 	}
 
-	Tile tile = Tile(position, m_tileSize, color, new sf::Texture(*texture), uvSize);
+	if (m_tiles[position.x][position.y].getTexture() == texture && m_tiles[position.x][position.y].getUV() == uv) return;
+	Tile tile = Tile(position, m_tileSize, color, texture, uv);
 	m_tiles[position.x][position.y] = tile;
 }
 

@@ -7,11 +7,11 @@
 
 class Brush {
 public:
-	Brush();
-	~Brush();
+	Brush() = default;
+	~Brush() = default;
 
 	void SetSize(unsigned int size);
-	void SetTexture(sf::Texture& texture);
+	void SetTexture(sf::Texture* texture);
 	void SetColor(sf::Color color);
 	void SetUV(sf::IntRect uv);
 

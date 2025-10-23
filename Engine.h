@@ -19,7 +19,7 @@ public:
 	void Update(float dt);
 	void Render(sf::RenderTexture& render, Camera& camera);
 public:
-	Grid grid{ {50, 50} };
+	Grid grid{ {16, 16} };
 };
 
 #endif

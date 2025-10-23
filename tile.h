@@ -19,6 +19,8 @@ public:
 	Tile(sf::Vector2u position, sf::Vector2u size, sf::Texture* texture, sf::IntRect uvSize);
 	Tile(sf::Vector2u position, sf::Vector2u size, sf::Color color,sf::Texture* texture, sf::IntRect uvSize);
 
+	void SetSize(sf::Vector2u size);
+
 	sf::Vector2u GetPosition() const;
 	sf::Vector2u GetSize() const;
 

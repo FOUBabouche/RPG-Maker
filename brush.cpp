@@ -1,24 +1,14 @@
 #include "brush.h"
 
 
-Brush::Brush()
-{
-	m_currentTexture = new sf::Texture;
-}
-
-Brush::~Brush()
-{
-	delete m_currentTexture;
-}
-
 void Brush::SetSize(unsigned int size)
 {
 	m_size = size;
 }
 
-void Brush::SetTexture(sf::Texture& texture)
+void Brush::SetTexture(sf::Texture* texture)
 {
-	*m_currentTexture = texture;
+	m_currentTexture = texture;
 }
 
 void Brush::SetColor(sf::Color color)
