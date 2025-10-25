@@ -26,6 +26,10 @@ public:
 
 	void Event(std::optional<sf::Event> event);
 	void Update(Engine& engine, float deltaTime);
+
+	void SaveScene();
+	void LoadScene();
+
 private:
 	// Other
 	EngineView engineWin;
@@ -35,12 +39,14 @@ private:
 	Tools tool;
 	Brush brush;
 	float* col;
+	unsigned int currentGridSelected = 0;
 	bool leftPressed = false;
 	bool rightPressed = false;
 	bool canBeANewPos = true;
 
 	bool brushWinIsOpen = false;
 	bool selectTextureWinIsOpen = false;
+	bool selectLayerWinIsOpen = false;
 
 	std::string currentTexturePath;
 	std::vector<sf::Texture*> textures;
@@ -48,12 +54,15 @@ private:
 	sf::Texture* currentTexture;
 
 private:
-	// UI
 	sf::Texture* placeHolder;
+	// UI
+	sf::Texture* saveButton;
 	sf::Texture* moveButton;
 	sf::Texture* paintButton;
 	sf::Texture* eraseButton;
 	sf::Texture* textureButton;
+	sf::Texture* addLayerButton;
+	sf::Texture* selectLayerButton;
 };
 
 #endif

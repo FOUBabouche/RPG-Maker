@@ -2,12 +2,12 @@
 #include "eMath.h"
 #include "tool.h"
 
-#include <iostream>
-
 #include <SFML/Graphics/Sprite.hpp>
 #include <imgui-SFML.h>
 #include <imgui.h>
 
+#include <iostream>
+#include <fstream>
 
 Editor::Editor()
 {
@@ -27,11 +27,15 @@ void Editor::Start() {
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
-	placeHolder = new sf::Texture("Placeholder.png");
+	saveButton = new sf::Texture("SaveButton.png");
 	moveButton = new sf::Texture("MoveButton.png");
 	paintButton = new sf::Texture("PaintButton.png");
 	eraseButton = new sf::Texture("EraseButton.png");
 	textureButton = new sf::Texture("TextureButton.png");
+	addLayerButton = new sf::Texture("AddLayerButton.png");
+	selectLayerButton = new sf::Texture("LayerButton.png");
+
+	placeHolder = new sf::Texture("Placeholder.png");
 	currentTexture = new sf::Texture();
 
 	brush.SetTexture(placeHolder);
@@ -82,7 +86,7 @@ void Editor::Update(Engine& engine, float deltaTime) {
 	sf::Vector2f mousePos = engineWin.GetMousePos(camera.GetView().getCenter(), camera.GetView().getSize(), zoom);
 	camera.SetZoom(zoom);
 
-	sf::Vector2u mousePosOnGrid = engine.grid.GetCoordToGridPos(mousePos);
+	sf::Vector2u mousePosOnGrid = engine.grids[currentGridSelected].GetCoordToGridPos(mousePos);
 
 	if (leftPressed && engineWin.isHover()) {
 		if (canBeANewPos) {
@@ -95,8 +99,8 @@ void Editor::Update(Engine& engine, float deltaTime) {
 			engineWin.getRender().get()->setView(camera.GetView());
 		}
 		if (mousePos.x >= 0 && mousePos.y >= 0) {
-			if (tool == Paint)engine.grid.SetTile(mousePosOnGrid, brush.GetColor(), brush.GetTexture(), brush.GetUV());
-			if (tool == Erase)engine.grid.RemoveTile(mousePosOnGrid);
+			if (tool == Paint)engine.grids[currentGridSelected].SetTile(mousePosOnGrid, brush.GetColor(), brush.GetTexture(), brush.GetUV());
+			if (tool == Erase)engine.grids[currentGridSelected].RemoveTile(mousePosOnGrid);
 		}
 	}
 
@@ -107,15 +111,15 @@ void Editor::Update(Engine& engine, float deltaTime) {
 				ImGui::SeparatorText("Grid Properties");
 				ImGui::Text("X: ");
 				ImGui::SameLine();
-				int tileSizeX = (int)engine.grid.getTileSize().x;
+				int tileSizeX = (int)engine.grids[currentGridSelected].getTileSize().x;
 				if (ImGui::InputInt("##X: ", &tileSizeX)) {
-					engine.grid.setTileSize({ (unsigned int)tileSizeX, engine.grid.getTileSize().y });
+					engine.grids[currentGridSelected].setTileSize({ (unsigned int)tileSizeX, engine.grids[currentGridSelected].getTileSize().y });
 				}
 				ImGui::Text("Y: ");
 				ImGui::SameLine();
-				int tileSizeY = (int)engine.grid.getTileSize().y;
+				int tileSizeY = (int)engine.grids[currentGridSelected].getTileSize().y;
 				if (ImGui::InputInt("##Y: ", &tileSizeY)) {
-					engine.grid.setTileSize({ engine.grid.getTileSize().x, (unsigned int)tileSizeY });
+					engine.grids[currentGridSelected].setTileSize({ engine.grids[currentGridSelected].getTileSize().x, (unsigned int)tileSizeY });
 				}
 				ImGui::SeparatorText("Brush Properties");
 				if (ImGui::ColorPicker3("Brush Color", col, 0)) {
@@ -158,16 +162,16 @@ void Editor::Update(Engine& engine, float deltaTime) {
 					ImGui::SeparatorText("Current Texture");
 
 					// IMAGE DE LA TEXTURE MA GUEULE
-					for (int x = 0; x < currentTexture->getSize().x; x += engine.grid.getTileSize().x)
+					for (int x = 0; x < currentTexture->getSize().x; x += engine.grids[currentGridSelected].getTileSize().x)
 					{
-						for (int y = 0; y < currentTexture->getSize().y; y += engine.grid.getTileSize().y)
+						for (int y = 0; y < currentTexture->getSize().y; y += engine.grids[currentGridSelected].getTileSize().y)
 						{
-							sf::Sprite texturePart(*currentTexture, { {y, x}, {(int)engine.grid.getTileSize().x,(int)engine.grid.getTileSize().y} });
+							sf::Sprite texturePart(*currentTexture, { {y, x}, {(int)engine.grids[currentGridSelected].getTileSize().x,(int)engine.grids[currentGridSelected].getTileSize().y} });
 							ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
 							ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.f, 0.f, 0.f, 0.f));
 							ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.f));
-							if (ImGui::ImageButton(std::string(std::to_string(x) + " " + std::to_string(y)).c_str(), texturePart, { (float)engine.grid.getTileSize().x,(float)engine.grid.getTileSize().y })) {
-								brush.SetUV({ {y, x}, {(int)engine.grid.getTileSize().x, (int)engine.grid.getTileSize().y} });
+							if (ImGui::ImageButton(std::string(std::to_string(x) + " " + std::to_string(y)).c_str(), texturePart, { (float)engine.grids[currentGridSelected].getTileSize().x,(float)engine.grids[currentGridSelected].getTileSize().y })) {
+								brush.SetUV({ {y, x}, {(int)engine.grids[currentGridSelected].getTileSize().x, (int)engine.grids[currentGridSelected].getTileSize().y} });
 							}
 							ImGui::PopStyleColor(3);
 							ImGui::SameLine();
@@ -179,11 +183,36 @@ void Editor::Update(Engine& engine, float deltaTime) {
 
 				ImGui::End();
 			}
+		}		
+	}
+
+	if (selectLayerWinIsOpen) {
+		ImGui::OpenPopup("Select a Layer");
+
+		ImGui::SetNextWindowSize(ImVec2(-1, -1), ImGuiCond_Always);
+
+		if (ImGui::BeginPopupModal("Select a Layer", &selectLayerWinIsOpen))
+		{
+			ImGui::Text("Layers :");
+			for (size_t i = 0; i < engine.grids.size(); i++)
+			{
+				if (ImGui::Button(std::to_string(i + 1).c_str(), { 20, 20 })) {
+					currentGridSelected = i;
+					selectLayerWinIsOpen = false;
+				}
+				ImGui::SameLine();
+			}
+
+			ImGui::EndPopup();
 		}
 	}
 
 	ImGui::Begin("Tools");
 
+	if (ImGui::ImageButton("save", *saveButton, { 32, 32 })) {
+		SaveScene();
+	}
+	ImGui::SameLine();
 	if(ImGui::ImageButton("move", *moveButton, { 32, 32 })) {
 		tool = Move;
 	}
@@ -202,6 +231,22 @@ void Editor::Update(Engine& engine, float deltaTime) {
 		brushWinIsOpen = true;
 		selectTextureWinIsOpen = true;
 	}
+	ImGui::SameLine();
+	if (ImGui::ImageButton("addLayer", *addLayerButton, { 32, 32 })) {
+		engine.AddLayer({ 16, 16 });
+	}
+	ImGui::SameLine();
+	if (ImGui::ImageButton("selectLayer", *selectLayerButton, { 32, 32 })) {
+		selectLayerWinIsOpen = true;
+	}
 
 	ImGui::End();
+}
+
+void Editor::SaveScene()
+{
+}
+
+void Editor::LoadScene()
+{
 }

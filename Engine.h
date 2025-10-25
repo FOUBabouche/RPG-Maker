@@ -11,6 +11,7 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 
+#include <vector>
 
 class Engine {
 public:
@@ -18,8 +19,10 @@ public:
 	void Event(std::optional<sf::Event> event);
 	void Update(float dt);
 	void Render(sf::RenderTexture& render, Camera& camera);
+
+	void AddLayer(sf::Vector2u gridSize);
 public:
-	Grid grid{ {16, 16} };
+	std::vector<Grid> grids = { {{16,16}} };
 };
 
 #endif
