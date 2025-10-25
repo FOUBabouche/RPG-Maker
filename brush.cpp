@@ -6,6 +6,11 @@ void Brush::SetSize(unsigned int size)
 	m_size = size;
 }
 
+void Brush::SetTextureName(std::string textureName)
+{
+	m_textureName = textureName;
+}
+
 void Brush::SetTexture(sf::Texture* texture)
 {
 	m_currentTexture = texture;
@@ -23,6 +28,11 @@ void Brush::SetUV(sf::IntRect uv)
 
 unsigned int Brush::GetSize(void) const {
 	return m_size;
+}
+
+std::string Brush::GetTextureName(void) const
+{
+	return m_textureName;
 }
 
 sf::Texture* Brush::GetTexture(void) const

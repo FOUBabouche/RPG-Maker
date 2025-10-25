@@ -11,6 +11,10 @@ Grid::Grid(sf::Vector2u tileSize)
 	m_tileSize = tileSize;
 }
 
+std::vector<std::vector<Tile>> Grid::getTiles(void)const {
+	return m_tiles;
+}
+
 sf::Vector2u Grid::getTileSize(void) const
 {
 	return m_tileSize;
@@ -24,7 +28,7 @@ void Grid::setTileSize(sf::Vector2u tileSize)
 			if (y != (Tile&)Tile()) y.SetSize(tileSize);
 }
 
-void Grid::SetTile(sf::Vector2u position, sf::Color color, sf::Texture* texture, sf::IntRect uv)
+void Grid::SetTile(sf::Vector2u position, sf::Vector2u size, sf::Color color, sf::Texture* texture, sf::IntRect uv, std::string textureName)
 {
 	if (position.x < 0 || position.y < 0) return;
 	
@@ -38,7 +42,7 @@ void Grid::SetTile(sf::Vector2u position, sf::Color color, sf::Texture* texture,
 	}
 
 	if (m_tiles[position.x][position.y].getTexture() == texture && m_tiles[position.x][position.y].getUV() == uv) return;
-	Tile tile = Tile(position, m_tileSize, color, texture, uv);
+	Tile tile = Tile(position, m_tileSize, color, texture, uv, textureName);
 	m_tiles[position.x][position.y] = tile;
 }
 

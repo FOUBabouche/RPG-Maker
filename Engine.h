@@ -22,7 +22,7 @@ public:
 
 	void AddLayer(sf::Vector2u gridSize);
 public:
-	std::vector<Grid> grids = { {{16,16}} };
+	std::vector<Grid> grids;
 };
 
 #endif

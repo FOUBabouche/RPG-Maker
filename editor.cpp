@@ -7,6 +7,8 @@
 #include <imgui.h>
 
 #include <iostream>
+#include <string>
+#include <sstream>
 #include <fstream>
 
 Editor::Editor()
@@ -23,10 +25,11 @@ Editor::~Editor() {
 	textures.clear();
 }
 
-void Editor::Start() {
+void Editor::Start(Engine& engine) {
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
+	importButton = new sf::Texture("ImportButton.png");
 	saveButton = new sf::Texture("SaveButton.png");
 	moveButton = new sf::Texture("MoveButton.png");
 	paintButton = new sf::Texture("PaintButton.png");
@@ -38,8 +41,11 @@ void Editor::Start() {
 	placeHolder = new sf::Texture("Placeholder.png");
 	currentTexture = new sf::Texture();
 
+	brush.SetTextureName("Placeholder.png");
 	brush.SetTexture(placeHolder);
 	brush.SetUV({ {0, 0}, {(int)brush.GetTexture()->getSize().x, (int)brush.GetTexture()->getSize().y} });
+
+	engine.AddLayer({ 16, 16 });
 }
 
 void Editor::Event(std::optional<sf::Event> event) {
@@ -99,7 +105,7 @@ void Editor::Update(Engine& engine, float deltaTime) {
 			engineWin.getRender().get()->setView(camera.GetView());
 		}
 		if (mousePos.x >= 0 && mousePos.y >= 0) {
-			if (tool == Paint)engine.grids[currentGridSelected].SetTile(mousePosOnGrid, brush.GetColor(), brush.GetTexture(), brush.GetUV());
+			if (tool == Paint)engine.grids[currentGridSelected].SetTile(mousePosOnGrid, { brush.GetSize(), brush.GetSize()}, brush.GetColor(), brush.GetTexture(), brush.GetUV(), brush.GetTextureName());
 			if (tool == Erase)engine.grids[currentGridSelected].RemoveTile(mousePosOnGrid);
 		}
 	}
@@ -143,6 +149,7 @@ void Editor::Update(Engine& engine, float deltaTime) {
 					currentTexturePath = texturesPaths[texturesPaths.size()-1];
 					textures.push_back(new sf::Texture(currentTexturePath));
 					currentTexture = textures[textures.size() - 1];
+					brush.SetTextureName(currentTexturePath);
 					brush.SetTexture(textures[textures.size() - 1]);
 				}
 				if (texturesPaths.size() > 0) {
@@ -153,6 +160,7 @@ void Editor::Update(Engine& engine, float deltaTime) {
 							if (ImGui::Selectable(texturesPaths[i].c_str(), is_selected)) {
 								currentTexturePath = texturesPaths[i];
 								currentTexture = textures[i];
+								brush.SetTextureName(currentTexturePath);
 								brush.SetTexture(textures[i]);
 							}
 						}
@@ -209,8 +217,12 @@ void Editor::Update(Engine& engine, float deltaTime) {
 
 	ImGui::Begin("Tools");
 
+	if (ImGui::ImageButton("import", *importButton, { 32, 32 })) {
+		LoadScene(engine, "test.txt");
+	}
+	ImGui::SameLine();
 	if (ImGui::ImageButton("save", *saveButton, { 32, 32 })) {
-		SaveScene();
+		SaveScene(engine, "test.txt");
 	}
 	ImGui::SameLine();
 	if(ImGui::ImageButton("move", *moveButton, { 32, 32 })) {
@@ -243,10 +255,69 @@ void Editor::Update(Engine& engine, float deltaTime) {
 	ImGui::End();
 }
 
-void Editor::SaveScene()
+void Editor::SaveScene(Engine& engine, std::string fileName)
 {
+	std::ofstream savingFile(fileName.c_str());
+
+	if (savingFile.is_open()) {
+		for (auto grid : engine.grids)
+		{
+			savingFile << "L" << std::endl;
+			for (auto&& x : grid.getTiles()) {
+				for (auto&& y : x) {
+					if (y == (Tile&)Tile()) continue;
+					savingFile << y;
+				}
+			}
+		}
+		savingFile.close();
+		return;
+	}
+	std::cout << "Cant write in file..." << std::endl;
 }
 
-void Editor::LoadScene()
+void Editor::LoadScene(Engine& engine, std::string fileName)
 {
+	// Parsing fichier
+	std::vector<std::vector<std::string>> tilesInfos;
+	std::ifstream savingFile(fileName);
+	std::string line;
+	while (std::getline(savingFile, line, '\n')) {
+		std::vector<std::string> variables;
+		std::stringstream content(line);
+		std::string info;
+		while (std::getline(content, info, ';')) {
+			variables.push_back(info);
+		}
+		std::vector<std::string> loc;
+		for (auto var : variables)
+		{
+			std::stringstream varContent(var);
+			std::string buffer;
+			while (std::getline(varContent, buffer, ',')) {
+				loc.push_back(buffer);
+			}
+		}
+		tilesInfos.push_back(loc);
+	}
+
+	// Load Scene
+ 	engine = Engine();
+	for (int i = 0; i < tilesInfos.size(); i++)
+	{
+		if (tilesInfos[i][0] == "L") {
+			engine.AddLayer({ 16, 16 });
+			currentGridSelected = 0;
+			continue;
+		}
+		engine.grids[currentGridSelected].SetTile(
+			{ (unsigned int)std::stoi(tilesInfos[i][0]),  (unsigned int)std::stoi(tilesInfos[i][1])},												// Position
+			{ (unsigned int)std::stoi(tilesInfos[i][2]),  (unsigned int)std::stoi(tilesInfos[i][3]) },											// Size
+			{ static_cast<uint8_t>(std::stoi(tilesInfos[i][4])), static_cast<uint8_t>(std::stoi(tilesInfos[i][5])), static_cast<uint8_t>(std::stoi(tilesInfos[i][6])), static_cast<uint8_t>(std::stoi(tilesInfos[i][7])) }, // Color
+			placeHolder,
+			{ {std::stoi(tilesInfos[i][8]), std::stoi(tilesInfos[i][9])}, {std::stoi(tilesInfos[i][10]), std::stoi(tilesInfos[i][11])} },// UV
+			tilesInfos[i][12]
+		);
+	}
+
 }

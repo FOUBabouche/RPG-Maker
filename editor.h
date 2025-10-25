@@ -22,13 +22,13 @@ class Editor {
 public:
 	Editor();
 	~Editor();
-	void Start();
+	void Start(Engine& engine);
 
 	void Event(std::optional<sf::Event> event);
 	void Update(Engine& engine, float deltaTime);
 
-	void SaveScene();
-	void LoadScene();
+	void SaveScene(Engine& engine, std::string fileName);
+	void LoadScene(Engine& engine, std::string fileName);
 
 private:
 	// Other
@@ -56,6 +56,7 @@ private:
 private:
 	sf::Texture* placeHolder;
 	// UI
+	sf::Texture* importButton;
 	sf::Texture* saveButton;
 	sf::Texture* moveButton;
 	sf::Texture* paintButton;

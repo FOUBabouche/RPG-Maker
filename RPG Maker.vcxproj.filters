@@ -88,10 +88,10 @@
       <Filter>Fichiers sources\engine</Filter>
     </ClCompile>
     <ClCompile Include="brush.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\editor</Filter>
     </ClCompile>
     <ClCompile Include="eMath.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

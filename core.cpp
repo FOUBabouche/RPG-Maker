@@ -19,7 +19,7 @@ void Core::Start()
 	ImGui::SFML::Init(window);
 
     engine.Start();
-    editor.Start();
+    editor.Start(engine);
 }
 
 void Core::Event()

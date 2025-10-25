@@ -16,11 +16,13 @@ class Grid {
 public:
 	Grid() = default;
 	Grid(sf::Vector2u tileSize);
+	
+	std::vector<std::vector<Tile>> getTiles(void)const;
 
 	sf::Vector2u getTileSize(void) const;
 	void setTileSize(sf::Vector2u tileSize);
 
-	void SetTile(sf::Vector2u position, sf::Color color, sf::Texture* texture, sf::IntRect uvSize);
+	void SetTile(sf::Vector2u position, sf::Vector2u size, sf::Color color, sf::Texture* texture, sf::IntRect uvSize, std::string textureName);
 	void RemoveTile(sf::Vector2u position);
 
 	sf::Vector2u GetCoordToGridPos(sf::Vector2f mousePos);
