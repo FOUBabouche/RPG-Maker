@@ -30,6 +30,9 @@ public:
 	void SaveScene(Engine& engine, std::string fileName);
 	void LoadScene(Engine& engine, std::string fileName);
 
+	bool AlreadyhaveThisTexture(std::string textureName);
+	sf::Texture* GetTextureByName(std::string textureName);
+
 private:
 	// Other
 	EngineView engineWin;

@@ -301,6 +301,26 @@ void Editor::LoadScene(Engine& engine, std::string fileName)
 		tilesInfos.push_back(loc);
 	}
 
+	
+	//Load Texture
+	texturesPaths.clear();
+	for (int i = 0; i < tilesInfos.size(); i++) {
+		if (tilesInfos[i].size() == 1) continue;
+		if (!AlreadyhaveThisTexture(tilesInfos[i][12])) {
+			texturesPaths.push_back(tilesInfos[i][12]);
+		}
+	}
+	textures.clear();
+	for (size_t i = 0; i < textures.size(); i++)
+	{
+		delete textures[i];
+	}
+	textures.clear();
+	for (auto name : texturesPaths) {
+		textures.push_back(new sf::Texture(name));
+	}
+
+
 	// Load Scene
  	engine = Engine();
 	for (int i = 0; i < tilesInfos.size(); i++)
@@ -314,10 +334,25 @@ void Editor::LoadScene(Engine& engine, std::string fileName)
 			{ (unsigned int)std::stoi(tilesInfos[i][0]),  (unsigned int)std::stoi(tilesInfos[i][1])},												// Position
 			{ (unsigned int)std::stoi(tilesInfos[i][2]),  (unsigned int)std::stoi(tilesInfos[i][3]) },											// Size
 			{ static_cast<uint8_t>(std::stoi(tilesInfos[i][4])), static_cast<uint8_t>(std::stoi(tilesInfos[i][5])), static_cast<uint8_t>(std::stoi(tilesInfos[i][6])), static_cast<uint8_t>(std::stoi(tilesInfos[i][7])) }, // Color
-			placeHolder,
+			GetTextureByName(tilesInfos[i][12]),
 			{ {std::stoi(tilesInfos[i][8]), std::stoi(tilesInfos[i][9])}, {std::stoi(tilesInfos[i][10]), std::stoi(tilesInfos[i][11])} },// UV
 			tilesInfos[i][12]
 		);
 	}
 
+}
+
+bool Editor::AlreadyhaveThisTexture(std::string textureName)
+{
+	for (auto name : texturesPaths)
+		if (name == textureName)return true;
+	return false;
+}
+
+sf::Texture* Editor::GetTextureByName(std::string textureName)
+{
+	if(!AlreadyhaveThisTexture(textureName))return nullptr;
+	for (int i = 0; i < texturesPaths.size(); i++)
+		if (texturesPaths[i] == textureName)
+			return textures[i];
 }
