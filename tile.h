@@ -22,6 +22,7 @@ public:
 
 	void SetSize(sf::Vector2u size);
 	void SetTextureName(std::string& textureName);
+	void setAnimation(std::vector<sf::IntRect> keys);
 
 	sf::Vector2u GetPosition() const;
 	sf::Vector2u GetSize() const;
@@ -29,6 +30,7 @@ public:
 	std::string getTextureName() const;
 	sf::Texture* getTexture() const;
 	sf::Color getColor() const;
+	std::vector<sf::IntRect> getKeys() const;
 
 public:
 	Tile& operator=(const Tile& tile);
@@ -43,6 +45,9 @@ private:
 	std::string m_textureName;
 	sf::Texture* m_texture = nullptr;
 	sf::IntRect m_uv;
+	std::vector<sf::IntRect> m_keys;
+
+	bool isAnimated = false;
 };
 
 #endif

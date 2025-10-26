@@ -42,6 +42,12 @@ void Tile::SetTextureName(std::string& textureName)
 	m_textureName = textureName;
 }
 
+void Tile::setAnimation(std::vector<sf::IntRect> keys)
+{
+	isAnimated = true;
+	m_keys = keys;
+}
+
 Tile::Tile(const Tile& tile)
 {
 	m_position = tile.m_position;
@@ -80,6 +86,12 @@ sf::Texture* Tile::getTexture()const
 sf::Color Tile::getColor()const
 {
 	return m_color;
+}
+
+std::vector<sf::IntRect> Tile::getKeys() const
+{
+	if (isAnimated) return m_keys;
+	return {};
 }
 
 Tile& Tile::operator=(const Tile& tile)

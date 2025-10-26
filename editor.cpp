@@ -3,6 +3,9 @@
 #include "tool.h"
 
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Image.hpp>
+#include <SFML/Window/Mouse.hpp>
+
 #include <imgui-SFML.h>
 #include <imgui.h>
 
@@ -29,6 +32,7 @@ void Editor::Start(Engine& engine) {
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
+	cursorButton = new sf::Texture("Cursor.png");
 	importButton = new sf::Texture("ImportButton.png");
 	saveButton = new sf::Texture("SaveButton.png");
 	moveButton = new sf::Texture("MoveButton.png");
@@ -86,6 +90,7 @@ void Editor::Event(std::optional<sf::Event> event) {
 void Editor::Update(Engine& engine, float deltaTime) {
 	ImGui::DockSpaceOverViewport(0U,ImGui::GetMainViewport());
 
+
 	engineWin.Draw(engine, camera);
 	camera.SetRenderTarget(*engineWin.getRender().get(), engineWin.getAvailSize());
 
@@ -110,11 +115,12 @@ void Editor::Update(Engine& engine, float deltaTime) {
 		}
 	}
 
-	if (tool == Paint) {
-		if(brushWinIsOpen)
+	if (tool == Paint || tool == Erase) {
+		if (brushWinIsOpen)
 		{
 			if (ImGui::Begin("Brush", &brushWinIsOpen)) {
 				ImGui::SeparatorText("Grid Properties");
+				ImGui::Text(("Layer: " + std::to_string(currentGridSelected + 1)).c_str());
 				ImGui::Text("X: ");
 				ImGui::SameLine();
 				int tileSizeX = (int)engine.grids[currentGridSelected].getTileSize().x;
@@ -133,24 +139,24 @@ void Editor::Update(Engine& engine, float deltaTime) {
 				}
 				ImGui::SeparatorText("Current Texture");
 				sf::Sprite preview(*brush.GetTexture(), brush.GetUV());
-				ImGui::Image(preview, {128, 128});
+				ImGui::Image(preview, { 128, 128 });
 
 				ImGui::End();
 			}
 		}
-	}
 
-	if (tool == Paint) {
 		if (selectTextureWinIsOpen)
 		{
 			if (ImGui::Begin("Texture Palette", &selectTextureWinIsOpen)) {
 				if(ImGui::Button("Add Texture")) {
-					texturesPaths.push_back(getFilePathByDialog());
-					currentTexturePath = texturesPaths[texturesPaths.size()-1];
-					textures.push_back(new sf::Texture(currentTexturePath));
-					currentTexture = textures[textures.size() - 1];
-					brush.SetTextureName(currentTexturePath);
-					brush.SetTexture(textures[textures.size() - 1]);
+					if (std::string path = getFilePathByDialog(); path != "") {
+						texturesPaths.push_back(path);
+						currentTexturePath = texturesPaths[texturesPaths.size() - 1];
+						textures.push_back(new sf::Texture(currentTexturePath));
+						currentTexture = textures[textures.size() - 1];
+						brush.SetTextureName(currentTexturePath);
+						brush.SetTexture(textures[textures.size() - 1]);
+					}
 				}
 				if (texturesPaths.size() > 0) {
 					if (ImGui::BeginCombo("Texture List", currentTexturePath.c_str())) {
@@ -186,9 +192,7 @@ void Editor::Update(Engine& engine, float deltaTime) {
 						}
 						ImGui::NewLine();
 					}
-
 				}
-
 				ImGui::End();
 			}
 		}		
@@ -218,15 +222,21 @@ void Editor::Update(Engine& engine, float deltaTime) {
 	ImGui::Begin("Tools");
 
 	if (ImGui::ImageButton("import", *importButton, { 32, 32 })) {
-		LoadScene(engine, "test.txt");
+		if (std::string path = getFilePathByDialog(); path != "")
+			LoadScene(engine, path);
 	}
 	ImGui::SameLine();
 	if (ImGui::ImageButton("save", *saveButton, { 32, 32 })) {
-		SaveScene(engine, "test.txt");
+		if (std::string path = getFilePathByDialog(); path != "")
+			SaveScene(engine, path);
 	}
 	ImGui::SameLine();
 	if(ImGui::ImageButton("move", *moveButton, { 32, 32 })) {
 		tool = Move;
+	}
+	ImGui::SameLine();
+	if (ImGui::ImageButton("select", *cursorButton, { 32, 32 })) {
+		tool = Select;
 	}
 	ImGui::SameLine();
 	if (ImGui::ImageButton("paint", *paintButton, { 32, 32 })) {
@@ -304,21 +314,21 @@ void Editor::LoadScene(Engine& engine, std::string fileName)
 	
 	//Load Texture
 	texturesPaths.clear();
+	for (size_t i = 0; i < textures.size(); i++)
+	{
+		delete textures[i];
+	}
+	textures.clear();
 	for (int i = 0; i < tilesInfos.size(); i++) {
 		if (tilesInfos[i].size() == 1) continue;
 		if (!AlreadyhaveThisTexture(tilesInfos[i][12])) {
 			texturesPaths.push_back(tilesInfos[i][12]);
 		}
 	}
-	textures.clear();
-	for (size_t i = 0; i < textures.size(); i++)
-	{
-		delete textures[i];
-	}
-	textures.clear();
 	for (auto name : texturesPaths) {
 		textures.push_back(new sf::Texture(name));
 	}
+	
 
 
 	// Load Scene

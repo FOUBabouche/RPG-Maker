@@ -48,7 +48,6 @@ void Core::Update()
 
 void Core::Render() {
     window.clear();
-
     ImGui::SFML::Render(window);
     window.display();
 }

@@ -41,7 +41,9 @@ void Grid::SetTile(sf::Vector2u position, sf::Vector2u size, sf::Color color, sf
 		m_tiles[position.x].resize(position.y + 1);
 	}
 
-	if (m_tiles[position.x][position.y].getTexture() == texture && m_tiles[position.x][position.y].getUV() == uv) return;
+	if (m_tiles[position.x][position.y].getTexture() == texture && 
+		m_tiles[position.x][position.y].getUV() == uv &&
+		m_tiles[position.x][position.y].getColor() == color) return;
 	Tile tile = Tile(position, m_tileSize, color, texture, uv, textureName);
 	m_tiles[position.x][position.y] = tile;
 }

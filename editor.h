@@ -10,9 +10,12 @@
 #include "brush.h"
 
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Window/Cursor.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <optional>
 
 enum Tools {
+	Select,
 	Move,
 	Paint,
 	Erase
@@ -50,6 +53,8 @@ private:
 	bool brushWinIsOpen = false;
 	bool selectTextureWinIsOpen = false;
 	bool selectLayerWinIsOpen = false;
+	bool saveWinIsOpen = false;
+	bool importWinIsOpen = false;
 
 	std::string currentTexturePath;
 	std::vector<sf::Texture*> textures;
@@ -59,6 +64,7 @@ private:
 private:
 	sf::Texture* placeHolder;
 	// UI
+	sf::Texture* cursorButton;
 	sf::Texture* importButton;
 	sf::Texture* saveButton;
 	sf::Texture* moveButton;
