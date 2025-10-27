@@ -152,10 +152,12 @@ void Editor::Update(Engine& engine, float deltaTime) {
 					if (std::string path = getFilePathByDialog(); path != "") {
 						texturesPaths.push_back(path);
 						currentTexturePath = texturesPaths[texturesPaths.size() - 1];
-						textures.push_back(new sf::Texture(currentTexturePath));
-						currentTexture = textures[textures.size() - 1];
-						brush.SetTextureName(currentTexturePath);
-						brush.SetTexture(textures[textures.size() - 1]);
+						if (auto load = new sf::Texture; load->loadFromFile(currentTexturePath)) {
+							textures.push_back(load);
+							currentTexture = textures[textures.size() - 1];
+							brush.SetTextureName(currentTexturePath);
+							brush.SetTexture(textures[textures.size() - 1]);
+						}
 					}
 				}
 				if (texturesPaths.size() > 0) {
@@ -233,10 +235,6 @@ void Editor::Update(Engine& engine, float deltaTime) {
 	ImGui::SameLine();
 	if(ImGui::ImageButton("move", *moveButton, { 32, 32 })) {
 		tool = Move;
-	}
-	ImGui::SameLine();
-	if (ImGui::ImageButton("select", *cursorButton, { 32, 32 })) {
-		tool = Select;
 	}
 	ImGui::SameLine();
 	if (ImGui::ImageButton("paint", *paintButton, { 32, 32 })) {
@@ -326,28 +324,31 @@ void Editor::LoadScene(Engine& engine, std::string fileName)
 		}
 	}
 	for (auto name : texturesPaths) {
-		textures.push_back(new sf::Texture(name));
+		if (auto load = new sf::Texture; load->loadFromFile(name))
+			textures.push_back(load);
 	}
 	
 
 
-	// Load Scene
- 	engine = Engine();
-	for (int i = 0; i < tilesInfos.size(); i++)
-	{
-		if (tilesInfos[i][0] == "L") {
-			engine.AddLayer({ 16, 16 });
-			currentGridSelected = 0;
-			continue;
+	if (textures.size() == texturesPaths.size()) {
+		// Load Scene
+		engine = Engine();
+		for (int i = 0; i < tilesInfos.size(); i++)
+		{
+			if (tilesInfos[i][0] == "L") {
+				engine.AddLayer({ 16, 16 });
+				currentGridSelected = 0;
+				continue;
+			}
+			engine.grids[currentGridSelected].SetTile(
+				{ (unsigned int)std::stoi(tilesInfos[i][0]),  (unsigned int)std::stoi(tilesInfos[i][1]) },												// Position
+				{ (unsigned int)std::stoi(tilesInfos[i][2]),  (unsigned int)std::stoi(tilesInfos[i][3]) },											// Size
+				{ static_cast<uint8_t>(std::stoi(tilesInfos[i][4])), static_cast<uint8_t>(std::stoi(tilesInfos[i][5])), static_cast<uint8_t>(std::stoi(tilesInfos[i][6])), static_cast<uint8_t>(std::stoi(tilesInfos[i][7])) }, // Color
+				GetTextureByName(tilesInfos[i][12]),
+				{ {std::stoi(tilesInfos[i][8]), std::stoi(tilesInfos[i][9])}, {std::stoi(tilesInfos[i][10]), std::stoi(tilesInfos[i][11])} },// UV
+				tilesInfos[i][12]
+			);
 		}
-		engine.grids[currentGridSelected].SetTile(
-			{ (unsigned int)std::stoi(tilesInfos[i][0]),  (unsigned int)std::stoi(tilesInfos[i][1])},												// Position
-			{ (unsigned int)std::stoi(tilesInfos[i][2]),  (unsigned int)std::stoi(tilesInfos[i][3]) },											// Size
-			{ static_cast<uint8_t>(std::stoi(tilesInfos[i][4])), static_cast<uint8_t>(std::stoi(tilesInfos[i][5])), static_cast<uint8_t>(std::stoi(tilesInfos[i][6])), static_cast<uint8_t>(std::stoi(tilesInfos[i][7])) }, // Color
-			GetTextureByName(tilesInfos[i][12]),
-			{ {std::stoi(tilesInfos[i][8]), std::stoi(tilesInfos[i][9])}, {std::stoi(tilesInfos[i][10]), std::stoi(tilesInfos[i][11])} },// UV
-			tilesInfos[i][12]
-		);
 	}
 
 }
