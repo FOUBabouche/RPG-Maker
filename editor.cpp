@@ -32,20 +32,20 @@ void Editor::Start(Engine& engine) {
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
-	cursorButton = new sf::Texture("Cursor.png");
-	importButton = new sf::Texture("ImportButton.png");
-	saveButton = new sf::Texture("SaveButton.png");
-	moveButton = new sf::Texture("MoveButton.png");
-	paintButton = new sf::Texture("PaintButton.png");
-	eraseButton = new sf::Texture("EraseButton.png");
-	textureButton = new sf::Texture("TextureButton.png");
-	addLayerButton = new sf::Texture("AddLayerButton.png");
-	selectLayerButton = new sf::Texture("LayerButton.png");
+	cursorButton = new sf::Texture("res/Editor/Cursor.png");
+	importButton = new sf::Texture("res/Editor/ImportButton.png");
+	saveButton = new sf::Texture("res/Editor/SaveButton.png");
+	moveButton = new sf::Texture("res/Editor/MoveButton.png");
+	paintButton = new sf::Texture("res/Editor/PaintButton.png");
+	eraseButton = new sf::Texture("res/Editor/EraseButton.png");
+	textureButton = new sf::Texture("res/Editor/TextureButton.png");
+	addLayerButton = new sf::Texture("res/Editor/AddLayerButton.png");
+	selectLayerButton = new sf::Texture("res/Editor/LayerButton.png");
 
-	placeHolder = new sf::Texture("Placeholder.png");
+	placeHolder = new sf::Texture("res/Editor/Placeholder.png");
 	currentTexture = new sf::Texture();
 
-	brush.SetTextureName("Placeholder.png");
+	brush.SetTextureName("res/Editor/Placeholder.png");
 	brush.SetTexture(placeHolder);
 	brush.SetUV({ {0, 0}, {(int)brush.GetTexture()->getSize().x, (int)brush.GetTexture()->getSize().y} });
 
@@ -170,6 +170,7 @@ void Editor::Update(Engine& engine, float deltaTime) {
 								currentTexture = textures[i];
 								brush.SetTextureName(currentTexturePath);
 								brush.SetTexture(textures[i]);
+								brush.SetUV({ {0, 0}, {(int)engine.grids[currentGridSelected].getTileSize().x, (int)engine.grids[currentGridSelected].getTileSize().y} });
 							}
 						}
 						ImGui::EndCombo();
@@ -178,21 +179,25 @@ void Editor::Update(Engine& engine, float deltaTime) {
 					ImGui::SeparatorText("Current Texture");
 
 					// IMAGE DE LA TEXTURE MA GUEULE
-					for (int x = 0; x < currentTexture->getSize().x; x += engine.grids[currentGridSelected].getTileSize().x)
-					{
-						for (int y = 0; y < currentTexture->getSize().y; y += engine.grids[currentGridSelected].getTileSize().y)
+					ImVec2 region = ImGui::GetWindowSize();
+					if(ImGui::BeginChild("TileSet")) {
+						for (int x = 0; x < currentTexture->getSize().x; x += engine.grids[currentGridSelected].getTileSize().x)
 						{
-							sf::Sprite texturePart(*currentTexture, { {y, x}, {(int)engine.grids[currentGridSelected].getTileSize().x,(int)engine.grids[currentGridSelected].getTileSize().y} });
-							ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
-							ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.f, 0.f, 0.f, 0.f));
-							ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.f));
-							if (ImGui::ImageButton(std::string(std::to_string(x) + " " + std::to_string(y)).c_str(), texturePart, { (float)engine.grids[currentGridSelected].getTileSize().x,(float)engine.grids[currentGridSelected].getTileSize().y })) {
-								brush.SetUV({ {y, x}, {(int)engine.grids[currentGridSelected].getTileSize().x, (int)engine.grids[currentGridSelected].getTileSize().y} });
+							for (int y = 0; y < currentTexture->getSize().y; y += engine.grids[currentGridSelected].getTileSize().y)
+							{
+								sf::Sprite texturePart(*currentTexture, { {y, x}, {(int)engine.grids[currentGridSelected].getTileSize().x,(int)engine.grids[currentGridSelected].getTileSize().y} });
+								ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
+								ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.f, 0.f, 0.f, 0.f));
+								ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.f));
+								if (ImGui::ImageButton(std::string(std::to_string(x) + " " + std::to_string(y)).c_str(), texturePart, { region.x / (float)engine.grids[currentGridSelected].getTileSize().x, region.x / (float)engine.grids[currentGridSelected].getTileSize().y })) {
+									brush.SetUV({ {y, x}, {(int)engine.grids[currentGridSelected].getTileSize().x, (int)engine.grids[currentGridSelected].getTileSize().y} });
+								}
+								ImGui::PopStyleColor(3);
+								ImGui::SameLine();
 							}
-							ImGui::PopStyleColor(3);
-							ImGui::SameLine();
+							ImGui::NewLine();
 						}
-						ImGui::NewLine();
+						ImGui::EndChild();
 					}
 				}
 				ImGui::End();
@@ -329,15 +334,15 @@ void Editor::LoadScene(Engine& engine, std::string fileName)
 	}
 	
 
-
 	if (textures.size() == texturesPaths.size()) {
 		// Load Scene
 		engine = Engine();
+		currentGridSelected = -1;
 		for (int i = 0; i < tilesInfos.size(); i++)
 		{
 			if (tilesInfos[i][0] == "L") {
 				engine.AddLayer({ 16, 16 });
-				currentGridSelected = 0;
+				currentGridSelected++;
 				continue;
 			}
 			engine.grids[currentGridSelected].SetTile(
