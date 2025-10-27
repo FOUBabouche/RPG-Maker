@@ -55,6 +55,7 @@ private:
 	bool selectLayerWinIsOpen = false;
 	bool saveWinIsOpen = false;
 	bool importWinIsOpen = false;
+	bool tileCreationWinIsOpen = false;
 
 	std::string currentTexturePath;
 	std::vector<sf::Texture*> textures;

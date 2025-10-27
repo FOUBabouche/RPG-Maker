@@ -90,7 +90,13 @@ void Editor::Event(std::optional<sf::Event> event) {
 void Editor::Update(Engine& engine, float deltaTime) {
 	ImGui::DockSpaceOverViewport(0U,ImGui::GetMainViewport());
 
-
+	for (auto& x : engine.grids[currentGridSelected].getTiles())
+	{
+		for (auto& y : x)
+		{
+			y.Update(deltaTime);
+		}
+	}
 	engineWin.Draw(engine, camera);
 	camera.SetRenderTarget(*engineWin.getRender().get(), engineWin.getAvailSize());
 
@@ -180,26 +186,28 @@ void Editor::Update(Engine& engine, float deltaTime) {
 
 					// IMAGE DE LA TEXTURE MA GUEULE
 					ImVec2 region = ImGui::GetWindowSize();
-					if(ImGui::BeginChild("TileSet")) {
-						for (int x = 0; x < currentTexture->getSize().x; x += engine.grids[currentGridSelected].getTileSize().x)
+					for (int x = 0; x < currentTexture->getSize().x; x += engine.grids[currentGridSelected].getTileSize().x)
+					{
+						for (int y = 0; y < currentTexture->getSize().y; y += engine.grids[currentGridSelected].getTileSize().y)
 						{
-							for (int y = 0; y < currentTexture->getSize().y; y += engine.grids[currentGridSelected].getTileSize().y)
-							{
-								sf::Sprite texturePart(*currentTexture, { {y, x}, {(int)engine.grids[currentGridSelected].getTileSize().x,(int)engine.grids[currentGridSelected].getTileSize().y} });
-								ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
-								ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.f, 0.f, 0.f, 0.f));
-								ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.f));
-								if (ImGui::ImageButton(std::string(std::to_string(x) + " " + std::to_string(y)).c_str(), texturePart, { region.x / (float)engine.grids[currentGridSelected].getTileSize().x, region.x / (float)engine.grids[currentGridSelected].getTileSize().y })) {
-									brush.SetUV({ {y, x}, {(int)engine.grids[currentGridSelected].getTileSize().x, (int)engine.grids[currentGridSelected].getTileSize().y} });
-								}
-								ImGui::PopStyleColor(3);
-								ImGui::SameLine();
+							sf::Sprite texturePart(*currentTexture, { {y, x}, {(int)engine.grids[currentGridSelected].getTileSize().x,(int)engine.grids[currentGridSelected].getTileSize().y} });
+							ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
+							ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.f, 0.f, 0.f, 0.f));
+							ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.f));
+							if (ImGui::ImageButton(std::string(std::to_string(x) + " " + std::to_string(y)).c_str(), texturePart, { region.x / (float)engine.grids[currentGridSelected].getTileSize().x, region.x / (float)engine.grids[currentGridSelected].getTileSize().y })) {
+								brush.SetUV({ {y, x}, {(int)engine.grids[currentGridSelected].getTileSize().x, (int)engine.grids[currentGridSelected].getTileSize().y} });
 							}
-							ImGui::NewLine();
+							ImGui::PopStyleColor(3);
+							ImGui::SameLine();
 						}
-						ImGui::EndChild();
+						ImGui::NewLine();
 					}
 				}
+				// Tile creation
+				if (ImGui::Button("Create Tile")) {
+					tileCreationWinIsOpen = true;
+				}
+
 				ImGui::End();
 			}
 		}		
@@ -221,6 +229,38 @@ void Editor::Update(Engine& engine, float deltaTime) {
 				}
 				ImGui::SameLine();
 			}
+
+			ImGui::EndPopup();
+		}
+	}
+
+	if (tileCreationWinIsOpen) {
+		ImGui::OpenPopup("New Tile");
+
+		ImGui::SetNextWindowSize(ImVec2(-1, -1), ImGuiCond_Always);
+
+		if (ImGui::BeginPopupModal("New Tile", &tileCreationWinIsOpen))
+		{
+			static int offsetX = 0, offsetY = 0;
+			static int maxFrame = 1;
+
+			ImGui::Text("Offset X: ");
+			ImGui::SameLine();
+			if (ImGui::InputInt("##Offset X: ", &offsetX, 1, 50));
+			ImGui::Text("Offset Y: ");
+			ImGui::SameLine();
+			if (ImGui::InputInt("##Offset Y: ", &offsetY, 1, 50));
+
+			ImGui::Text("Max Frame: ");
+			ImGui::SameLine();
+			if (ImGui::InputInt("##Max Frame: ", &maxFrame, 1, 50));
+
+			sf::Vector2i tileSize = (sf::Vector2i)engine.grids[currentGridSelected].getTileSize();
+			static Tile tile = Tile(brush.GetTexture(), { {offsetX * tileSize.x, offsetY * tileSize.y }, tileSize });
+			tile.SetUV({ {offsetX * tileSize.x, offsetY * tileSize.y }, tileSize });
+			ImGui::Image(sf::Sprite(*tile.getTexture(), tile.getUV()), ImVec2(86, 86));
+
+			tile.Update(deltaTime, maxFrame);
 
 			ImGui::EndPopup();
 		}

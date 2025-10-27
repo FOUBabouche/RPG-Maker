@@ -1,11 +1,22 @@
 #include "tile.h"
 
+#include <iostream>
+
 Tile::Tile()
 {
 	m_position = {(unsigned int) - 1, (unsigned int)-1};
 	m_size = { (unsigned int)-1, (unsigned int)-1};
 	m_color = sf::Color::White;
 	m_texture = nullptr;
+}
+
+Tile::Tile(sf::Texture* texture, sf::IntRect uv)
+{
+	m_position = { (unsigned int)-1, (unsigned int)-1 };
+	m_size = (sf::Vector2u)uv.size;
+	m_color = sf::Color::White;
+	m_texture = texture;
+	m_uv = uv;
 }
 
 Tile::Tile(sf::Vector2u position, sf::Vector2u size, sf::Texture* texture, sf::IntRect uv, std::string textureName)
@@ -32,6 +43,11 @@ Tile::Tile(sf::Vector2u position, sf::Vector2u size, sf::Color color, sf::Textur
 	m_textureName = textureName;
 }
 
+void Tile::SetUV(sf::IntRect uv)
+{
+	m_uv = uv;
+}
+
 void Tile::SetSize(sf::Vector2u size)
 {
 	m_size = size;
@@ -42,11 +58,7 @@ void Tile::SetTextureName(std::string& textureName)
 	m_textureName = textureName;
 }
 
-void Tile::setAnimation(std::vector<sf::IntRect> keys)
-{
-	isAnimated = true;
-	m_keys = keys;
-}
+
 
 Tile::Tile(const Tile& tile)
 {
@@ -88,10 +100,26 @@ sf::Color Tile::getColor()const
 	return m_color;
 }
 
-std::vector<sf::IntRect> Tile::getKeys() const
+void Tile::Update(float dt, int maxAnim)
 {
-	if (isAnimated) return m_keys;
-	return {};
+	m_maxAnim = maxAnim;
+	Update(dt);
+}
+
+void Tile::Update(float dt)
+{
+	static float totalTime = 0;
+	if (totalTime >= 1) {
+		m_animIndex++;
+		if (m_animIndex >= m_maxAnim) {
+			m_uv.position.x -= (m_animIndex-1) * m_size.x;
+			m_animIndex = 0;
+		}
+		m_uv.position.x +=  ((m_animIndex) * m_size.x);
+		std::cout << m_uv.position.x << " " << m_animIndex<<std::endl;
+		totalTime = 0;
+	}
+	else totalTime += dt;
 }
 
 Tile& Tile::operator=(const Tile& tile)
