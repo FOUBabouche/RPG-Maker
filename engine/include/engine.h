@@ -1,0 +1,22 @@
+#ifndef __ENGINE_H__
+#define __ENGINE_H__
+
+#include <object.h>
+#include <base_engine.h>
+#include <vector>
+#include <memory>
+
+class Engine : public BaseEngine{
+    public:
+        Engine() = default;
+        ~Engine() = default;
+
+        void addObject(Object* object);
+        template<typename T>
+        T* getObject(std::string name);
+
+    private:
+        std::vector<std::unique_ptr<Object>> objects;
+};
+
+#endif

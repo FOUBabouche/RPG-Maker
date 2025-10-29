@@ -16,6 +16,7 @@ set(IMGUI_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/imgui")
 find_package(SFML 3 COMPONENTS Graphics Window System REQUIRED)
 
 add_subdirectory(thirdparty)
+add_subdirectory(engine)
 
 add_executable(${PROJECT_NAME})
 
@@ -31,6 +32,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
+    engine
     ImGui-SFML::ImGui-SFML
     SFML::System
     SFML::Window
