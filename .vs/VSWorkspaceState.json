@@ -12,7 +12,13 @@
     ]
   },
   "ExpandedNodes": [
-    ""
+    "",
+    "\\thirdparty",
+    "\\thirdparty\\imgui-docking",
+    "\\thirdparty\\imgui-docking\\imgui",
+    "\\thirdparty\\imgui-docking\\imgui\\examples",
+    "\\thirdparty\\imgui-docking\\imgui\\examples\\example_allegro5"
   ],
+  "SelectedNode": "\\thirdparty\\imgui-docking\\imgui\\examples\\example_allegro5\\example_allegro5.vcxproj",
   "PreviewInSolutionExplorer": false
 }

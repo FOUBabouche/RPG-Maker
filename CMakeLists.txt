@@ -11,11 +11,13 @@ endif()
 
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build SFML as static libraries" FORCE)
 
-set(IMGUI_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/imgui-docking/imgui")
+set(IMGUI_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/imgui-docking")
+set(SFML_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/SFML-3.0.0/cmake/SFML")
+set(Freetype_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/SFML-3.0.0/cmake/freetype")
 
 project("RPG_Maker")
 
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/SFML-3.0.2")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/SFML-3.0.0")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/imgui-docking")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/imgui-sfml-3.0")
 
