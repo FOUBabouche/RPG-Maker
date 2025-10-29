@@ -18,8 +18,7 @@ void Core::Start()
 	window.create(sf::VideoMode({ 800, 600 }), "RPG Maker");
 	ImGui::SFML::Init(window);
 
-    engine.Start();
-    editor.Start(engine);
+    
 }
 
 void Core::Event()
@@ -29,8 +28,7 @@ void Core::Event()
         ImGui::SFML::ProcessEvent(window, *event);
         if (event->is<sf::Event::Closed>())
             window.close();
-        engine.Event(event);
-        editor.Event(event);
+        
     }
 }
 
@@ -42,8 +40,7 @@ void Core::Update()
 
     ImGui::SFML::Update(window, time);
 
-    engine.Update(deltaTime);
-    editor.Update(engine, deltaTime);
+    
 }
 
 void Core::Render() {

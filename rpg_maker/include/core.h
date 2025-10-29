@@ -15,8 +15,6 @@ private:
 	sf::RenderWindow window;
 	sf::Clock deltaClock;
 	float deltaTime;
-
-	
 };
 
 #endif
