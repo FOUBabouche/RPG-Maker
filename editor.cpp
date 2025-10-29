@@ -90,6 +90,7 @@ void Editor::Event(std::optional<sf::Event> event) {
 void Editor::Update(Engine& engine, float deltaTime) {
 	ImGui::DockSpaceOverViewport(0U,ImGui::GetMainViewport());
 
+	sf::Vector2i tileSize = (sf::Vector2i)engine.grids[currentGridSelected].getTileSize();
 	for (auto& x : engine.grids[currentGridSelected].getTiles())
 	{
 		for (auto& y : x)
@@ -203,9 +204,12 @@ void Editor::Update(Engine& engine, float deltaTime) {
 						ImGui::NewLine();
 					}
 				}
+				ImGui::SeparatorText("Animated Tiles");
+
 				// Tile creation
 				if (ImGui::Button("Create Tile")) {
 					tileCreationWinIsOpen = true;
+					currentEditedTile = Tile(brush.GetTexture(), { {0 * tileSize.x, 0 * tileSize.y }, tileSize });
 				}
 
 				ImGui::End();
@@ -246,21 +250,27 @@ void Editor::Update(Engine& engine, float deltaTime) {
 
 			ImGui::Text("Offset X: ");
 			ImGui::SameLine();
-			if (ImGui::InputInt("##Offset X: ", &offsetX, 1, 50));
+			if (ImGui::InputInt("##Offset X: ", &offsetX, 1, 50)) {
+				currentEditedTile.SetUV({ {offsetX * tileSize.x, offsetY * tileSize.y }, tileSize });
+			}
 			ImGui::Text("Offset Y: ");
 			ImGui::SameLine();
-			if (ImGui::InputInt("##Offset Y: ", &offsetY, 1, 50));
+			if (ImGui::InputInt("##Offset Y: ", &offsetY, 1, 50)) {
+				currentEditedTile.SetUV({ {offsetX * tileSize.x, offsetY * tileSize.y }, tileSize });
+			}
 
 			ImGui::Text("Max Frame: ");
 			ImGui::SameLine();
 			if (ImGui::InputInt("##Max Frame: ", &maxFrame, 1, 50));
 
-			sf::Vector2i tileSize = (sf::Vector2i)engine.grids[currentGridSelected].getTileSize();
-			static Tile tile = Tile(brush.GetTexture(), { {offsetX * tileSize.x, offsetY * tileSize.y }, tileSize });
-			tile.SetUV({ {offsetX * tileSize.x, offsetY * tileSize.y }, tileSize });
-			ImGui::Image(sf::Sprite(*tile.getTexture(), tile.getUV()), ImVec2(86, 86));
+			
+			ImGui::Image(sf::Sprite(*currentEditedTile.getTexture(), currentEditedTile.getUV()), ImVec2(86, 86));
 
-			tile.Update(deltaTime, maxFrame);
+			currentEditedTile.Update(deltaTime, maxFrame);
+
+			if (ImGui::Button("Save Tile")) {
+				customTile.push_back(currentEditedTile);
+			}
 
 			ImGui::EndPopup();
 		}

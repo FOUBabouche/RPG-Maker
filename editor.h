@@ -62,6 +62,9 @@ private:
 	std::vector<std::string> texturesPaths;
 	sf::Texture* currentTexture;
 
+	Tile currentEditedTile;
+	std::vector<Tile> customTile;
+
 private:
 	sf::Texture* placeHolder;
 	// UI

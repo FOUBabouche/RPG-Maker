@@ -108,18 +108,20 @@ void Tile::Update(float dt, int maxAnim)
 
 void Tile::Update(float dt)
 {
-	static float totalTime = 0;
-	if (totalTime >= 1) {
-		m_animIndex++;
-		if (m_animIndex >= m_maxAnim) {
-			m_uv.position.x -= (m_animIndex-1) * m_size.x;
-			m_animIndex = 0;
+	if (m_maxAnim > 1) {
+		static float totalTime = 0;
+		if (totalTime >= 1) {
+			m_animIndex++;
+			if (m_animIndex >= m_maxAnim) {
+				m_uv.position.x -= (m_animIndex-1)*m_size.x;
+				m_animIndex = 0;
+			}
+			m_uv.position.x += (m_animIndex)*m_size.x;
+			std::cout << m_uv.position.x << " " << m_animIndex << std::endl;
+			totalTime = 0;
 		}
-		m_uv.position.x +=  ((m_animIndex) * m_size.x);
-		std::cout << m_uv.position.x << " " << m_animIndex<<std::endl;
-		totalTime = 0;
+		else totalTime += dt;
 	}
-	else totalTime += dt;
 }
 
 Tile& Tile::operator=(const Tile& tile)
