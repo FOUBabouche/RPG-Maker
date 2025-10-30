@@ -117,7 +117,7 @@ void Editor::Update(Engine& engine, float deltaTime) {
 			engineWin.getRender().get()->setView(camera.GetView());
 		}
 		if (mousePos.x >= 0 && mousePos.y >= 0) {
-			if (tool == Paint)engine.grids[currentGridSelected].SetTile(mousePosOnGrid, { brush.GetSize(), brush.GetSize()}, brush.GetColor(), brush.GetTexture(), brush.GetUV(), brush.GetTextureName());
+			if (tool == Paint)engine.grids[currentGridSelected].SetTile(mousePosOnGrid, { brush.GetSize(), brush.GetSize() }, brush.GetColor(), brush.GetTexture(), brush.GetUV(), brush.GetTextureName(), brush.maxAnim);
 			if (tool == Erase)engine.grids[currentGridSelected].RemoveTile(mousePosOnGrid);
 		}
 	}
@@ -205,12 +205,26 @@ void Editor::Update(Engine& engine, float deltaTime) {
 					}
 				}
 				ImGui::SeparatorText("Animated Tiles");
+				for (size_t i = 0; i < customTile.size(); i++)
+				{
+					sf::Sprite sprite(*customTile[i].getTexture(), customTile[i].getUV());
+					if (ImGui::ImageButton(("Custom" + std::to_string(i)).c_str(), sprite, {32,32})) {
+						brush.SetTexture(customTile[i].getTexture());
+						brush.SetUV(customTile[i].getUV());
+						brush.SetColor(customTile[i].getColor());
+						brush.SetTextureName(customTile[i].getTextureName());
+						brush.maxAnim = customTile[i].m_maxAnim;
+					}
+					ImGui::SameLine();
+				}
 
 				// Tile creation
 				if (ImGui::Button("Create Tile")) {
 					tileCreationWinIsOpen = true;
 					currentEditedTile = Tile(brush.GetTexture(), { {0 * tileSize.x, 0 * tileSize.y }, tileSize });
 				}
+
+				for (auto& ct : customTile) ct.Update(deltaTime);
 
 				ImGui::End();
 			}
@@ -320,7 +334,7 @@ void Editor::Update(Engine& engine, float deltaTime) {
 
 void Editor::SaveScene(Engine& engine, std::string fileName)
 {
-	std::ofstream savingFile(fileName.c_str());
+	std::ofstream savingFile(fileName.c_str(), std::ios::binary);
 
 	if (savingFile.is_open()) {
 		for (auto grid : engine.grids)
@@ -343,7 +357,7 @@ void Editor::LoadScene(Engine& engine, std::string fileName)
 {
 	// Parsing fichier
 	std::vector<std::vector<std::string>> tilesInfos;
-	std::ifstream savingFile(fileName);
+	std::ifstream savingFile(fileName, std::ios::binary);
 	std::string line;
 	while (std::getline(savingFile, line, '\n')) {
 		std::vector<std::string> variables;
@@ -401,7 +415,8 @@ void Editor::LoadScene(Engine& engine, std::string fileName)
 				{ static_cast<uint8_t>(std::stoi(tilesInfos[i][4])), static_cast<uint8_t>(std::stoi(tilesInfos[i][5])), static_cast<uint8_t>(std::stoi(tilesInfos[i][6])), static_cast<uint8_t>(std::stoi(tilesInfos[i][7])) }, // Color
 				GetTextureByName(tilesInfos[i][12]),
 				{ {std::stoi(tilesInfos[i][8]), std::stoi(tilesInfos[i][9])}, {std::stoi(tilesInfos[i][10]), std::stoi(tilesInfos[i][11])} },// UV
-				tilesInfos[i][12]
+				tilesInfos[i][12],
+				1
 			);
 		}
 	}

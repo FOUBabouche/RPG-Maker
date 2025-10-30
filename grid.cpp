@@ -28,7 +28,7 @@ void Grid::setTileSize(sf::Vector2u tileSize)
 			if (y != (Tile&)Tile()) y.SetSize(tileSize);
 }
 
-void Grid::SetTile(sf::Vector2u position, sf::Vector2u size, sf::Color color, sf::Texture* texture, sf::IntRect uv, std::string textureName)
+void Grid::SetTile(sf::Vector2u position, sf::Vector2u size, sf::Color color, sf::Texture* texture, sf::IntRect uv, std::string textureName, int maxAnim)
 {
 	if (position.x < 0 || position.y < 0) return;
 	
@@ -45,6 +45,7 @@ void Grid::SetTile(sf::Vector2u position, sf::Vector2u size, sf::Color color, sf
 		m_tiles[position.x][position.y].getUV() == uv &&
 		m_tiles[position.x][position.y].getColor() == color) return;
 	Tile tile = Tile(position, m_tileSize, color, texture, uv, textureName);
+	tile.m_maxAnim = maxAnim;
 	m_tiles[position.x][position.y] = tile;
 }
 

@@ -22,7 +22,7 @@ public:
 	sf::Vector2u getTileSize(void) const;
 	void setTileSize(sf::Vector2u tileSize);
 
-	void SetTile(sf::Vector2u position, sf::Vector2u size, sf::Color color, sf::Texture* texture, sf::IntRect uvSize, std::string textureName);
+	void SetTile(sf::Vector2u position, sf::Vector2u size, sf::Color color, sf::Texture* texture, sf::IntRect uvSize, std::string textureName, int maxAnim);
 	void RemoveTile(sf::Vector2u position);
 
 	sf::Vector2u GetCoordToGridPos(sf::Vector2f mousePos);

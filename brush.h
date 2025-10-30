@@ -26,6 +26,7 @@ public:
 	sf::IntRect GetUV(void) const;
 
 	virtual void click() {};
+	int maxAnim = 0;
 protected:
 	unsigned int m_size;
 	sf::Texture* m_currentTexture;

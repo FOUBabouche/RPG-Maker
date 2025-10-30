@@ -68,6 +68,8 @@ Tile::Tile(const Tile& tile)
 	m_texture = tile.m_texture;
 	m_uv = tile.m_uv;
 	m_textureName = tile.m_textureName;
+	m_animIndex = tile.m_animIndex;
+	m_maxAnim = tile.m_maxAnim;
 }
 
 sf::Vector2u Tile::GetPosition()const
@@ -103,7 +105,7 @@ sf::Color Tile::getColor()const
 void Tile::Update(float dt, int maxAnim)
 {
 	m_maxAnim = maxAnim;
-	Update(dt);
+	return Update(dt);
 }
 
 void Tile::Update(float dt)
@@ -132,6 +134,8 @@ Tile& Tile::operator=(const Tile& tile)
 	m_texture = tile.m_texture;
 	m_uv = tile.m_uv;
 	m_textureName = tile.m_textureName;
+	m_animIndex = tile.m_animIndex;
+	m_maxAnim = tile.m_maxAnim;
 	return *this;
 }
 

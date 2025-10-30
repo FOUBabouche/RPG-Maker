@@ -41,6 +41,7 @@ public:
 	bool operator!=(Tile& tile);
 
 	friend std::ostream& operator<<(std::ostream& os, Tile& tile);
+	int m_maxAnim;
 private:
 	sf::Vector2u m_position;
 	sf::Vector2u m_size;
@@ -50,7 +51,6 @@ private:
 	sf::IntRect m_uv;
 
 	int m_animIndex = 0;
-	int m_maxAnim;
 };
 
 #endif
