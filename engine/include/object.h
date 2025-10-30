@@ -1,7 +1,9 @@
-#ifndef OBJECT_H
-#define OBJECT_H
+#ifndef __OBJECT_H__
+#define __OBJECT_H__
 
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+
 #include <string>
 
 struct Object
@@ -12,7 +14,7 @@ struct Object
 
     virtual void Start() = 0;
     virtual void Update() = 0;
-    virtual void Draw() = 0;
+    virtual void Draw(sf::RenderTarget&) = 0;
 };
 
 

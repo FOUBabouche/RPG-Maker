@@ -1,5 +1,5 @@
-#ifndef CORE_H
-#define CORE_H
+#ifndef __CORE_H__
+#define __CORE_H__
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>

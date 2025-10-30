@@ -1,1 +1,6 @@
-build/*
+build/
+build/*/
+build/*.*
+RPG Maker/
+RPG Maker/*/
+x64/
