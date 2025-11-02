@@ -53,4 +53,6 @@ private:
 	int m_animIndex = 0;
 };
 
+using NoTile = Tile;
+
 #endif

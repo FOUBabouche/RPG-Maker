@@ -43,6 +43,12 @@
     <Filter Include="Fichiers sources\editor">
       <UniqueIdentifier>{d11b4310-fbac-4c46-9c65-a31ba6f9bf9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\game">
+      <UniqueIdentifier>{bfc2b41f-52e2-4411-84cd-a6d8a9eec317}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\game">
+      <UniqueIdentifier>{a4284bea-34c5-43bd-928b-178dae7baead}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui-SFML.cpp">
@@ -91,6 +97,12 @@
       <Filter>Fichiers sources\editor</Filter>
     </ClCompile>
     <ClCompile Include="eMath.cpp">
+      <Filter>Fichiers sources\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>Fichiers sources\game</Filter>
+    </ClCompile>
+    <ClCompile Include="collision.cpp">
       <Filter>Fichiers sources\engine</Filter>
     </ClCompile>
   </ItemGroup>
@@ -154,6 +166,12 @@
     </ClInclude>
     <ClInclude Include="tool.h">
       <Filter>Fichiers d%27en-tête\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Fichiers d%27en-tête\game</Filter>
+    </ClInclude>
+    <ClInclude Include="collision.h">
+      <Filter>Fichiers d%27en-tête\engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

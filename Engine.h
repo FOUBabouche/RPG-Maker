@@ -7,6 +7,7 @@
 
 #include "grid.h"
 #include "camera.h"
+#include "player.h"
 
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
@@ -23,6 +24,7 @@ public:
 	void AddLayer(sf::Vector2u gridSize);
 public:
 	std::vector<Grid> grids;
+	Player player;
 };
 
 #endif

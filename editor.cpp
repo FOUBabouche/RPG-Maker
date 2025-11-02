@@ -41,6 +41,9 @@ void Editor::Start(Engine& engine) {
 	textureButton = new sf::Texture("res/Editor/TextureButton.png");
 	addLayerButton = new sf::Texture("res/Editor/AddLayerButton.png");
 	selectLayerButton = new sf::Texture("res/Editor/LayerButton.png");
+	entityButton = new sf::Texture("res/Editor/EntityButton.png");
+	playButton = new sf::Texture("res/Editor/PlayButton.png");
+	stopButton = new sf::Texture("res/Editor/StopButton.png");
 
 	placeHolder = new sf::Texture("res/Editor/Placeholder.png");
 	currentTexture = new sf::Texture();
@@ -93,9 +96,9 @@ void Editor::Update(Engine& engine, float deltaTime) {
 	sf::Vector2i tileSize = (sf::Vector2i)engine.grids[currentGridSelected].getTileSize();
 	for (auto& x : engine.grids[currentGridSelected].getTiles())
 	{
-		for (auto& y : x)
+		for (auto&& y : x)
 		{
-			y.Update(deltaTime);
+			if(y != (Tile&)Tile()) y.Update(deltaTime);
 		}
 	}
 	engineWin.Draw(engine, camera);
@@ -105,6 +108,9 @@ void Editor::Update(Engine& engine, float deltaTime) {
 	camera.SetZoom(zoom);
 
 	sf::Vector2u mousePosOnGrid = engine.grids[currentGridSelected].GetCoordToGridPos(mousePos);
+
+	if(!isPlaying_)
+		engine.grids[currentGridSelected].DrawGrid(*engineWin.getRender(), (sf::Vector2f)engineWin.getRender()->getSize(), camera.GetView().getCenter() - ((sf::Vector2f)engineWin.getRender()->getSize() / 2.f), camera.GetZoom());
 
 	if (leftPressed && engineWin.isHover()) {
 		if (canBeANewPos) {
@@ -228,7 +234,15 @@ void Editor::Update(Engine& engine, float deltaTime) {
 
 				ImGui::End();
 			}
-		}		
+		}
+
+		/*if (entityCreationWinIsOpen) {
+			if (ImGui::Begin("Entities", &entityCreationWinIsOpen)) {
+
+
+				ImGui::End();
+			}
+		}*/
 	}
 
 	if (selectLayerWinIsOpen) {
@@ -280,7 +294,7 @@ void Editor::Update(Engine& engine, float deltaTime) {
 			
 			ImGui::Image(sf::Sprite(*currentEditedTile.getTexture(), currentEditedTile.getUV()), ImVec2(86, 86));
 
-			currentEditedTile.Update(deltaTime, maxFrame);
+			//currentEditedTile.Update(deltaTime, maxFrame);
 
 			if (ImGui::Button("Save Tile")) {
 				customTile.push_back(currentEditedTile);
@@ -288,7 +302,11 @@ void Editor::Update(Engine& engine, float deltaTime) {
 
 			ImGui::EndPopup();
 		}
+
+		
 	}
+
+	
 
 	ImGui::Begin("Tools");
 
@@ -328,6 +346,17 @@ void Editor::Update(Engine& engine, float deltaTime) {
 	if (ImGui::ImageButton("selectLayer", *selectLayerButton, { 32, 32 })) {
 		selectLayerWinIsOpen = true;
 	}
+	ImGui::SameLine();
+	if (ImGui::ImageButton("playStop", *(isPlaying_ ? stopButton : playButton), {32, 32})) {
+		isPlaying_ = !isPlaying_;
+		engine.Start();
+	}
+	/*ImGui::SameLine();
+	if (ImGui::ImageButton("entity", *entityButton, { 32, 32 })) {
+		tool = Paint;
+		entityCreationWinIsOpen = true;
+		selectTextureWinIsOpen = true;
+	}*/
 
 	ImGui::End();
 }
@@ -421,6 +450,11 @@ void Editor::LoadScene(Engine& engine, std::string fileName)
 		}
 	}
 
+}
+
+bool Editor::isPlaying(void) const
+{
+	return isPlaying_;
 }
 
 bool Editor::AlreadyhaveThisTexture(std::string textureName)

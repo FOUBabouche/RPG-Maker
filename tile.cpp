@@ -8,6 +8,7 @@ Tile::Tile()
 	m_size = { (unsigned int)-1, (unsigned int)-1};
 	m_color = sf::Color::White;
 	m_texture = nullptr;
+	m_maxAnim = 0;
 }
 
 Tile::Tile(sf::Texture* texture, sf::IntRect uv)

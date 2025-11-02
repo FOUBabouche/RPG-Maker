@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="brush.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="collision.cpp" />
     <ClCompile Include="core.cpp" />
     <ClCompile Include="eMath.cpp" />
     <ClCompile Include="engine.cpp" />
@@ -146,11 +147,13 @@
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="editor.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="brush.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="collision.h" />
     <ClInclude Include="core.h" />
     <ClInclude Include="editor.h" />
     <ClInclude Include="eMath.h" />
@@ -167,6 +170,7 @@
     <ClInclude Include="include\imgui\imstb_textedit.h" />
     <ClInclude Include="include\imgui\imstb_truetype.h" />
     <ClInclude Include="paint.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="tool.h" />
   </ItemGroup>

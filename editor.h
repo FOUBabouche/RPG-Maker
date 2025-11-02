@@ -33,6 +33,8 @@ public:
 	void SaveScene(Engine& engine, std::string fileName);
 	void LoadScene(Engine& engine, std::string fileName);
 
+	bool isPlaying(void) const;
+
 	bool AlreadyhaveThisTexture(std::string textureName);
 	sf::Texture* GetTextureByName(std::string textureName);
 
@@ -56,6 +58,9 @@ private:
 	bool saveWinIsOpen = false;
 	bool importWinIsOpen = false;
 	bool tileCreationWinIsOpen = false;
+	bool entityCreationWinIsOpen = false;
+	
+	bool isPlaying_ = false;
 
 	std::string currentTexturePath;
 	std::vector<sf::Texture*> textures;
@@ -77,6 +82,9 @@ private:
 	sf::Texture* textureButton;
 	sf::Texture* addLayerButton;
 	sf::Texture* selectLayerButton;
+	sf::Texture* entityButton;
+	sf::Texture* playButton;
+	sf::Texture* stopButton;
 };
 
 #endif
