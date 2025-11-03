@@ -36,11 +36,11 @@ void Core::Update()
 {
     sf::Time time = deltaClock.restart();
     deltaTime = time.asSeconds();
-
-
     ImGui::SFML::Update(window, time);
 
-    
+    ImGui::Begin("test");
+
+    ImGui::End();
 }
 
 void Core::Render() {
