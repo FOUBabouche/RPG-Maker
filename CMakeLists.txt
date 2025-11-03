@@ -10,10 +10,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(SFML_STATIC_LIBRARIES TRUE CACHE BOOL "Use static SFML libraries" FORCE)
 
-set(SFML_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/SFML-3.0.2/lib/cmake/SFML")
-set(IMGUI_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/imgui")
-
 find_package(SFML 3 COMPONENTS Graphics Window System REQUIRED)
+find_package(imgui REQUIRED)
 
 add_subdirectory(thirdparty)
 add_subdirectory(engine)
