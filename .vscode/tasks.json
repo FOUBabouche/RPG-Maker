@@ -4,14 +4,30 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build Debug 🪲",
+            "label": "Build Debug",
+            "icon": {
+                "color": "terminal.ansiGreen",
+                "id": "breakpoints-view-icon"
+            },
             "type": "shell",
             "command": "cmake --build out/build --config Debug; ./bin/Debug/RPG-MAKER.exe"
         },
         {
-            "label": "Build Release 📦",
+            "label": "Build Release",
+            "icon": {
+                "color": "terminal.ansiGreen",
+                "id": "debug-start"
+            },
             "type": "shell",
             "command": "cmake --build out/build --config Release; ./bin/Release/RPG-MAKER.exe"
+        },
+        {
+            "label": "Build Cache ",
+            "icon": {
+                "id": "multi-diff-editor-label-icon"
+            },
+            "type": "shell",
+            "command": "if(Test-Path './out') {rm -r './out'}; cmake -G 'Visual Studio 17 2022' -S . -B out/build -DCMAKE_TOOLCHAIN_FILE=\"C:\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake\""
         }
     ]
 }
