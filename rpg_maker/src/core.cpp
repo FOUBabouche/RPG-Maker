@@ -18,7 +18,10 @@ void Core::Start()
 	window.create(sf::VideoMode({ 800, 600 }), "RPG Maker");
 	ImGui::SFML::Init(window);
 
-    
+    engine = std::make_unique<RPGEngine>();
+    engine->start();
+    editor = std::make_unique<Editor>();
+    editor->start();
 }
 
 void Core::Event()
@@ -28,7 +31,6 @@ void Core::Event()
         ImGui::SFML::ProcessEvent(window, *event);
         if (event->is<sf::Event::Closed>())
             window.close();
-        
     }
 }
 
@@ -38,12 +40,14 @@ void Core::Update()
     deltaTime = time.asSeconds();
     ImGui::SFML::Update(window, time);
 
-    ImGui::Begin("test");
-
-    ImGui::End();
+    engine->update(deltaTime);
+    editor->update(deltaTime);
 }
 
-void Core::Render() {
+void Core::Render() 
+{
+    editor->draw();
+
     window.clear();
     ImGui::SFML::Render(window);
     window.display();

@@ -16,4 +16,5 @@ target_sources(editor PUBLIC ${SRC})
 target_link_libraries(editor PUBLIC
     imgui::imgui
     ImGui-SFML::ImGui-SFML
+    engine
 )

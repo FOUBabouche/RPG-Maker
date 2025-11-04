@@ -7,6 +7,6 @@ void Editor::start(){
 void Editor::update(float dt){
 
 }
-void Editor::draw(sf::RenderTarget& target){
+void Editor::draw(){
 
 }

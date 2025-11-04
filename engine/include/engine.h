@@ -6,7 +6,7 @@
 #include <vector>
 #include <memory>
 
-class Engine : public BaseEngine{
+class Engine : virtual public BaseEngine{
     public:
         Engine() = default;
         ~Engine() = default;
