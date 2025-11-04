@@ -12,9 +12,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 set(SFML_STATIC_LIBRARIES TRUE CACHE BOOL "Use static SFML libraries" FORCE)
 
 add_subdirectory(engine)
-
-find_package(imgui REQUIRED)
-find_package(ImGui-SFML REQUIRED)
+add_subdirectory(editor)
 
 add_executable(${PROJECT_NAME})
 
@@ -31,6 +29,5 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
     engine
-    imgui::imgui
-    ImGui-SFML::ImGui-SFML
+    editor
 )

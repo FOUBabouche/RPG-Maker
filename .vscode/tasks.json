@@ -1,0 +1,17 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Debug 🪲",
+            "type": "shell",
+            "command": "cmake --build out/build --config Debug; ./bin/Debug/RPG-MAKER.exe"
+        },
+        {
+            "label": "Build Release 📦",
+            "type": "shell",
+            "command": "cmake --build out/build --config Release; ./bin/Release/RPG-MAKER.exe"
+        }
+    ]
+}
