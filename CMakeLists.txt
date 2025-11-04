@@ -8,13 +8,13 @@ endif()
 project("RPG-MAKER")
 set(CMAKE_CXX_STANDARD 20)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 set(SFML_STATIC_LIBRARIES TRUE CACHE BOOL "Use static SFML libraries" FORCE)
 
-find_package(SFML 3 COMPONENTS Graphics Window System REQUIRED)
-find_package(imgui REQUIRED)
-
-add_subdirectory(thirdparty)
 add_subdirectory(engine)
+
+find_package(imgui REQUIRED)
+find_package(ImGui-SFML REQUIRED)
 
 add_executable(${PROJECT_NAME})
 
@@ -29,11 +29,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/rpg_maker/include"
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE
+target_link_libraries(${PROJECT_NAME} PUBLIC
     engine
+    imgui::imgui
     ImGui-SFML::ImGui-SFML
-    SFML::System
-    SFML::Window
-    SFML::Graphics
-    opengl32
 )

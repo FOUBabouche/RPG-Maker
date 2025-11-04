@@ -15,7 +15,7 @@ class Engine : public BaseEngine{
         template<typename T>
         T* getObject(std::string name);
     private:
-        std::vector<std::unique_ptr<Object>> objects;
+        std::vector<Object*> objects;
 };
 
 #endif

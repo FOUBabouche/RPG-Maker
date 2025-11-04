@@ -1,6 +1,8 @@
-build/
+out
+out/build/
 build/*/
 build/*.*
 RPG Maker/
 RPG Maker/*/
 x64/
+.vscode/

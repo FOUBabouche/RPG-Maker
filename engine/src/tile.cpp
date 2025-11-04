@@ -1,8 +1,16 @@
 #include <tile.h>
+#include <object.h>
 #include <SFML/Graphics/RectangleShape.hpp>
 
 Tile::Tile(Tile &tile)
 {
+    position = tile.position;
+    size = tile.size;
+    m_textureRef = tile.m_textureRef;
+    m_uv = tile.m_uv;
+}
+
+Tile::Tile(const Tile& tile){
     position = tile.position;
     size = tile.size;
     m_textureRef = tile.m_textureRef;
@@ -39,7 +47,7 @@ void Tile::Update()
 
 }
 
-void Tile::Draw(sf::RenderTarget& target)
+void Tile::draw(sf::RenderTarget& target)
 {
     sf::RectangleShape shape(size);
     shape.setPosition(position);
@@ -50,6 +58,15 @@ void Tile::Draw(sf::RenderTarget& target)
 }
 
 Tile &Tile::operator=(Tile &tile)
+{
+    position = tile.position;
+    size = tile.size;
+    m_textureRef = tile.m_textureRef;
+    m_uv = tile.m_uv;
+    return *this;
+}
+
+Tile &Tile::operator=(const Tile &tile)
 {
     position = tile.position;
     size = tile.size;

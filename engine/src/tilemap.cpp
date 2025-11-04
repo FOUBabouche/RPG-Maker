@@ -1,27 +1,39 @@
 #include <tilemap.h>
 #include <cmath>
 
-sf::Vector2u TileMap::getCoordToGridPos(sf::Vector2f mousePos)
+TileMap::TileMap(TileMap &tm)
 {
-	return sf::Vector2u(std::floor(mousePos.x / .x), std::floor(mousePos.y / m_tileSize.y));
+	position = tm.position;
+    size = tm.size;
+	m_tiles = tm.m_tiles;
+	m_tileSize = tm.m_tileSize;
 }
 
-void TileMap::SetTile(sf::Vector2u gridPosition, Tile &tile)
-{
-    if (gridPosition.x < 0 || gridPosition.y < 0) return;
+TileMap::TileMap(const TileMap& tm){
+	position = tm.position;
+    size = tm.size;
+	m_tiles = tm.m_tiles;
+	m_tileSize = tm.m_tileSize;
+}
 
-	
+sf::Vector2u TileMap::getCoordToGridPos(sf::Vector2f mousePos)
+{
+	return sf::Vector2u(std::floor(mousePos.x /  m_tileSize.x), std::floor(mousePos.y / m_tileSize.y));
+}
+
+void TileMap::setTile(sf::Vector2u gridPosition, Tile &tile)
+{	
 	if (m_tiles.size() <= gridPosition.x) m_tiles.resize(gridPosition.x + 1);
 	if (m_tiles[gridPosition.x].size() <= gridPosition.y) m_tiles[gridPosition.x].resize(gridPosition.y + 1);
 
 	m_tiles[gridPosition.x][gridPosition.y] = tile;
 }
 
-void TileMap::RemoveTile(sf::Vector2u gridPosition)
+void TileMap::removeTile(sf::Vector2u gridPosition)
 {
     if (gridPosition.x >= m_tiles.size() || gridPosition.y >= m_tiles[gridPosition.x].size())return;
 
-	auto& tilePtr = m_tiles[gridPosition.x][gridPosition.y];
+	Tile tilePtr = m_tiles[gridPosition.x][gridPosition.y];
 	if (tilePtr.position == sf::Vector2f(gridPosition.x * tilePtr.size.x, gridPosition.y * tilePtr.size.x)) {
 		tilePtr = (Tile&)Tile();
 		bool empty = true;
@@ -35,9 +47,26 @@ void TileMap::RemoveTile(sf::Vector2u gridPosition)
 	}
 }
 
-void TileMap::Draw(sf::RenderTarget &target)
+void TileMap::draw(sf::RenderTarget &target)
 {
 	for (auto&& x : m_tiles)
 		for(auto&& y : x)
-			y.Draw(target);
+			y.draw(target);
+}
+
+TileMap &TileMap::operator=(TileMap &tm)
+{
+	position = tm.position;
+    size = tm.size;
+	m_tiles = tm.m_tiles;
+	m_tileSize = tm.m_tileSize;
+	return *this;
+}
+
+TileMap& TileMap::operator=(const TileMap& tm){
+	position = tm.position;
+    size = tm.size;
+	m_tiles = tm.m_tiles;
+	m_tileSize = tm.m_tileSize;
+	return *this;
 }

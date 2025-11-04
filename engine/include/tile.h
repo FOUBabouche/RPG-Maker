@@ -9,6 +9,7 @@ class Tile : public Object{
     public:
         Tile() = default;
         Tile(Tile& tile);
+        Tile(const Tile& tile);
         ~Tile() = default;
 
         sf::Texture* getTextureRef(void) const;
@@ -19,9 +20,10 @@ class Tile : public Object{
 
         void Start() override;
         void Update()override;
-        void Draw(sf::RenderTarget& target)override;
+        void draw(sf::RenderTarget& target)override;
     public: // Operators
         Tile& operator=(Tile& tile);
+        Tile& operator=(const Tile& tile);
         bool operator==(Tile& tile);
         bool operator!=(Tile& tile);
     private:
