@@ -9,8 +9,7 @@ void Engine::addObject(Object *object)
     objects.push_back(object);
 }
 
-
-template<typename T>
+template<ObjectChild T>
 T* Engine::getObject(std::string name){
     for (auto obj : this->objects)
         if(obj->name == name)

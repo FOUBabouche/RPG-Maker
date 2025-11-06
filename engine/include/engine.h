@@ -12,7 +12,7 @@ class Engine : virtual public BaseEngine{
         ~Engine() = default;
 
         void addObject(Object* object);
-        template<typename T>
+        template<ObjectChild T>
         T* getObject(std::string name);
     private:
         std::vector<Object*> objects;

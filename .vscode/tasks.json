@@ -10,7 +10,7 @@
                 "id": "breakpoints-view-icon"
             },
             "type": "shell",
-            "command": "cmake --build out/build --config Debug; ./bin/Debug/RPG-MAKER.exe"
+            "command": "cmake --build out/build --config Debug"
         },
         {
             "label": "Build Release",

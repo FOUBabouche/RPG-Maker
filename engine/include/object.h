@@ -4,6 +4,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
+#include <concepts>
 #include <string>
 
 class Object
@@ -32,6 +33,11 @@ class Object
         std::string name;
         sf::Vector2f position;
         sf::Vector2f size;
+};
+
+template<typename T>
+concept ObjectChild = requires(T a){
+    { std::hash<T>{}(a) }->std::derived_from<T, Object>;
 };
 
 

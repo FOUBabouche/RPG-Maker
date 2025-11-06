@@ -10,14 +10,19 @@
 
 class SceneRender : public Element{
     public:
+        SceneRender();
+        SceneRender(const SceneRender& render);
         SceneRender(BaseEngine* engine);
-        ~SceneRender() = default;
+        ~SceneRender();
+
+        void setEngine(BaseEngine* engine);
 
         void update() override;
-        void draw() override;
+    public:
+        SceneRender& operator=(const SceneRender& render);
     private:
-        std::unique_ptr<sf::RenderTexture> m_renderer;
-        BaseEngine* ref_engine;
+        sf::RenderTexture* m_renderer = nullptr;
+        BaseEngine* ref_engine = nullptr;
 };
 
 #endif

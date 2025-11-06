@@ -18,9 +18,12 @@ void Core::Start()
 	window.create(sf::VideoMode({ 800, 600 }), "RPG Maker");
 	ImGui::SFML::Init(window);
 
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
     engine = std::make_unique<RPGEngine>();
     engine->start();
-    editor = std::make_unique<Editor>();
+    editor = std::make_unique<Editor>(engine.get());
     editor->start();
 }
 
@@ -39,6 +42,9 @@ void Core::Update()
     sf::Time time = deltaClock.restart();
     deltaTime = time.asSeconds();
     ImGui::SFML::Update(window, time);
+
+    
+    ImGui::DockSpaceOverViewport(0U, ImGui::GetMainViewport());
 
     engine->update(deltaTime);
     editor->update(deltaTime);
