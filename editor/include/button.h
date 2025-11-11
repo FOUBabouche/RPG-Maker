@@ -10,16 +10,20 @@
 class Button : public Element{
     public:
         Button();
+        Button(std::string _name);
+        Button(std::string _name, sf::Texture* iconRef);
+        Button(const Button& button);
         ~Button() = default;
 
         void setIcon(sf::Texture* texRef, sf::IntRect uv, sf::Vector2f size);
         void setAction(std::function<void()> action);
 
         void update() override;
-    private:
-        unsigned int m_id;
 
-        sf::Texture* m_textureRef;
+    public:
+        Button& operator=(const Button& button);
+    private:
+        sf::Texture* m_textureRef = nullptr;
         sf::IntRect m_iconUV;
 
         std::function<void()> m_action;

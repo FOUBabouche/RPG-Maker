@@ -7,7 +7,6 @@ class Base_Editor{
     public:
         virtual void start() = 0;
         virtual void update(float dt) = 0;
-        virtual void draw() = 0;
 };
 
 #endif

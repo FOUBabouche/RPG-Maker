@@ -7,6 +7,8 @@
 class ToolSelector : public ButtonList, public Element{
     public:
         ToolSelector() = default;
+        ToolSelector(std::string _name);
+        ~ToolSelector() = default;
 
         void update() override;
 };

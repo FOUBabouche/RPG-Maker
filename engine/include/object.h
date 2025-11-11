@@ -18,9 +18,9 @@ class Object
         }
         virtual ~Object() = default;
 
-        virtual void Start() = 0;
-        virtual void Update() = 0;
-        virtual void draw(sf::RenderTarget&) = 0;
+        virtual void start() = 0;
+        virtual void update(float dt) = 0;
+        virtual void draw(sf::RenderTarget& target) = 0;
 
     public:
         Object& operator=(Object& b){

@@ -10,7 +10,7 @@
                 "id": "breakpoints-view-icon"
             },
             "type": "shell",
-            "command": "cmake --build out/build --config Debug"
+            "command": "cmake --build out/build --config Debug",
         },
         {
             "label": "Build Release",
@@ -19,7 +19,7 @@
                 "id": "debug-start"
             },
             "type": "shell",
-            "command": "cmake --build out/build --config Release; ./bin/Release/RPG-MAKER.exe"
+            "command": "cmake --build out/build --config Release; ./bin/Release/RPG-MAKER.exe",
         },
         {
             "label": "Build Cache ",
@@ -27,7 +27,12 @@
                 "id": "multi-diff-editor-label-icon"
             },
             "type": "shell",
-            "command": "if(Test-Path './out') {rm -r './out'}; if(Test-Path './out') {echo 'cant build cache'} else {cmake -G 'Visual Studio 17 2022' -S . -B out/build -DCMAKE_TOOLCHAIN_FILE=\"C:\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake\"}"
+            "command": "if(Test-Path './out') {rm -r './out'}; if(Test-Path './out') {echo 'cant build cache'} else {cmake -G 'Visual Studio 17 2022' -S . -B out/build -DCMAKE_TOOLCHAIN_FILE=\"C:\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake\"}",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }

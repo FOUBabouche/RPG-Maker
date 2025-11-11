@@ -10,6 +10,8 @@ Core::Core(){
         Update();
         Render();
     }
+    delete editor;
+    delete engine;
     ImGui::SFML::Shutdown();
 }
 
@@ -21,9 +23,9 @@ void Core::Start()
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
-    engine = std::make_unique<RPGEngine>();
+    engine = new RPGEngine;
     engine->start();
-    editor = std::make_unique<Editor>(engine.get());
+    editor = new Editor(engine);
     editor->start();
 }
 
@@ -52,8 +54,6 @@ void Core::Update()
 
 void Core::Render() 
 {
-    editor->draw();
-
     window.clear();
     ImGui::SFML::Render(window);
     window.display();

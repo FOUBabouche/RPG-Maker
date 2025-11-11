@@ -11,8 +11,9 @@
 class SceneRender : public Element{
     public:
         SceneRender();
-        SceneRender(const SceneRender& render);
+        SceneRender(std::string _name, BaseEngine* engine);
         SceneRender(BaseEngine* engine);
+        SceneRender(const SceneRender& render);
         ~SceneRender();
 
         void setEngine(BaseEngine* engine);

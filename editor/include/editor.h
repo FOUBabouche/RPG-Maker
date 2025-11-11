@@ -3,16 +3,19 @@
 
 #include <base_editor.h>
 #include <sceneRender.h>
-#include <base_engine.h>
+#include <engine.h>
 #include <element.h>
 
+#include <SFML/Graphics/Texture.hpp>
+
+#include <unordered_map>
 #include <vector>
 
 class Editor : public Base_Editor{
     public:
         Editor();
+        Editor(Engine* engine);
         ~Editor();
-        Editor(BaseEngine* engine);
 
         void addElement(Element* element);
 
@@ -21,11 +24,12 @@ class Editor : public Base_Editor{
 
         void start() override;
         void update(float dt) override;
-        void draw() override;
 
     private:
         std::vector<Element*> m_elements;
-        BaseEngine* m_engineRef;
+        Engine* m_engineRef;
+
+        std::unordered_map<std::string, sf::Texture*> buttonsTextures;
 };
 
 #endif

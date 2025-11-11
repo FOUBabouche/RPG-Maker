@@ -10,14 +10,16 @@ class ButtonList{
         ButtonList() = default;
         ~ButtonList();
 
-        Button* at(size_t index);
+        Button& at(size_t index);
         size_t size(void) const;
 
-        void pushButton(Button* button);        
+        Button& getButton(std::string name) noexcept;
+
+        void pushButton(const Button& button);        
     public:
-        Button* operator [](size_t index);
+        Button& operator [](size_t index);
     protected:
-        std::vector<Button*> m_buttons;
+        std::vector<Button> m_buttons = {};
 };
 
 #endif

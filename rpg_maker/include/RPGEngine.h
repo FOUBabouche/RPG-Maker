@@ -10,7 +10,6 @@ class RPGEngine : public Engine{
 
         void start() override;
         void update(float dt) override;
-        void render(sf::RenderTarget& target) override;
 };
 
 #endif

@@ -21,8 +21,8 @@ private:
 	sf::Clock deltaClock;
 	float deltaTime;
 
-	std::unique_ptr<RPGEngine> engine;
-	std::unique_ptr<Editor> editor;
+	RPGEngine *engine;
+	Editor *editor;
 };
 
 #endif

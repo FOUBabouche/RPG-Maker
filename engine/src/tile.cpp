@@ -2,6 +2,13 @@
 #include <object.h>
 #include <SFML/Graphics/RectangleShape.hpp>
 
+Tile::Tile(sf::Vector2f _position, sf::Vector2f _size)
+{
+    position = _position;
+    size = _size;
+    m_textureRef = nullptr;
+}
+
 Tile::Tile(Tile &tile)
 {
     position = tile.position;
@@ -37,12 +44,12 @@ void Tile::setUV(sf::IntRect &uv)
     m_uv = uv;
 }
 
-void Tile::Start()
+void Tile::start()
 {
     m_textureRef = nullptr;
 }
 
-void Tile::Update()
+void Tile::update(float dt)
 {
 
 }

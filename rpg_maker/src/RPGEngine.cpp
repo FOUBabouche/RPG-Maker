@@ -3,14 +3,12 @@
 
 void RPGEngine::start()
 {
+    for(auto& obj : m_objects)
+        obj->start();
 }
 
 void RPGEngine::update(float dt)
 {
-}
-
-void RPGEngine::render(sf::RenderTarget &target)
-{
-    sf::RectangleShape shape({100, 100});
-    target.draw(shape);
+    for(auto& obj : m_objects)
+        obj->update(dt);
 }

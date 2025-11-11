@@ -12,9 +12,9 @@
             "program": "${workspaceFolder}/bin/Debug/RPG-MAKER.exe",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${fileDirname}",
+            "cwd": "${workspaceFolder}",
             "environment": [],
-            "console": "externalTerminal"
+            "console": "internalConsole"
         }
 
     ]

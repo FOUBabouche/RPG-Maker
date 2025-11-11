@@ -14,8 +14,10 @@ class Engine : virtual public BaseEngine{
         void addObject(Object* object);
         template<ObjectChild T>
         T* getObject(std::string name);
-    private:
-        std::vector<Object*> objects;
+
+        void render(sf::RenderTarget& target) override;
+    protected:
+        std::vector<Object*> m_objects;
 };
 
 #endif
