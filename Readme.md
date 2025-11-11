@@ -1,6 +1,7 @@
-Commande:
-cmake -G "Visual Studio 17 2022" -S . -B build -DCMAKE_TOOLCHAIN_FILE="C:\vcpkg\scripts\buildsystems\vcpkg.cmake" -DCMAKE_BUILD_TYPE=Release
-cmake --build build --config Debug
-
-
-
+# RPG-Maker
+RPG-Maker is a full open-source RPG Editor that work with its own engine,
+It's a school project for Game-Academy build with ImGui and SFML.
+# How it work
+TODO....
+# How can you compile it
+TODO....
