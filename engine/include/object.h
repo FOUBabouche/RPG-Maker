@@ -1,0 +1,44 @@
+#ifndef __OBJECT_H__
+#define __OBJECT_H__
+
+#include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+
+#include <concepts>
+#include <string>
+
+class Object
+{
+    public:
+        Object() = default;
+        Object(Object& b){
+            name = b.name;
+            position = b.position;
+            size = b.size;
+        }
+        virtual ~Object() = default;
+
+        virtual void start() = 0;
+        virtual void update(float dt) = 0;
+        virtual void draw(sf::RenderTarget& target) = 0;
+
+    public:
+        Object& operator=(Object& b){
+            name = b.name;
+            position = b.position;
+            size = b.size;
+            return *this;
+        }
+    public:
+        std::string name;
+        sf::Vector2f position;
+        sf::Vector2f size;
+};
+
+template<typename T>
+concept ObjectChild = requires(T a){
+    { std::hash<T>{}(a) }->std::derived_from<T, Object>;
+};
+
+
+#endif

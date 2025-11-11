@@ -1,0 +1,12 @@
+{
+  "dependencies": [
+    {
+      "name": "imgui",
+      "features": [
+        "docking-experimental"
+      ]
+    },
+    "sfml",
+    "imgui-sfml"
+  ]
+}
