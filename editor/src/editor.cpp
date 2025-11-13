@@ -1,8 +1,16 @@
+// Editor
 #include <editor.h>
 #include <toolSelector.h>
 
+// Engine
 #include <tile.h>
+#include <camera.h>
 
+// External Lib
+#include <imgui.h>
+#include <imconfig-SFML.h>
+
+// STL
 #include <iostream>
 
 Editor::Editor()
@@ -69,6 +77,16 @@ void Editor::start()
 }
 
 void Editor::update(float dt){
+    Camera* camPosition =  m_engineRef->getObject<Camera>("MainCamera");
+    
+
+    if(tool == Tools::Move){
+        if(ImGui::IsMouseClicked(0)){
+
+        }
+    }
+
+    // Boucle Update des Objets
     for(auto element : m_elements)
         element->update();
 }

@@ -35,6 +35,15 @@ SceneRender::~SceneRender()
     delete m_renderer;
 }
 
+sf::Vector2f SceneRender::getMousePositionInScene(Camera& camera)
+{
+    ImVec2 windowMousePos = ImGui::GetMousePos();
+
+    sf::Vector2f renderLocalPos = { windowMousePos.x - m_rendererPosition.x, windowMousePos.y - m_rendererPosition.y };
+
+	return (renderLocalPos + (camera.position - sf::Vector2f(camera.size.x / 2, camera.size.y / 2))) / camera.getZoom();
+}
+
 void SceneRender::setEngine(BaseEngine *engine)
 {
     ref_engine = engine;
@@ -50,6 +59,7 @@ void SceneRender::update()
         ImVec2 region = ImGui::GetContentRegionAvail();
         m_renderer->resize({static_cast<unsigned int>(region.x), static_cast<unsigned int>(region.y)});
         ImGui::Image(m_renderer->getTexture(), {region.x, region.y},  {0, 1}, {1, 0});
+        m_rendererPosition = {ImGui::GetItemRectMin().x, ImGui::GetItemRectMin().y};
 
         ImGui::End();
     }

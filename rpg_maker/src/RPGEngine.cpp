@@ -1,8 +1,15 @@
 #include <RPGEngine.h>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <camera.h>
+
+void RPGEngine::initObjects()
+{
+    addObject(new Camera("MainCamera"));
+}
 
 void RPGEngine::start()
 {
+    initObjects();
     for(auto& obj : m_objects)
         obj->start();
 }

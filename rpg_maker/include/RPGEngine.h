@@ -8,6 +8,8 @@ class RPGEngine : public Engine{
         RPGEngine() =default;
         ~RPGEngine() = default;
 
+        void initObjects();
+
         void start() override;
         void update(float dt) override;
 };

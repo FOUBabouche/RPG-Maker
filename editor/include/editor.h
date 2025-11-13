@@ -11,6 +11,12 @@
 #include <unordered_map>
 #include <vector>
 
+enum Tools{
+    Move,
+    Paint,
+    Erase
+};
+
 class Editor : public Base_Editor{
     public:
         Editor();
@@ -28,6 +34,8 @@ class Editor : public Base_Editor{
     private:
         std::vector<Element*> m_elements;
         Engine* m_engineRef;
+
+        Tools tool = Tools::Move;
 
         std::unordered_map<std::string, sf::Texture*> buttonsTextures;
 };
