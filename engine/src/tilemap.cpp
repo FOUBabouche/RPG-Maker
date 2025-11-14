@@ -1,8 +1,24 @@
 #include <tilemap.h>
 #include <cmath>
 
+TileMap::TileMap(std::string _name)
+{
+	name = _name;
+	position = {0, 0};
+	m_tileSize = {16, 16};
+}
+
+TileMap::TileMap(std::string _name, sf::Vector2u tileSize)
+{
+	name = _name;
+	position = {0, 0};
+	m_tileSize = {16, 16};
+	m_tileSize = tileSize;
+}
+
 TileMap::TileMap(TileMap &tm)
 {
+	name = tm.name;
 	position = tm.position;
     size = tm.size;
 	m_tiles = tm.m_tiles;
@@ -10,10 +26,16 @@ TileMap::TileMap(TileMap &tm)
 }
 
 TileMap::TileMap(const TileMap& tm){
+	name = tm.name;
 	position = tm.position;
     size = tm.size;
 	m_tiles = tm.m_tiles;
 	m_tileSize = tm.m_tileSize;
+}
+
+sf::Vector2u TileMap::getTileSize(void) const
+{
+    return m_tileSize;
 }
 
 sf::Vector2u TileMap::getCoordToGridPos(sf::Vector2f mousePos)
@@ -22,7 +44,7 @@ sf::Vector2u TileMap::getCoordToGridPos(sf::Vector2f mousePos)
 }
 
 void TileMap::setTile(sf::Vector2u gridPosition, Tile &tile)
-{	
+{
 	if (m_tiles.size() <= gridPosition.x) m_tiles.resize(gridPosition.x + 1);
 	if (m_tiles[gridPosition.x].size() <= gridPosition.y) m_tiles[gridPosition.x].resize(gridPosition.y + 1);
 
@@ -56,6 +78,7 @@ void TileMap::draw(sf::RenderTarget &target)
 
 TileMap &TileMap::operator=(TileMap &tm)
 {
+	name = tm.name;
 	position = tm.position;
     size = tm.size;
 	m_tiles = tm.m_tiles;
@@ -64,6 +87,7 @@ TileMap &TileMap::operator=(TileMap &tm)
 }
 
 TileMap& TileMap::operator=(const TileMap& tm){
+	name = tm.name;
 	position = tm.position;
     size = tm.size;
 	m_tiles = tm.m_tiles;

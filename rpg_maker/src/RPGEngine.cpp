@@ -1,10 +1,12 @@
 #include <RPGEngine.h>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <camera.h>
+#include <tilemap.h>
 
 void RPGEngine::initObjects()
 {
     addObject(new Camera("MainCamera"));
+    addObject(new TileMap("TileMap"));
 }
 
 void RPGEngine::start()

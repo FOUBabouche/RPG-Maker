@@ -9,15 +9,21 @@
 class TileMap : public Object{
     public:
         TileMap() = default;
+        TileMap(std::string _name);
+        TileMap(std::string _name, sf::Vector2u tileSize);
         TileMap(TileMap& tm);
         TileMap(const TileMap& tm);
         ~TileMap() = default;
+
+        sf::Vector2u getTileSize(void) const;
 
         sf::Vector2u getCoordToGridPos(sf::Vector2f mousePos);
 
         void setTile(sf::Vector2u gridPosition, Tile& tile);
         void removeTile(sf::Vector2u gridPosition);
 
+        void start() override {};
+        void update(float dt) override {};
         void draw(sf::RenderTarget& target) override;
 
     public:

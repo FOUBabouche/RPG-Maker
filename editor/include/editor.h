@@ -12,6 +12,7 @@
 #include <vector>
 
 enum Tools{
+    Select,
     Move,
     Paint,
     Erase
@@ -35,7 +36,7 @@ class Editor : public Base_Editor{
         std::vector<Element*> m_elements;
         Engine* m_engineRef;
 
-        Tools tool = Tools::Move;
+        Tools m_tool = Tools::Select;
 
         std::unordered_map<std::string, sf::Texture*> buttonsTextures;
 };
