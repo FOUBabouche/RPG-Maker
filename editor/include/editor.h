@@ -33,6 +33,11 @@ class Editor : public Base_Editor{
         void update(float dt) override;
 
     private:
+        void registerTextures();
+        void registerElements();
+        void registerToolButtons();
+
+    private:
         std::vector<Element*> m_elements;
         Engine* m_engineRef;
 

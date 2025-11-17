@@ -17,9 +17,4 @@ class Element{
         sf::Vector2f m_size;
 };
 
-template<class T>
-concept ElementChild = requires(T a){
-    { std::hash<T>{}(a) }->std::derived_from<Element, T>;
-};
-
 #endif

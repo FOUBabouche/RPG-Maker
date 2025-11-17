@@ -21,6 +21,10 @@ Camera::Camera(std::string _name, sf::Vector2f _position)
     m_zoom = 1;
 }
 
+sf::View& Camera::getHandle(void){
+    return m_handle;
+}
+
 void Camera::setZoom(float zoom)
 {
     m_zoom = zoom;

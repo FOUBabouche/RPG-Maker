@@ -19,7 +19,7 @@ class TileMap : public Object{
 
         sf::Vector2u getCoordToGridPos(sf::Vector2f mousePos);
 
-        void setTile(sf::Vector2u gridPosition, Tile& tile);
+        void setTile(sf::Vector2u gridPosition, const Tile& tile);
         void removeTile(sf::Vector2u gridPosition);
 
         void start() override {};

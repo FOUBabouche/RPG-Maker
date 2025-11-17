@@ -13,6 +13,8 @@ class Camera : public Object{
         Camera(std::string name, sf::Vector2f position);
         ~Camera() = default;
 
+        sf::View& getHandle(void);
+
         void setZoom(float zoom);
         float getZoom(void) const;
 

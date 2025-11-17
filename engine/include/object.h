@@ -35,10 +35,4 @@ class Object
         sf::Vector2f size;
 };
 
-template<typename T>
-concept ObjectChild = requires(T a){
-    { std::hash<T>{}(a) }->std::derived_from<T, Object>;
-};
-
-
 #endif
