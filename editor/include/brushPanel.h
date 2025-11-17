@@ -15,12 +15,15 @@ class BrushPanel : public Element{
     public:
         BrushPanel() = default;
         BrushPanel(std::string _name);
-        ~BrushPanel() = default;
+        ~BrushPanel();
+
+        Brush& getBrush(void);
 
         void update() override;
     private:
         Brush brush;
-        TILE_TYPE tileType;
+        TILE_TYPE tileType = TILE_TYPE::NORMAL_TILE;
+        sf::Texture* placeHolder;
 };
 
 #endif

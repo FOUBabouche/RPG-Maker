@@ -9,6 +9,7 @@ class Tile : public Object{
     public:
         Tile() = default;
         Tile(sf::Vector2f position, sf::Vector2f size);
+        Tile(sf::Vector2f position, sf::Vector2f size, sf::IntRect uv, sf::Texture* texture);
         Tile(Tile& tile);
         Tile(const Tile& tile);
         ~Tile() = default;

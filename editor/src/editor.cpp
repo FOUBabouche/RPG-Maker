@@ -58,6 +58,9 @@ void Editor::start()
     getElement<ToolSelector>("Tools")->getButton("PaintButton").setAction([&](){
         m_tool = Tools::Paint;
     });
+    getElement<ToolSelector>("Tools")->getButton("EraseButton").setAction([&](){
+        m_tool = Tools::Erase;
+    });
 }
 
 void Editor::update(float dt){
@@ -68,9 +71,6 @@ void Editor::update(float dt){
     Camera* cam =  m_engineRef->getObject<Camera>("MainCamera");
     // Recupere la position de la souris dans la scene
     sf::Vector2f mousePos = getElement<SceneRender>("Renderer")->getMousePositionInScene(*cam);
-
-    //Boucle du panel de brushs
-    getElement<BrushPanel>("BrushPanel")->update();
 
     // Garde en memoire une variable pour stocké la derniere position de la souris
     static sf::Vector2f lastMousePos; 
@@ -92,12 +92,18 @@ void Editor::update(float dt){
         }
     }
 
-    if(m_tool==Tools::Paint){ // Si on a le mode Paint d'actif
-        if(const auto tileMap = m_engineRef->getObject<TileMap>("TileMap")){ // Recupere la tilemap si elle existe dans la scene
-            if(ImGui::IsMouseClicked(0, true)){ // Si le bouton gauche est appuyer 
+    if(const auto tileMap = m_engineRef->getObject<TileMap>("TileMap")){ // Recupere la tilemap si elle existe dans la scene
+        if(ImGui::IsMouseClicked(0, true)){ // Si le bouton gauche est appuyer 
+            if(m_tool==Tools::Paint){ // Si on a le mode Paint d'actif
                 if(sf::Vector2u gridPos = tileMap->getCoordToGridPos(mousePos); mousePos.x > 0 && mousePos.y > 0) // Prend la position de la souris sur la grid et si ses coordonees sont supperieur a {0, 0}
                     tileMap->setTile(gridPos, Tile(static_cast<sf::Vector2f>(sf::Vector2u(gridPos.x*tileMap->getTileSize().x, gridPos.y*tileMap->getTileSize().y)), // Position de la tile
-                                                   static_cast<sf::Vector2f>(tileMap->getTileSize()))); // Taille de la tile
+                                                    static_cast<sf::Vector2f>(tileMap->getTileSize()), // Taille de la tile
+                                                    getElement<BrushPanel>("BrushPanel")->getBrush().uv, 
+                                                    getElement<BrushPanel>("BrushPanel")->getBrush().texture));
+            } 
+            if(m_tool==Tools::Erase){
+                if(sf::Vector2u gridPos = tileMap->getCoordToGridPos(mousePos); mousePos.x > 0 && mousePos.y > 0) // Prend la position de la souris sur la grid et si ses coordonees sont supperieur a {0, 0}
+                    tileMap->removeTile(gridPos);
             }
         }
     }
