@@ -2,6 +2,7 @@
 #include <editor.h>
 #include <toolSelector.h>
 #include <brushPanel.h>
+#include <tileSelector.h>
 
 // Engine
 #include <tilemap.h>
@@ -24,6 +25,8 @@ Editor::~Editor()
     for(auto element : m_elements)
         delete element;
     m_elements.clear();
+
+    delete placeHolder;
 }
 
 Editor::Editor(Engine *engine)
@@ -50,6 +53,8 @@ void Editor::start()
     registerElements(); // Enregistre les elements de l'editor
     registerToolButtons(); // Enregistre les different boutons du ToolSelector
 
+    getElement<BrushPanel>("BrushPanel")->getBrush().texture = placeHolder;     
+
     // Action des boutons
     getElement<ToolSelector>("Tools")->getButton("MoveButton").setAction([&](){
         m_tool = Tools::Move;
@@ -71,6 +76,7 @@ void Editor::update(float dt){
     Camera* cam =  m_engineRef->getObject<Camera>("MainCamera");
     // Recupere la position de la souris dans la scene
     sf::Vector2f mousePos = getElement<SceneRender>("Renderer")->getMousePositionInScene(*cam);
+    getElement<TileSelector>("TileSelector")->setBrush(&getElement<BrushPanel>("BrushPanel")->getBrush());
 
     // Garde en memoire une variable pour stocké la derniere position de la souris
     static sf::Vector2f lastMousePos; 
@@ -86,9 +92,11 @@ void Editor::update(float dt){
 
         // Zoom | Dezoom de la camera
         if(const float wheelDelta = io.MouseWheel; wheelDelta > 0){ // Si la roue de la souris bouge vers le haut
-            cam->setZoom(cam->getZoom() - 0.1f); // Zoom
+            if(cam->getZoom() - 0.1f > 0) // Si on est au dessus de 0
+                cam->setZoom(cam->getZoom() - 0.1f); // Zoom
         }else if(wheelDelta < 0){ // Si la roue de la souris bouge vers le bas
-            cam->setZoom(cam->getZoom() + 0.1f); // Dezoom 
+            if(cam->getZoom() + 0.1f < 2) // Si on est en dessous de 2
+                cam->setZoom(cam->getZoom() + 0.1f); // Dezoom 
         }
     }
 
@@ -116,6 +124,9 @@ void Editor::update(float dt){
 void Editor::registerTextures()
 {
     const std::string editorButtonsTexturesPath = "ressources/editor/buttons/"; // Chemin vers les fichier des textures des bouttons
+    const std::string editorTexturesPath = "ressources/editor/textures/"; // Chemin vers les fichier des textures des bouttons
+
+    placeHolder = new sf::Texture(editorTexturesPath+"placeHolder.png");
 
     // Texture des boutons
     buttonsTextures["ImportButton"] = new sf::Texture(editorButtonsTexturesPath+"ImportButton.png");
@@ -131,6 +142,7 @@ void Editor::registerElements()
     addElement(new SceneRender("Renderer", m_engineRef));
     addElement(new ToolSelector("Tools"));
     addElement(new BrushPanel("BrushPanel"));
+    addElement(new TileSelector("TileSelector"));
 }
 
 void Editor::registerToolButtons()

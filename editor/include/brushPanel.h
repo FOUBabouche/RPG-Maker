@@ -23,7 +23,6 @@ class BrushPanel : public Element{
     private:
         Brush brush;
         TILE_TYPE tileType = TILE_TYPE::NORMAL_TILE;
-        sf::Texture* placeHolder;
 };
 
 #endif

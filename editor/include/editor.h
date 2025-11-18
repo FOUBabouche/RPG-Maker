@@ -44,6 +44,7 @@ class Editor : public Base_Editor{
         Tools m_tool = Tools::Select;
 
         std::unordered_map<std::string, sf::Texture*> buttonsTextures;
+        sf::Texture* placeHolder;
 };
 
 #endif

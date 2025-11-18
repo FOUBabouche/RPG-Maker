@@ -38,15 +38,13 @@ std::string EnumToString(E value) {
 BrushPanel::BrushPanel(std::string _name)
 {
     name = _name;
-    placeHolder = new sf::Texture("ressources/editor/textures/placeHolder.png");
-    brush.texture = placeHolder;
     brush.color = sf::Color::White;
     brush.uv = {{0, 0}, {64, 64}};
 }
 
 BrushPanel::~BrushPanel()
 {
-    delete placeHolder;
+
 }
 
 Brush &BrushPanel::getBrush(void)
