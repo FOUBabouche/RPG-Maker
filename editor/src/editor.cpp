@@ -15,11 +15,6 @@
 // STL
 #include <iostream>
 
-Editor::Editor()
-{
-    
-}
-
 Editor::~Editor()
 {
     for(auto element : m_elements)

@@ -20,7 +20,7 @@ enum Tools{
 
 class Editor : public Base_Editor{
     public:
-        Editor();
+        Editor() = default;
         Editor(Engine* engine);
         ~Editor();
 
