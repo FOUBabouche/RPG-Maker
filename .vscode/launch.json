@@ -12,7 +12,7 @@
             "program": "${workspaceFolder}/bin/Debug/RPG-MAKER.exe",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/bin/Debug",
             "environment": [],
             "console": "internalConsole"
         }

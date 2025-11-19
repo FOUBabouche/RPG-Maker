@@ -12,8 +12,14 @@ class Engine : virtual public BaseEngine{
         ~Engine() = default;
 
         void addObject(Object* object);
-        template<ObjectChild T>
-        T* getObject(std::string name);
+        template<typename T>
+        T* getObject(std::string name)
+        {
+            for (auto obj : m_objects)
+                if (obj->name == name)
+                    return static_cast<T*>(obj);
+            return nullptr;
+        }
 
         void render(sf::RenderTarget& target) override;
     protected:

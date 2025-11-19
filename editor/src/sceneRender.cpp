@@ -25,7 +25,6 @@ SceneRender::SceneRender(BaseEngine *engine)
 
 SceneRender::SceneRender(const SceneRender &render)
 {
-    std::cout << render.m_renderer << std::endl;
     m_renderer = render.m_renderer;
     ref_engine = render.ref_engine;
 }
@@ -33,6 +32,25 @@ SceneRender::SceneRender(const SceneRender &render)
 SceneRender::~SceneRender()
 {
     delete m_renderer;
+}
+
+sf::Vector2f SceneRender::getMousePositionInScene(Camera& camera)
+{
+    ImVec2 mouseImGui = ImGui::GetMousePos();
+    sf::Vector2f local = { mouseImGui.x - m_rendererPosition.x, mouseImGui.y - m_rendererPosition.y };
+
+    sf::Vector2f rendererPx = static_cast<sf::Vector2f>(m_renderer->getSize());
+
+    // calculer la taille du view en unités monde (après zoom)
+    sf::Vector2f viewSizeWorld = camera.size * camera.getZoom(); // opérateur * scalaire à implémenter si besoin
+
+    sf::Vector2f normalized = { local.x / rendererPx.x, local.y / rendererPx.y };
+
+    sf::Vector2f camTopLeft = camera.position - 0.5f * viewSizeWorld;
+
+    sf::Vector2f mouseWorld = camTopLeft + sf::Vector2f(normalized.x * viewSizeWorld.x, normalized.y * viewSizeWorld.y);
+
+    return mouseWorld;
 }
 
 void SceneRender::setEngine(BaseEngine *engine)
@@ -50,6 +68,7 @@ void SceneRender::update()
         ImVec2 region = ImGui::GetContentRegionAvail();
         m_renderer->resize({static_cast<unsigned int>(region.x), static_cast<unsigned int>(region.y)});
         ImGui::Image(m_renderer->getTexture(), {region.x, region.y},  {0, 1}, {1, 0});
+        m_rendererPosition = {ImGui::GetItemRectMin().x, ImGui::GetItemRectMin().y};
 
         ImGui::End();
     }

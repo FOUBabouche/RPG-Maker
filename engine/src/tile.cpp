@@ -9,6 +9,14 @@ Tile::Tile(sf::Vector2f _position, sf::Vector2f _size)
     m_textureRef = nullptr;
 }
 
+Tile::Tile(sf::Vector2f _position, sf::Vector2f _size, sf::IntRect uv, sf::Texture *texture)
+{
+    position = _position;
+    size = _size;
+    m_textureRef = texture;
+    m_uv = uv;
+}
+
 Tile::Tile(Tile &tile)
 {
     position = tile.position;

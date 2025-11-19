@@ -11,9 +11,16 @@
 #include <unordered_map>
 #include <vector>
 
+enum Tools{
+    Select,
+    Move,
+    Paint,
+    Erase
+};
+
 class Editor : public Base_Editor{
     public:
-        Editor();
+        Editor() = default;
         Editor(Engine* engine);
         ~Editor();
 
@@ -26,10 +33,18 @@ class Editor : public Base_Editor{
         void update(float dt) override;
 
     private:
+        void registerTextures();
+        void registerElements();
+        void registerToolButtons();
+
+    private:
         std::vector<Element*> m_elements;
         Engine* m_engineRef;
 
+        Tools m_tool = Tools::Select;
+
         std::unordered_map<std::string, sf::Texture*> buttonsTextures;
+        sf::Texture* placeHolder;
 };
 
 #endif
