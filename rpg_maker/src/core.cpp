@@ -39,6 +39,7 @@ void SetCustomImGuiTheme()
     colors[ImGuiCol_TabActive]        = ImVec4(0.40f, 0.43f, 0.48f, 1.0f);
     colors[ImGuiCol_TabUnfocused]     = ImVec4(0.20f, 0.22f, 0.25f, 1.0f);
     colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.28f, 0.30f, 0.34f, 1.0f);
+    colors[ImGuiCol_TabDimmedSelectedOverline] = ImVec4(0.35f, 0.38f, 0.42f, 1.0f);
 }
 
 Core::Core(){

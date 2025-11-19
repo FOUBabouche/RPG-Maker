@@ -3,6 +3,7 @@
 
 #include <element.h>
 #include <brush.h>
+#include <fileContener.hpp>
 
 #include <SFML/Graphics/Texture.hpp>
 
@@ -17,7 +18,8 @@ class TileSelector : public Element{
         void update() override;
     private:
         Brush* m_brushRef;
-
+        FileContener textureContener;
+        std::filesystem::path curentTexturePath;
 };
 
 #endif

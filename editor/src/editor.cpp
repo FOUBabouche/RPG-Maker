@@ -48,7 +48,7 @@ void Editor::start()
     registerElements(); // Enregistre les elements de l'editor
     registerToolButtons(); // Enregistre les different boutons du ToolSelector
 
-    getElement<BrushPanel>("BrushPanel")->getBrush().texture = placeHolder;     
+    getElement<BrushPanel>("BrushPanel")->getBrush().texture = placeHolder; // Donne la texture placeHolder a la brush
 
     // Action des boutons
     getElement<ToolSelector>("Tools")->getButton("MoveButton").setAction([&](){
