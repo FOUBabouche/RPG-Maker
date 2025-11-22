@@ -14,7 +14,15 @@ Tile::Tile(sf::Vector2f _position, sf::Vector2f _size, sf::IntRect uv, sf::Textu
     position = _position;
     size = _size;
     m_textureRef = texture;
-    m_uv = uv;
+    m_uvs.push_back(uv);
+}
+
+Tile::Tile(sf::Vector2f _position, sf::Vector2f _size, std::vector<sf::IntRect> uv, sf::Texture *texture)
+{
+    position = _position;
+    size = _size;
+    m_textureRef = texture;
+    m_uvs = uv;
 }
 
 Tile::Tile(Tile &tile)
@@ -22,14 +30,14 @@ Tile::Tile(Tile &tile)
     position = tile.position;
     size = tile.size;
     m_textureRef = tile.m_textureRef;
-    m_uv = tile.m_uv;
+    m_uvs = tile.m_uvs;
 }
 
 Tile::Tile(const Tile& tile){
     position = tile.position;
     size = tile.size;
     m_textureRef = tile.m_textureRef;
-    m_uv = tile.m_uv;
+    m_uvs = tile.m_uvs;
 }
 
 sf::Texture *Tile::getTextureRef(void) const
@@ -39,7 +47,12 @@ sf::Texture *Tile::getTextureRef(void) const
 
 sf::IntRect Tile::getUV(void) const
 {
-    return m_uv;
+    return m_uvs[currentUVIndex];
+}
+
+std::vector<sf::IntRect> Tile::getUVs(void) const
+{
+    return m_uvs;
 }
 
 void Tile::setTextureRef(sf::Texture *ref)
@@ -47,9 +60,9 @@ void Tile::setTextureRef(sf::Texture *ref)
     m_textureRef = ref;
 }
 
-void Tile::setUV(sf::IntRect &uv)
+void Tile::setUV(std::vector<sf::IntRect> &uv)
 {
-    m_uv = uv;
+    m_uvs = uv;
 }
 
 void Tile::start()
@@ -59,7 +72,15 @@ void Tile::start()
 
 void Tile::update(float dt)
 {
-
+    if(totalTime >= 1 * animationSpeed){
+        currentUVIndex++;
+        if(currentUVIndex == m_uvs.size()){
+            currentUVIndex = 0;
+        }
+        totalTime = 0;
+    }else{ 
+        totalTime += dt;
+    }
 }
 
 void Tile::draw(sf::RenderTarget& target)
@@ -67,7 +88,8 @@ void Tile::draw(sf::RenderTarget& target)
     sf::RectangleShape shape(size);
     shape.setPosition(position);
     shape.setTexture(m_textureRef);
-    shape.setTextureRect(m_uv);
+    if(m_uvs.size()>0)
+        shape.setTextureRect(m_uvs[currentUVIndex]);
 
     target.draw(shape);
 }
@@ -77,7 +99,7 @@ Tile &Tile::operator=(Tile &tile)
     position = tile.position;
     size = tile.size;
     m_textureRef = tile.m_textureRef;
-    m_uv = tile.m_uv;
+    m_uvs = tile.m_uvs;
     return *this;
 }
 
@@ -86,7 +108,7 @@ Tile &Tile::operator=(const Tile &tile)
     position = tile.position;
     size = tile.size;
     m_textureRef = tile.m_textureRef;
-    m_uv = tile.m_uv;
+    m_uvs = tile.m_uvs;
     return *this;
 }
 
@@ -96,7 +118,7 @@ bool Tile::operator==(Tile &tile)
         position == tile.position &&
         size == tile.size &&
         m_textureRef == tile.m_textureRef &&
-        m_uv == tile.m_uv
+        m_uvs == tile.m_uvs
     );
 }
 
@@ -106,6 +128,6 @@ bool Tile::operator!=(Tile &tile)
         position != tile.position &&
         size != tile.size &&
         m_textureRef != tile.m_textureRef &&
-        m_uv != tile.m_uv
+        m_uvs != tile.m_uvs
     );
 }

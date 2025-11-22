@@ -7,10 +7,10 @@
 class ToolSelector : public ButtonList, public Element{
     public:
         ToolSelector() = default;
-        ToolSelector(std::string _name);
+        ToolSelector(std::string _name, Base_Editor* editor);
         ~ToolSelector() = default;
 
-        void update() override;
+        void update(float dt) override;
 };
 
 #endif

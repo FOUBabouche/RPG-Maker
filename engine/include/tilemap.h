@@ -23,7 +23,7 @@ class TileMap : public Object{
         void removeTile(sf::Vector2u gridPosition);
 
         void start() override {};
-        void update(float dt) override {};
+        void update(float dt) override;
         void draw(sf::RenderTarget& target) override;
 
     public:

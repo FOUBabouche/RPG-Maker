@@ -69,6 +69,13 @@ void TileMap::removeTile(sf::Vector2u gridPosition)
 	}
 }
 
+void TileMap::update(float dt)
+{
+	for (auto&& x : m_tiles)
+		for(auto&& y : x)
+			y.update(dt);
+}
+
 void TileMap::draw(sf::RenderTarget &target)
 {
 	for (auto&& x : m_tiles)

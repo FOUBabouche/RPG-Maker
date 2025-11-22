@@ -1,8 +1,9 @@
 // Editor
 #include <editor.h>
-#include <toolSelector.h>
-#include <brushPanel.h>
-#include <tileSelector.h>
+#include <elements/toolSelector.h>
+#include <elements/brushPanel.h>
+#include <elements/tileSelector.h>
+#include <elements/animationPanel.h>
 
 // Engine
 #include <tilemap.h>
@@ -32,14 +33,6 @@ Editor::Editor(Engine *engine)
 void Editor::addElement(Element *element)
 {
     m_elements.push_back(element);
-}
-
-template <typename T>
-T *Editor::getElement(std::string name)
-{
-    for(auto obj : m_elements) 
-        if (obj->name == name) return static_cast<T*>(obj);
-    return nullptr;
 }
 
 void Editor::start()
@@ -98,11 +91,19 @@ void Editor::update(float dt){
     if(const auto tileMap = m_engineRef->getObject<TileMap>("TileMap")){ // Recupere la tilemap si elle existe dans la scene
         if(ImGui::IsMouseClicked(0, true)){ // Si le bouton gauche est appuyer 
             if(m_tool==Tools::Paint){ // Si on a le mode Paint d'actif
-                if(sf::Vector2u gridPos = tileMap->getCoordToGridPos(mousePos); mousePos.x > 0 && mousePos.y > 0) // Prend la position de la souris sur la grid et si ses coordonees sont supperieur a {0, 0}
-                    tileMap->setTile(gridPos, Tile(static_cast<sf::Vector2f>(sf::Vector2u(gridPos.x*tileMap->getTileSize().x, gridPos.y*tileMap->getTileSize().y)), // Position de la tile
+                if(sf::Vector2u gridPos = tileMap->getCoordToGridPos(mousePos); mousePos.x > 0 && mousePos.y > 0){ // Prend la position de la souris sur la grid et si ses coordonees sont supperieur a {0, 0}
+                    if(getElement<BrushPanel>("BrushPanel")->getTileType() == TILE_TYPE::NORMAL_TILE){
+                        tileMap->setTile(gridPos, Tile(static_cast<sf::Vector2f>(sf::Vector2u(gridPos.x*tileMap->getTileSize().x, gridPos.y*tileMap->getTileSize().y)), // Position de la tile
                                                     static_cast<sf::Vector2f>(tileMap->getTileSize()), // Taille de la tile
                                                     getElement<BrushPanel>("BrushPanel")->getBrush().uv, 
                                                     getElement<BrushPanel>("BrushPanel")->getBrush().texture));
+                    }else if(getElement<BrushPanel>("BrushPanel")->getTileType() == TILE_TYPE::ANIMATED_TILE){
+                        tileMap->setTile(gridPos, Tile(static_cast<sf::Vector2f>(sf::Vector2u(gridPos.x*tileMap->getTileSize().x, gridPos.y*tileMap->getTileSize().y)), // Position de la tile
+                                                    static_cast<sf::Vector2f>(tileMap->getTileSize()), // Taille de la tile
+                                                    getElement<BrushPanel>("BrushPanel")->currentAnimatedTile().getUVs(), 
+                                                    getElement<BrushPanel>("BrushPanel")->currentAnimatedTile().getTextureRef()));
+                    }
+                }
             } 
             if(m_tool==Tools::Erase){
                 if(sf::Vector2u gridPos = tileMap->getCoordToGridPos(mousePos); mousePos.x > 0 && mousePos.y > 0) // Prend la position de la souris sur la grid et si ses coordonees sont supperieur a {0, 0}
@@ -113,7 +114,7 @@ void Editor::update(float dt){
 
     // Boucle Update des Objets
     for(auto element : m_elements)
-        element->update();
+        element->update(dt);
 }
 
 void Editor::registerTextures()
@@ -134,10 +135,11 @@ void Editor::registerTextures()
 void Editor::registerElements()
 {
     // Ajout des element dans l'editor
-    addElement(new SceneRender("Renderer", m_engineRef));
-    addElement(new ToolSelector("Tools"));
-    addElement(new BrushPanel("BrushPanel"));
-    addElement(new TileSelector("TileSelector"));
+    addElement(new SceneRender("Renderer", m_engineRef, this));
+    addElement(new ToolSelector("Tools", this));
+    addElement(new BrushPanel("BrushPanel", this));
+    addElement(new TileSelector("TileSelector", this));
+    addElement(new AnimationPanel("AnimationPanel", this));
 }
 
 void Editor::registerToolButtons()

@@ -2,7 +2,7 @@
 #define __EDITOR_H__
 
 #include <base_editor.h>
-#include <sceneRender.h>
+#include <elements/sceneRender.h>
 #include <engine.h>
 #include <element.h>
 
@@ -27,7 +27,12 @@ class Editor : public Base_Editor{
         void addElement(Element* element);
 
         template<typename T>
-        T* getElement(std::string name);
+        T* getElement(std::string name)
+        {
+            for(auto obj : m_elements) 
+                if (obj->name == name) return static_cast<T*>(obj);
+            return nullptr;
+        }
 
         void start() override;
         void update(float dt) override;

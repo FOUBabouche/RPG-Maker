@@ -1,18 +1,21 @@
-#include <tileSelector.h>
+#include <elements/tileSelector.h>
 #include <folderDialog.h>
+#include <elements/animationPanel.h>
+#include <editor.h>
 
 #include <imgui.h>
 #include <imgui-SFML.h>
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/OpenGL.hpp>
 
 #include <cmath>
 #include <string>
 
-TileSelector::TileSelector(std::string _name)
+TileSelector::TileSelector(std::string _name, Base_Editor* editor)
 {
     name = _name;
+    m_editor = editor;
     textureContener.init("Project\\assets\\Textures");
-    textureContener.show();
     if(textureContener.getContentPaths().size())
         curentTexturePath = textureContener.getContentPaths()[0].filename();
     else
@@ -23,7 +26,7 @@ void TileSelector::setBrush(Brush* brush){
     m_brushRef = brush;
 }
 
-void TileSelector::update()
+void TileSelector::update(float dt)
 {
     const int tileCountX = static_cast<int>(std::floor(static_cast<int>(m_brushRef->texture->getSize().x) / m_brushRef->uv.size.x));
     const int tileCountY = static_cast<int>(std::floor(static_cast<int>(m_brushRef->texture->getSize().y) / m_brushRef->uv.size.y));
@@ -58,12 +61,25 @@ void TileSelector::update()
                 if(ImGui::ImageButton(std::string("tile" + std::to_string(y)+ " "+std::to_string(x)).c_str(),sprite, tileSize)){
                     m_brushRef->uv.position = {y * m_brushRef->uv.size.y, x * m_brushRef->uv.size.x};
                 }
+                if(ImGui::BeginDragDropSource()){
+                    GLuint glID = m_brushRef->texture->getNativeHandle();
+                    ImGui::SetDragDropPayload("Tile", &glID, sizeof(GLuint));
+                    ImGui::Image(sprite, {64,64});
+                    ImGui::Text("Drop it");
+                    ImGui::EndDragDropSource();
+
+                    if(auto animator = static_cast<Editor*>(m_editor)->getElement<AnimationPanel>("AnimationPanel")){
+                        animator->setCurrentUVDragged({{y * m_brushRef->uv.size.y, x * m_brushRef->uv.size.x}, m_brushRef->uv.size});
+                    }
+                }
+                
                 ImGui::SameLine();
                 ImGui::PopStyleColor(3);
                 ImGui::PopStyleVar();
             }
             ImGui::NewLine();
         }
+        
 
         ImGui::End();
     }

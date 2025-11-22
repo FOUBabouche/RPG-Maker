@@ -1,4 +1,4 @@
-#include <sceneRender.h>
+#include <elements/sceneRender.h>
 #include <imgui.h>
 #include <imgui-SFML.h>
 #include <imgui_sfml_fix.h>
@@ -9,17 +9,19 @@ SceneRender::SceneRender()
     m_renderer = new sf::RenderTexture;
 }
 
-SceneRender::SceneRender(std::string _name, BaseEngine *engine)
+SceneRender::SceneRender(std::string _name, BaseEngine *engine, Base_Editor* editor)
 {
     name = _name;
+    m_editor = editor;
     ref_engine = engine;
     m_renderer = new sf::RenderTexture;
 }
 
 
-SceneRender::SceneRender(BaseEngine *engine)
+SceneRender::SceneRender(BaseEngine *engine, Base_Editor* editor)
 {
     ref_engine = engine;
+    m_editor = editor;
     m_renderer = new sf::RenderTexture;
 }
 
@@ -58,7 +60,7 @@ void SceneRender::setEngine(BaseEngine *engine)
     ref_engine = engine;
 }
 
-void SceneRender::update()
+void SceneRender::update(float dt)
 {
     m_renderer->clear(sf::Color::Black);
     ref_engine->render(*m_renderer);

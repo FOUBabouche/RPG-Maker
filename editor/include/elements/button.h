@@ -18,7 +18,7 @@ class Button : public Element{
         void setIcon(sf::Texture* texRef, sf::IntRect uv, sf::Vector2f size);
         void setAction(std::function<void()> action);
 
-        void update() override;
+        void update(float dt) override;
 
     public:
         Button& operator=(const Button& button);

@@ -1,4 +1,4 @@
-#include <brushPanel.h>
+#include <elements/brushPanel.h>
 
 #include <imgui.h>
 #include <imgui-SFML.h>
@@ -35,9 +35,10 @@ std::string EnumToString(E value) {
     return result.empty() ? "Unknown" : result;
 }
 
-BrushPanel::BrushPanel(std::string _name)
+BrushPanel::BrushPanel(std::string _name, Base_Editor* editor)
 {
     name = _name;
+    m_editor = editor;
     brush.color = sf::Color::White;
     brush.uv = {{0, 0}, {64, 64}};
 }
@@ -52,7 +53,23 @@ Brush &BrushPanel::getBrush(void)
     return brush;
 }
 
-void BrushPanel::update()
+Tile &BrushPanel::currentAnimatedTile(void)
+{
+    return currentAnimatedTileSelected;
+}
+
+    
+TILE_TYPE BrushPanel::getTileType(void) const
+{
+    return tileType;
+}
+
+void BrushPanel::addAnimatedTile(const Tile& tile)
+{
+    animatedTiles.push_back(tile);
+}
+
+void BrushPanel::update(float dt)
 {
     if(ImGui::Begin("Brush")){
         ImGui::SeparatorText("Properties");
@@ -76,10 +93,23 @@ void BrushPanel::update()
             brush.uv.size = {uvSize[0], uvSize[1]};
         }
 
-        ImGui::SeparatorText("Preview");
-        sf::Sprite sprite(*brush.texture);
-        sprite.setTextureRect(brush.uv);
-        ImGui::Image(sprite, {ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().x}, brush.color);
+        if(tileType == TILE_TYPE::NORMAL_TILE){
+            ImGui::SeparatorText("Preview");
+            sf::Sprite sprite(*brush.texture);
+            sprite.setTextureRect(brush.uv);
+            ImGui::Image(sprite, {ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().x}, brush.color);
+        }
+        if(tileType == TILE_TYPE::ANIMATED_TILE){
+            ImGui::SeparatorText("Animated Tiles");
+            for(auto animatedTile : animatedTiles){
+                animatedTile.update(dt);
+                sf::Sprite sprite(*animatedTile.getTextureRef());
+                sprite.setTextureRect(animatedTile.getUV());
+                if(ImGui::ImageButton(std::to_string(reinterpret_cast<unsigned long long>(&animatedTile)).c_str(),sprite, {32, 32})){
+                    currentAnimatedTileSelected = animatedTile;
+                }
+            }
+        }
 
         ImGui::End();
     }

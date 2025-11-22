@@ -14,8 +14,8 @@
 class SceneRender : public Element{
     public:
         SceneRender();
-        SceneRender(std::string _name, BaseEngine* engine);
-        SceneRender(BaseEngine* engine);
+        SceneRender(std::string _name, BaseEngine* engine, Base_Editor* editor);
+        SceneRender(BaseEngine* engine, Base_Editor* editor);
         SceneRender(const SceneRender& render);
         ~SceneRender();
 
@@ -23,7 +23,7 @@ class SceneRender : public Element{
 
         void setEngine(BaseEngine* engine);
 
-        void update() override;
+        void update(float dt) override;
     public:
         SceneRender& operator=(const SceneRender& render);
     private:
