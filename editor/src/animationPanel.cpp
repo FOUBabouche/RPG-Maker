@@ -32,6 +32,7 @@ void AnimationPanel::update(float dt)
                 }
             }
         }
+        ImGui::SameLine();
         if(ImGui::Button(isPlaying ? "Stop" : "Play")){
             isPlaying =! isPlaying;
         }

@@ -11,13 +11,20 @@ void RPGEngine::initObjects()
 
 void RPGEngine::start()
 {
+    layers.addLayer("Layer 1");
+    currentLayerName = "Layer 1";
+
     initObjects();
-    for(auto& obj : m_objects)
-        obj->start();
+    for(auto &layer : layers.getHandle()){
+        for(auto& obj : layer.second)
+            obj->start();
+    }
 }
 
 void RPGEngine::update(float dt)
 {
-    for(auto& obj : m_objects)
-        obj->update(dt);
+    for(auto &layer : layers.getHandle()){
+        for(auto& obj : layer.second)
+            obj->update(dt);
+    }
 }

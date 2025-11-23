@@ -34,6 +34,8 @@ class Editor : public Base_Editor{
             return nullptr;
         }
 
+        Engine* getEngine(void) const;
+
         void start() override;
         void update(float dt) override;
 

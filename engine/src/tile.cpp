@@ -4,6 +4,7 @@
 
 Tile::Tile(sf::Vector2f _position, sf::Vector2f _size)
 {
+    currentUVIndex = 0;
     position = _position;
     size = _size;
     m_textureRef = nullptr;
@@ -11,6 +12,7 @@ Tile::Tile(sf::Vector2f _position, sf::Vector2f _size)
 
 Tile::Tile(sf::Vector2f _position, sf::Vector2f _size, sf::IntRect uv, sf::Texture *texture)
 {
+    currentUVIndex = 0;
     position = _position;
     size = _size;
     m_textureRef = texture;
@@ -19,6 +21,7 @@ Tile::Tile(sf::Vector2f _position, sf::Vector2f _size, sf::IntRect uv, sf::Textu
 
 Tile::Tile(sf::Vector2f _position, sf::Vector2f _size, std::vector<sf::IntRect> uv, sf::Texture *texture)
 {
+    currentUVIndex = 0;
     position = _position;
     size = _size;
     m_textureRef = texture;
@@ -27,6 +30,7 @@ Tile::Tile(sf::Vector2f _position, sf::Vector2f _size, std::vector<sf::IntRect> 
 
 Tile::Tile(Tile &tile)
 {
+    currentUVIndex = 0;
     position = tile.position;
     size = tile.size;
     m_textureRef = tile.m_textureRef;
@@ -34,6 +38,7 @@ Tile::Tile(Tile &tile)
 }
 
 Tile::Tile(const Tile& tile){
+    currentUVIndex = 0;
     position = tile.position;
     size = tile.size;
     m_textureRef = tile.m_textureRef;
@@ -72,14 +77,16 @@ void Tile::start()
 
 void Tile::update(float dt)
 {
-    if(totalTime >= 1 * animationSpeed){
-        currentUVIndex++;
-        if(currentUVIndex == m_uvs.size()){
-            currentUVIndex = 0;
+    if(m_uvs.size()>0){
+        if(totalTime >= 1 * animationSpeed){
+            currentUVIndex++;
+            if(currentUVIndex == m_uvs.size()){
+                currentUVIndex = 0;
+            }
+            totalTime = 0;
+        }else{ 
+            totalTime += dt;
         }
-        totalTime = 0;
-    }else{ 
-        totalTime += dt;
     }
 }
 
@@ -96,6 +103,7 @@ void Tile::draw(sf::RenderTarget& target)
 
 Tile &Tile::operator=(Tile &tile)
 {
+    currentUVIndex = 0;
     position = tile.position;
     size = tile.size;
     m_textureRef = tile.m_textureRef;
@@ -105,6 +113,7 @@ Tile &Tile::operator=(Tile &tile)
 
 Tile &Tile::operator=(const Tile &tile)
 {
+    currentUVIndex = 0;
     position = tile.position;
     size = tile.size;
     m_textureRef = tile.m_textureRef;

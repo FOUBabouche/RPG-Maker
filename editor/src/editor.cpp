@@ -35,6 +35,11 @@ void Editor::addElement(Element *element)
     m_elements.push_back(element);
 }
 
+Engine *Editor::getEngine(void) const
+{
+    return m_engineRef;
+}
+
 void Editor::start()
 {
     registerTextures(); // Enregistre les texture qui vont faire partie de l'editeur
@@ -61,7 +66,7 @@ void Editor::update(float dt){
     ImGuiIO& io = ImGui::GetIO();
 
     // Recupere l'objet MainCamera present dans la scene
-    Camera* cam =  m_engineRef->getObject<Camera>("MainCamera");
+    Camera* cam =  m_engineRef->getLayers().getObjectFromLayer<Camera>("Layer 1", "MainCamera");
     // Recupere la position de la souris dans la scene
     sf::Vector2f mousePos = getElement<SceneRender>("Renderer")->getMousePositionInScene(*cam);
     getElement<TileSelector>("TileSelector")->setBrush(&getElement<BrushPanel>("BrushPanel")->getBrush());

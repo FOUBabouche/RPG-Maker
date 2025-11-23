@@ -2,6 +2,7 @@
 #define __ENGINE_H__
 
 #include <object.h>
+#include <layers.h>
 #include <base_engine.h>
 #include <vector>
 #include <memory>
@@ -15,15 +16,19 @@ class Engine : virtual public BaseEngine{
         template<typename T>
         T* getObject(std::string name)
         {
-            for (auto obj : m_objects)
-                if (obj->name == name)
-                    return static_cast<T*>(obj);
-            return nullptr;
+            return layers.getObjectFromLayer<T>(currentLayerName, name);
         }
+
+        void setCurrentLayer(const std::string layerName);
+        std::string getCurrentLayerName(void) const;
+
+        Layers& getLayers(void);
 
         void render(sf::RenderTarget& target) override;
     protected:
         std::vector<Object*> m_objects;
+        Layers layers;
+        std::string currentLayerName = "";
 };
 
 #endif

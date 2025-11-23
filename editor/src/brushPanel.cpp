@@ -1,4 +1,7 @@
 #include <elements/brushPanel.h>
+#include <tilemap.h>
+
+#include <editor.h>
 
 #include <imgui.h>
 #include <imgui-SFML.h>
@@ -6,6 +9,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 
 #include <string>
+#include <iostream>
 
 // Compile-time template
     template <auto V>
@@ -111,6 +115,29 @@ void BrushPanel::update(float dt)
             }
         }
 
+        ImGui::SeparatorText("Layers");
+        if(auto engine = static_cast<Editor*>(m_editor)->getEngine()){
+            if(ImGui::BeginCombo("##Layers", engine->getCurrentLayerName().c_str())){
+                for (auto layer : engine->getLayers().getHandle())
+                {
+                    bool selected = engine->getCurrentLayerName() == layer.first;
+                    if(ImGui::Selectable(layer.first.c_str(), &selected)){
+                        engine->setCurrentLayer(layer.first);
+                    }
+                }
+                if(bool selected = false; ImGui::Selectable("Add Layer", &selected)){
+                    engine->getLayers().addLayer("Layer " + std::to_string(engine->getLayers().getHandle().size() + 1));
+                    engine->setCurrentLayer("Layer " + std::to_string(engine->getLayers().getHandle().size()));
+                    engine->addObject(new TileMap("TileMap"));
+                }
+                ImGui::EndCombo();
+            }
+        }
+        bool checked = true;
+        if(ImGui::Checkbox("Have Collision", &checked)){
+            // TODO
+        }
+            
         ImGui::End();
     }
 }
