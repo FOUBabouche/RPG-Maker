@@ -6,7 +6,8 @@
         "docking-experimental"
       ]
     },
+    "imgui-sfml",
     "sfml",
-    "imgui-sfml"
+    "nlohmann-json"
   ]
 }

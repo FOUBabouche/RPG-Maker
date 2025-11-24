@@ -1,5 +1,6 @@
 find_package(imgui REQUIRED)
 find_package(ImGui-SFML REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
 
 add_library(editor)
 
@@ -14,6 +15,7 @@ file(GLOB_RECURSE SRC
 target_sources(editor PUBLIC ${SRC})
 
 target_link_libraries(editor PUBLIC
+    nlohmann_json::nlohmann_json
     imgui::imgui
     ImGui-SFML::ImGui-SFML
     engine
