@@ -19,7 +19,7 @@ class Layers{
 
         template<typename T>
         T* getObjectFromLayer(std::string layerName, std::string objectName){
-            for (auto obj : layers[layerName])
+            for (auto &obj : layers[layerName])
                 if (obj->name == objectName)
                     return static_cast<T*>(obj);
             return nullptr;

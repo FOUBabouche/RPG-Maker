@@ -4,6 +4,7 @@
 #include <elements/brushPanel.h>
 #include <elements/tileSelector.h>
 #include <elements/animationPanel.h>
+#include <elements/sceneInspectorPanel.h>
 
 // Engine
 #include <tilemap.h>
@@ -52,21 +53,26 @@ void Editor::start()
     getElement<ToolSelector>("Tools")->getButton("MoveButton").setAction([&](){
         m_tool = Tools::Move;
     });
-
     getElement<ToolSelector>("Tools")->getButton("PaintButton").setAction([&](){
         m_tool = Tools::Paint;
     });
     getElement<ToolSelector>("Tools")->getButton("EraseButton").setAction([&](){
         m_tool = Tools::Erase;
     });
+    getElement<ToolSelector>("Tools")->getButton("SceneButton").setAction([&](){
+        if(ImGui::Begin("Test")){
+
+            ImGui::End();
+        }
+    });
 }
 
 void Editor::update(float dt){
-    // Capture les evenement entree et sor| std::views::transform(add_text)ti de Imgui
+    // Capture les evenement entree et sorti de Imgui
     ImGuiIO& io = ImGui::GetIO();
 
     // Recupere l'objet MainCamera present dans la scene
-    Camera* cam =  m_engineRef->getLayers().getObjectFromLayer<Camera>("Layer 1", "MainCamera");
+    Camera* cam =  m_engineRef->getCurrentScene()->getLayers().getObjectFromLayer<Camera>("Layer 1", "MainCamera");
     // Recupere la position de la souris dans la scene
     sf::Vector2f mousePos = getElement<SceneRender>("Renderer")->getMousePositionInScene(*cam);
     getElement<TileSelector>("TileSelector")->setBrush(&getElement<BrushPanel>("BrushPanel")->getBrush());
@@ -93,7 +99,7 @@ void Editor::update(float dt){
         }
     }
 
-    if(const auto tileMap = m_engineRef->getObject<TileMap>("TileMap")){ // Recupere la tilemap si elle existe dans la scene
+    if(const auto tileMap = m_engineRef->getCurrentScene()->getObject<TileMap>("TileMap")){ // Recupere la tilemap si elle existe dans la scene
         if(ImGui::IsMouseClicked(0, true)){ // Si le bouton gauche est appuyer 
             if(m_tool==Tools::Paint){ // Si on a le mode Paint d'actif
                 if(sf::Vector2u gridPos = tileMap->getCoordToGridPos(mousePos); mousePos.x > 0 && mousePos.y > 0){ // Prend la position de la souris sur la grid et si ses coordonees sont supperieur a {0, 0}
@@ -135,6 +141,7 @@ void Editor::registerTextures()
     buttonsTextures["MoveButton"] = new sf::Texture(editorButtonsTexturesPath+"MoveButton.png");
     buttonsTextures["PaintButton"] = new sf::Texture(editorButtonsTexturesPath+"PaintButton.png");
     buttonsTextures["EraseButton"] = new sf::Texture(editorButtonsTexturesPath+"EraseButton.png");
+    buttonsTextures["SceneButton"] = new sf::Texture(editorButtonsTexturesPath+"SceneButton.png");
 }
 
 void Editor::registerElements()
@@ -145,6 +152,7 @@ void Editor::registerElements()
     addElement(new BrushPanel("BrushPanel", this));
     addElement(new TileSelector("TileSelector", this));
     addElement(new AnimationPanel("AnimationPanel", this));
+    addElement(new SceneInspectorPanel("SceneInspector", this));
 }
 
 void Editor::registerToolButtons()
@@ -156,4 +164,5 @@ void Editor::registerToolButtons()
     tools->pushButton(Button("MoveButton", buttonsTextures["MoveButton"]));
     tools->pushButton(Button("PaintButton", buttonsTextures["PaintButton"]));
     tools->pushButton(Button("EraseButton", buttonsTextures["EraseButton"]));
+    tools->pushButton(Button("SceneButton", buttonsTextures["SceneButton"]));
 }

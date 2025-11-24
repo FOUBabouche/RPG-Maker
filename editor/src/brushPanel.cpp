@@ -117,20 +117,22 @@ void BrushPanel::update(float dt)
 
         ImGui::SeparatorText("Layers");
         if(auto engine = static_cast<Editor*>(m_editor)->getEngine()){
-            if(ImGui::BeginCombo("##Layers", engine->getCurrentLayerName().c_str())){
-                for (auto layer : engine->getLayers().getHandle())
-                {
-                    bool selected = engine->getCurrentLayerName() == layer.first;
-                    if(ImGui::Selectable(layer.first.c_str(), &selected)){
-                        engine->setCurrentLayer(layer.first);
+            if(auto scene = engine->getCurrentScene()){
+                if(ImGui::BeginCombo("##Layers", scene->getCurrentLayerName().c_str())){
+                    for (auto layer : scene->getLayers().getHandle())
+                    {
+                        bool selected = scene->getCurrentLayerName() == layer.first;
+                        if(ImGui::Selectable(layer.first.c_str(), &selected)){
+                            scene->setCurrentLayer(layer.first);
+                        }
                     }
+                    if(bool selected = false; ImGui::Selectable("Add Layer", &selected)){
+                        scene->getLayers().addLayer("Layer " + std::to_string(scene->getLayers().getHandle().size() + 1));
+                        scene->setCurrentLayer("Layer " + std::to_string(scene->getLayers().getHandle().size()));
+                        scene->addObject(new TileMap("TileMap"));
+                    }
+                    ImGui::EndCombo();
                 }
-                if(bool selected = false; ImGui::Selectable("Add Layer", &selected)){
-                    engine->getLayers().addLayer("Layer " + std::to_string(engine->getLayers().getHandle().size() + 1));
-                    engine->setCurrentLayer("Layer " + std::to_string(engine->getLayers().getHandle().size()));
-                    engine->addObject(new TileMap("TileMap"));
-                }
-                ImGui::EndCombo();
             }
         }
         bool checked = true;
