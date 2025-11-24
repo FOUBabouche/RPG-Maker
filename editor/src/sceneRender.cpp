@@ -1,4 +1,10 @@
 #include <elements/sceneRender.h>
+
+#include <editor.h>
+
+#include <camera.h>
+#include <tilemap.h>
+
 #include <imgui.h>
 #include <imgui-SFML.h>
 #include <imgui_sfml_fix.h>
@@ -64,6 +70,13 @@ void SceneRender::update(float dt)
 {
     m_renderer->clear(sf::Color::Black);
     ref_engine->render(*m_renderer);
+    if(auto engine = static_cast<Editor*>(m_editor)->getEngine()){
+        if(auto tilemap = engine->getCurrentScene()->getObject<TileMap>("TileMap")){
+            if(auto camera = engine->getCurrentScene()->getObject<Camera>("MainCamera", "Layer 1")){
+                tilemap->drawGrid(*m_renderer, camera->position, m_rendererPosition, camera->getZoom());
+            }
+        }
+    }
     m_renderer->display();
 
     if(ImGui::Begin("Scene")){
@@ -71,7 +84,6 @@ void SceneRender::update(float dt)
         m_renderer->resize({static_cast<unsigned int>(region.x), static_cast<unsigned int>(region.y)});
         ImGui::Image(m_renderer->getTexture(), {region.x, region.y},  {0, 1}, {1, 0});
         m_rendererPosition = {ImGui::GetItemRectMin().x, ImGui::GetItemRectMin().y};
-
         ImGui::End();
     }
 }

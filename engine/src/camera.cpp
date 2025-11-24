@@ -37,6 +37,13 @@ float Camera::getZoom(void) const
 
 void Camera::update(float dt)
 {
+    if(position.x - (size.x * m_zoom/ 2)  < 0){
+        position.x = 0 + (size.x * m_zoom / 2);
+    }
+    if(position.y - (size.y * m_zoom / 2)  < 0){
+        position.y = 0 + (size.y * m_zoom / 2);
+    }
+
     m_handle.setSize(size);
     m_handle.setCenter(position);
     m_handle.zoom(m_zoom);

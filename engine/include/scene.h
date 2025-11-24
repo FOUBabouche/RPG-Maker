@@ -24,6 +24,12 @@ class Scene{
             return layers.getObjectFromLayer<T>(currentLayerName, name);
         }
 
+        template<typename T>
+        T* getObject(std::string name, std::string layerName)
+        {
+            return layers.getObjectFromLayer<T>(layerName, name);
+        }
+
         void addlayer(std::string layerName);
 
         void start();
