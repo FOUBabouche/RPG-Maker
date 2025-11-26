@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <concepts>
 
 class Layers{
     public:
@@ -15,7 +16,11 @@ class Layers{
         std::map<std::string, std::vector<Object *>>& getHandle(void);
 
         void addLayer(const std::string& name);
-        void addObjectToLayer(std::string layerName, Object* object);
+        template<typename T>
+        requires std::derived_from<T, Object>
+        void addObjectToLayer(const std::string layerName, std::string objName){
+            layers[layerName].push_back(new T(objName));
+        }
 
         template<typename T>
         T* getObjectFromLayer(std::string layerName, std::string objectName){

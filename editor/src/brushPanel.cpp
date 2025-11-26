@@ -129,7 +129,7 @@ void BrushPanel::update(float dt)
                     if(bool selected = false; ImGui::Selectable("Add Layer", &selected)){
                         scene->getLayers().addLayer("Layer " + std::to_string(scene->getLayers().getHandle().size() + 1));
                         scene->setCurrentLayer("Layer " + std::to_string(scene->getLayers().getHandle().size()));
-                        scene->addObject(new TileMap("TileMap"));
+                        scene->addObject<TileMap>("TileMap");
                     }
                     ImGui::EndCombo();
                 }

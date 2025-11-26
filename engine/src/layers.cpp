@@ -11,11 +11,6 @@ void Layers::addLayer(const std::string& name)
     layers.insert({name, {}});
 }
 
-void Layers::addObjectToLayer(std::string layerName, Object *object)
-{
-    layers[layerName].push_back(object);
-}
-
 void Layers::removeLayer(std::string layerName)
 {
     layers.erase(layers.find(layerName));

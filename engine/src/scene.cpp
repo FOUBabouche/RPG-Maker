@@ -15,12 +15,6 @@ Layers &Scene::getLayers(void)
     return layers;
 }
 
-void Scene::addObject(Object *object)
-{
-    if(layers.getHandle().size()>0)
-        layers.addObjectToLayer(currentLayerName, object);
-}
-
 void Scene::setCurrentLayer(const std::string layerName)
 {
     currentLayerName = layerName;
