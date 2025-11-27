@@ -69,6 +69,11 @@
         "xmemory": "cpp",
         "xtr1common": "cpp",
         "xtree": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "coroutine": "cpp",
+        "deque": "cpp",
+        "random": "cpp",
+        "source_location": "cpp",
+        "span": "cpp"
     }
 }

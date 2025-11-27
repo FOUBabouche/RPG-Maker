@@ -1,8 +1,10 @@
 // Editor
 #include <editor.h>
-#include <toolSelector.h>
-#include <brushPanel.h>
-#include <tileSelector.h>
+#include <elements/toolSelector.h>
+#include <elements/brushPanel.h>
+#include <elements/tileSelector.h>
+#include <elements/animationPanel.h>
+#include <elements/sceneInspectorPanel.h>
 
 // Engine
 #include <tilemap.h>
@@ -34,12 +36,13 @@ void Editor::addElement(Element *element)
     m_elements.push_back(element);
 }
 
-template <typename T>
-T *Editor::getElement(std::string name)
+Engine *Editor::getEngine(void) const
 {
-    for(auto obj : m_elements) 
-        if (obj->name == name) return static_cast<T*>(obj);
-    return nullptr;
+    return m_engineRef;
+}
+
+Camera& Editor::getCamera(void){
+    return m_camera;
 }
 
 void Editor::start()
@@ -54,23 +57,28 @@ void Editor::start()
     getElement<ToolSelector>("Tools")->getButton("MoveButton").setAction([&](){
         m_tool = Tools::Move;
     });
-
     getElement<ToolSelector>("Tools")->getButton("PaintButton").setAction([&](){
         m_tool = Tools::Paint;
     });
     getElement<ToolSelector>("Tools")->getButton("EraseButton").setAction([&](){
         m_tool = Tools::Erase;
     });
+    getElement<ToolSelector>("Tools")->getButton("SceneButton").setAction([&](){
+        if(ImGui::Begin("Test")){
+
+            ImGui::End();
+        }
+    });
+
+    m_camera.start();
 }
 
 void Editor::update(float dt){
-    // Capture les evenement entree et sor| std::views::transform(add_text)ti de Imgui
+    // Capture les evenement entree et sorti de Imgui
     ImGuiIO& io = ImGui::GetIO();
 
-    // Recupere l'objet MainCamera present dans la scene
-    Camera* cam =  m_engineRef->getObject<Camera>("MainCamera");
     // Recupere la position de la souris dans la scene
-    sf::Vector2f mousePos = getElement<SceneRender>("Renderer")->getMousePositionInScene(*cam);
+    sf::Vector2f mousePos = getElement<SceneRender>("Renderer")->getMousePositionInScene(m_camera);
     getElement<TileSelector>("TileSelector")->setBrush(&getElement<BrushPanel>("BrushPanel")->getBrush());
 
     // Garde en memoire une variable pour stocké la derniere position de la souris
@@ -82,27 +90,35 @@ void Editor::update(float dt){
         }
         if(ImGui::IsMouseDragging(0)){ // Si la souris effectuer un mouvement pendant un clique
             sf::Vector2f deltaMousePos = lastMousePos - mousePos; // On recupere l'ecart sur l'instant entre la position de la souris actuelle et l'ancienne
-            cam->position += deltaMousePos * cam->getZoom(); // On additionne l'ecart à la position actuelle de la camera
+            m_camera.position += deltaMousePos * m_camera.getZoom(); // On additionne l'ecart à la position actuelle de la camera
         }
 
         // Zoom | Dezoom de la camera
         if(const float wheelDelta = io.MouseWheel; wheelDelta > 0){ // Si la roue de la souris bouge vers le haut
-            if(cam->getZoom() - 0.1f > 0) // Si on est au dessus de 0
-                cam->setZoom(cam->getZoom() - 0.1f); // Zoom
+            if(m_camera.getZoom() - 0.1f > 0) // Si on est au dessus de 0
+                m_camera.setZoom(m_camera.getZoom() - 0.1f); // Zoom
         }else if(wheelDelta < 0){ // Si la roue de la souris bouge vers le bas
-            if(cam->getZoom() + 0.1f < 2) // Si on est en dessous de 2
-                cam->setZoom(cam->getZoom() + 0.1f); // Dezoom 
+            if(m_camera.getZoom() + 0.1f < 2) // Si on est en dessous de 2
+                m_camera.setZoom(m_camera.getZoom() + 0.1f); // Dezoom 
         }
     }
 
-    if(const auto tileMap = m_engineRef->getObject<TileMap>("TileMap")){ // Recupere la tilemap si elle existe dans la scene
+    if(const auto tileMap = m_engineRef->getCurrentScene()->getObject<TileMap>("TileMap")){ // Recupere la tilemap si elle existe dans la scene
         if(ImGui::IsMouseClicked(0, true)){ // Si le bouton gauche est appuyer 
             if(m_tool==Tools::Paint){ // Si on a le mode Paint d'actif
-                if(sf::Vector2u gridPos = tileMap->getCoordToGridPos(mousePos); mousePos.x > 0 && mousePos.y > 0) // Prend la position de la souris sur la grid et si ses coordonees sont supperieur a {0, 0}
-                    tileMap->setTile(gridPos, Tile(static_cast<sf::Vector2f>(sf::Vector2u(gridPos.x*tileMap->getTileSize().x, gridPos.y*tileMap->getTileSize().y)), // Position de la tile
+                if(sf::Vector2u gridPos = tileMap->getCoordToGridPos(mousePos); mousePos.x > 0 && mousePos.y > 0){ // Prend la position de la souris sur la grid et si ses coordonees sont supperieur a {0, 0}
+                    if(getElement<BrushPanel>("BrushPanel")->getTileType() == TILE_TYPE::NORMAL_TILE){
+                        tileMap->setTile(gridPos, Tile(static_cast<sf::Vector2f>(sf::Vector2u(gridPos.x*tileMap->getTileSize().x, gridPos.y*tileMap->getTileSize().y)), // Position de la tile
                                                     static_cast<sf::Vector2f>(tileMap->getTileSize()), // Taille de la tile
                                                     getElement<BrushPanel>("BrushPanel")->getBrush().uv, 
                                                     getElement<BrushPanel>("BrushPanel")->getBrush().texture));
+                    }else if(getElement<BrushPanel>("BrushPanel")->getTileType() == TILE_TYPE::ANIMATED_TILE){
+                        tileMap->setTile(gridPos, Tile(static_cast<sf::Vector2f>(sf::Vector2u(gridPos.x*tileMap->getTileSize().x, gridPos.y*tileMap->getTileSize().y)), // Position de la tile
+                                                    static_cast<sf::Vector2f>(tileMap->getTileSize()), // Taille de la tile
+                                                    getElement<BrushPanel>("BrushPanel")->currentAnimatedTile().getUVs(), 
+                                                    getElement<BrushPanel>("BrushPanel")->currentAnimatedTile().getTextureRef()));
+                    }
+                }
             } 
             if(m_tool==Tools::Erase){
                 if(sf::Vector2u gridPos = tileMap->getCoordToGridPos(mousePos); mousePos.x > 0 && mousePos.y > 0) // Prend la position de la souris sur la grid et si ses coordonees sont supperieur a {0, 0}
@@ -111,9 +127,15 @@ void Editor::update(float dt){
         }
     }
 
+    m_camera.update(dt);
+
     // Boucle Update des Objets
     for(auto element : m_elements)
-        element->update();
+        element->update(dt);
+
+    if(auto renderer = getElement<SceneRender>("Renderer")){
+        m_camera.draw(*renderer->getHandle());
+    }
 }
 
 void Editor::registerTextures()
@@ -129,15 +151,19 @@ void Editor::registerTextures()
     buttonsTextures["MoveButton"] = new sf::Texture(editorButtonsTexturesPath+"MoveButton.png");
     buttonsTextures["PaintButton"] = new sf::Texture(editorButtonsTexturesPath+"PaintButton.png");
     buttonsTextures["EraseButton"] = new sf::Texture(editorButtonsTexturesPath+"EraseButton.png");
+    buttonsTextures["SceneButton"] = new sf::Texture(editorButtonsTexturesPath+"SceneButton.png");
 }
 
 void Editor::registerElements()
 {
     // Ajout des element dans l'editor
-    addElement(new SceneRender("Renderer", m_engineRef));
-    addElement(new ToolSelector("Tools"));
-    addElement(new BrushPanel("BrushPanel"));
-    addElement(new TileSelector("TileSelector"));
+    
+    addElement(new SceneRender("Renderer", m_engineRef, this));
+    addElement(new ToolSelector("Tools", this));
+    addElement(new BrushPanel("BrushPanel", this));
+    addElement(new TileSelector("TileSelector", this));
+    addElement(new AnimationPanel("AnimationPanel", this));
+    addElement(new SceneInspectorPanel("SceneInspector", this));
 }
 
 void Editor::registerToolButtons()
@@ -149,4 +175,5 @@ void Editor::registerToolButtons()
     tools->pushButton(Button("MoveButton", buttonsTextures["MoveButton"]));
     tools->pushButton(Button("PaintButton", buttonsTextures["PaintButton"]));
     tools->pushButton(Button("EraseButton", buttonsTextures["EraseButton"]));
+    tools->pushButton(Button("SceneButton", buttonsTextures["SceneButton"]));
 }

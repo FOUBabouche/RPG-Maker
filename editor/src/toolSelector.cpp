@@ -1,19 +1,19 @@
-#include "toolSelector.h"
+#include <elements/toolSelector.h>
 #include <imgui.h>
 
-ToolSelector::ToolSelector(std::string _name)
+ToolSelector::ToolSelector(std::string _name, Base_Editor* editor)
 {
     name = _name;
+    m_editor = editor;
 }
 
-void ToolSelector::update()
+void ToolSelector::update(float dt)
 {
-    if(ImGui::Begin("Tools")){
-        for (auto& button : m_buttons){
-            button.update();
-            ImGui::SameLine();
-        }
-
-        ImGui::End();
+    ImGui::Begin("Tools");
+    for (auto& button : m_buttons){
+        button.update(dt);
+        ImGui::SameLine();
     }
+
+    ImGui::End();
 }

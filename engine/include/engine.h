@@ -2,6 +2,7 @@
 #define __ENGINE_H__
 
 #include <object.h>
+#include <scene.h>
 #include <base_engine.h>
 #include <vector>
 #include <memory>
@@ -11,19 +12,18 @@ class Engine : virtual public BaseEngine{
         Engine() = default;
         ~Engine() = default;
 
-        void addObject(Object* object);
-        template<typename T>
-        T* getObject(std::string name)
-        {
-            for (auto obj : m_objects)
-                if (obj->name == name)
-                    return static_cast<T*>(obj);
-            return nullptr;
-        }
+        Scene* getScene(std::string sceneName) const;
+        Scene* getCurrentScene(void) const;
+
+        void setCurrentScene(std::string sceneName);
+        void setCurrentScene(size_t sceneIndex);
+
+        void addScene(std::string scenename);
 
         void render(sf::RenderTarget& target) override;
     protected:
-        std::vector<Object*> m_objects;
+        std::vector<Scene*> scenes;
+        size_t currentSceneIndex = 0;
 };
 
 #endif

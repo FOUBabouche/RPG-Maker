@@ -3,19 +3,19 @@
 
 #include <element.h>
 #include <brush.h>
-#include <fileContener.hpp>
+#include <fileContener.h>
 
 #include <SFML/Graphics/Texture.hpp>
 
 class TileSelector : public Element{
     public:
         TileSelector() = default;
-        TileSelector(std::string _name);
+        TileSelector(std::string _name, Base_Editor* editor);
         ~TileSelector() = default;
 
         void setBrush(Brush* brush);
     
-        void update() override;
+        void update(float dt) override;
     private:
         Brush* m_brushRef;
         FileContener textureContener;

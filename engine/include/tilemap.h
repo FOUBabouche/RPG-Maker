@@ -23,8 +23,9 @@ class TileMap : public Object{
         void removeTile(sf::Vector2u gridPosition);
 
         void start() override {};
-        void update(float dt) override {};
+        void update(float dt) override;
         void draw(sf::RenderTarget& target) override;
+        void drawGrid(sf::RenderTarget& target, sf::Vector2f cameraPos, sf::Vector2f renderSize, float zoom);
 
     public:
         TileMap& operator=(TileMap& tm);

@@ -1,4 +1,10 @@
-#include <sceneRender.h>
+#include <elements/sceneRender.h>
+
+#include <editor.h>
+
+#include <camera.h>
+#include <tilemap.h>
+
 #include <imgui.h>
 #include <imgui-SFML.h>
 #include <imgui_sfml_fix.h>
@@ -9,17 +15,19 @@ SceneRender::SceneRender()
     m_renderer = new sf::RenderTexture;
 }
 
-SceneRender::SceneRender(std::string _name, BaseEngine *engine)
+SceneRender::SceneRender(std::string _name, BaseEngine *engine, Base_Editor* editor)
 {
     name = _name;
+    m_editor = editor;
     ref_engine = engine;
     m_renderer = new sf::RenderTexture;
 }
 
 
-SceneRender::SceneRender(BaseEngine *engine)
+SceneRender::SceneRender(BaseEngine *engine, Base_Editor* editor)
 {
     ref_engine = engine;
+    m_editor = editor;
     m_renderer = new sf::RenderTexture;
 }
 
@@ -32,6 +40,10 @@ SceneRender::SceneRender(const SceneRender &render)
 SceneRender::~SceneRender()
 {
     delete m_renderer;
+}
+
+sf::RenderTexture* SceneRender::getHandle(void){
+    return m_renderer;
 }
 
 sf::Vector2f SceneRender::getMousePositionInScene(Camera& camera)
@@ -58,20 +70,24 @@ void SceneRender::setEngine(BaseEngine *engine)
     ref_engine = engine;
 }
 
-void SceneRender::update()
+void SceneRender::update(float dt)
 {
     m_renderer->clear(sf::Color::Black);
     ref_engine->render(*m_renderer);
+    if(auto engine = static_cast<Editor*>(m_editor)->getEngine()){
+        if(auto tilemap = engine->getCurrentScene()->getObject<TileMap>("TileMap")){
+            Camera& camera = static_cast<Editor*>(m_editor)->getCamera();
+            tilemap->drawGrid(*m_renderer, camera.position, m_rendererPosition, camera.getZoom());
+        }
+    }
     m_renderer->display();
 
-    if(ImGui::Begin("Scene")){
-        ImVec2 region = ImGui::GetContentRegionAvail();
-        m_renderer->resize({static_cast<unsigned int>(region.x), static_cast<unsigned int>(region.y)});
-        ImGui::Image(m_renderer->getTexture(), {region.x, region.y},  {0, 1}, {1, 0});
-        m_rendererPosition = {ImGui::GetItemRectMin().x, ImGui::GetItemRectMin().y};
-
-        ImGui::End();
-    }
+    ImGui::Begin("Scene");
+    ImVec2 region = ImGui::GetContentRegionAvail();
+    m_renderer->resize({static_cast<unsigned int>(region.x), static_cast<unsigned int>(region.y)});
+    ImGui::Image(m_renderer->getTexture(), {region.x, region.y},  {0, 1}, {1, 0});
+    m_rendererPosition = {ImGui::GetItemRectMin().x, ImGui::GetItemRectMin().y};
+    ImGui::End();
 }
 
 

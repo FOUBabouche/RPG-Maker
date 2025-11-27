@@ -5,19 +5,26 @@
 
 void RPGEngine::initObjects()
 {
-    addObject(new Camera("MainCamera"));
-    addObject(new TileMap("TileMap"));
+    getCurrentScene()->addObject<TileMap>("TileMap");
 }
 
 void RPGEngine::start()
 {
+    addScene("First Scene");
+    setCurrentScene("First Scene");
+    getCurrentScene()->addlayer("Layer 1");
+    getCurrentScene()->setCurrentLayer("Layer 1");
     initObjects();
-    for(auto& obj : m_objects)
-        obj->start();
+    for(auto &layer : getCurrentScene()->getLayers().getHandle()){
+        for(auto& obj : layer.second)
+            obj->start();
+    }
 }
 
 void RPGEngine::update(float dt)
 {
-    for(auto& obj : m_objects)
-        obj->update(dt);
+    for(auto &layer : getCurrentScene()->getLayers().getHandle()){
+        for(auto& obj : layer.second)
+            obj->update(dt);
+    }
 }

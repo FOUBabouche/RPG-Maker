@@ -1,4 +1,4 @@
-#include <button.h>
+#include <elements/button.h>
 #include <imgui-SFML.h>
 #include <imgui.h> 
 
@@ -46,7 +46,7 @@ void Button::setAction(std::function<void()> action)
     m_action = action;
 }
 
-void Button::update()
+void Button::update(float dt)
 {
     if(m_textureRef){
         if(ImGui::ImageButton(name.c_str(), *m_textureRef, {ImGui::GetContentRegionAvail().y-3, ImGui::GetContentRegionAvail().y-3})){
