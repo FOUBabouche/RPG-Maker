@@ -15,7 +15,6 @@ class ConsolePanel : public Element{
         ~ConsolePanel() = default;
 
         template<typename... Args>
-        requires std::same_as<Args..., std::string>
         static void Log(Args... args){
             if(!(lineExist(args),...)){
                 (m_lines.push_back({1,args}),...);

@@ -52,7 +52,7 @@ void Editor::start()
     registerElements(); // Enregistre les elements de l'editor
     registerToolButtons(); // Enregistre les different boutons du ToolSelector
 
-    Debug::Log<std::string>("Editor :: All Register passed");
+    Debug::Log("Editor :: All Register passed");
 
     getElement<BrushPanel>("BrushPanel")->getBrush().texture = placeHolder; // Donne la texture placeHolder a la brush
 
