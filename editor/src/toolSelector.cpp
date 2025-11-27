@@ -9,12 +9,11 @@ ToolSelector::ToolSelector(std::string _name, Base_Editor* editor)
 
 void ToolSelector::update(float dt)
 {
-    if(ImGui::Begin("Tools")){
-        for (auto& button : m_buttons){
-            button.update(dt);
-            ImGui::SameLine();
-        }
-
-        ImGui::End();
+    ImGui::Begin("Tools");
+    for (auto& button : m_buttons){
+        button.update(dt);
+        ImGui::SameLine();
     }
+
+    ImGui::End();
 }

@@ -35,6 +35,7 @@ class Editor : public Base_Editor{
         }
 
         Engine* getEngine(void) const;
+        Camera& getCamera(void);
 
         void start() override;
         void update(float dt) override;
@@ -45,6 +46,7 @@ class Editor : public Base_Editor{
         void registerToolButtons();
 
     private:
+        Camera m_camera;
         std::vector<Element*> m_elements;
         Engine* m_engineRef;
 

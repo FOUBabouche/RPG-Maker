@@ -21,6 +21,8 @@ class SceneRender : public Element{
 
         sf::Vector2f getMousePositionInScene(Camera& camera);
 
+        sf::RenderTexture* getHandle(void);
+
         void setEngine(BaseEngine* engine);
 
         void update(float dt) override;

@@ -5,9 +5,8 @@
 
 void ShaderEditor::update(float dt)
 {
-    if(ImGui::Begin("Shader Editor")){
+    ImGui::Begin("Shader Editor");
         
 
-        ImGui::End();
-    }
+    ImGui::End();
 }

@@ -1,4 +1,8 @@
 #include <scene.h>
+#include <camera.h>
+
+#include <iostream>
+#include <typeindex>
 
 Scene::Scene(std::string name)
 {
@@ -46,12 +50,17 @@ void Scene::update(float dt)
 {
     for (auto layer : layers.getHandle())
         for (auto obj : layer.second)
-            obj->update(dt);
+                if(typeid(obj) != typeid(Camera))
+                    obj->update(dt);
 }
 
 void Scene::render(sf::RenderTarget &target)
 {
     for (auto layer : layers.getHandle())
         for (auto obj : layer.second)
-            obj->draw(target);
+            if(typeid(*obj).name() != typeid(Camera).name()){
+                obj->draw(target);
+            }
+            else
+                std::cout << "Camera" << std::endl;
 }

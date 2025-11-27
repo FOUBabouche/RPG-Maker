@@ -5,7 +5,6 @@
 
 void RPGEngine::initObjects()
 {
-    getCurrentScene()->addObject<Camera>("MainCamera");
     getCurrentScene()->addObject<TileMap>("TileMap");
 }
 

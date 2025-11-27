@@ -41,6 +41,10 @@ Engine *Editor::getEngine(void) const
     return m_engineRef;
 }
 
+Camera& Editor::getCamera(void){
+    return m_camera;
+}
+
 void Editor::start()
 {
     registerTextures(); // Enregistre les texture qui vont faire partie de l'editeur
@@ -65,16 +69,16 @@ void Editor::start()
             ImGui::End();
         }
     });
+
+    m_camera.start();
 }
 
 void Editor::update(float dt){
     // Capture les evenement entree et sorti de Imgui
     ImGuiIO& io = ImGui::GetIO();
 
-    // Recupere l'objet MainCamera present dans la scene
-    Camera* cam =  m_engineRef->getCurrentScene()->getLayers().getObjectFromLayer<Camera>("Layer 1", "MainCamera");
     // Recupere la position de la souris dans la scene
-    sf::Vector2f mousePos = getElement<SceneRender>("Renderer")->getMousePositionInScene(*cam);
+    sf::Vector2f mousePos = getElement<SceneRender>("Renderer")->getMousePositionInScene(m_camera);
     getElement<TileSelector>("TileSelector")->setBrush(&getElement<BrushPanel>("BrushPanel")->getBrush());
 
     // Garde en memoire une variable pour stocké la derniere position de la souris
@@ -86,16 +90,16 @@ void Editor::update(float dt){
         }
         if(ImGui::IsMouseDragging(0)){ // Si la souris effectuer un mouvement pendant un clique
             sf::Vector2f deltaMousePos = lastMousePos - mousePos; // On recupere l'ecart sur l'instant entre la position de la souris actuelle et l'ancienne
-            cam->position += deltaMousePos * cam->getZoom(); // On additionne l'ecart à la position actuelle de la camera
+            m_camera.position += deltaMousePos * m_camera.getZoom(); // On additionne l'ecart à la position actuelle de la camera
         }
 
         // Zoom | Dezoom de la camera
         if(const float wheelDelta = io.MouseWheel; wheelDelta > 0){ // Si la roue de la souris bouge vers le haut
-            if(cam->getZoom() - 0.1f > 0) // Si on est au dessus de 0
-                cam->setZoom(cam->getZoom() - 0.1f); // Zoom
+            if(m_camera.getZoom() - 0.1f > 0) // Si on est au dessus de 0
+                m_camera.setZoom(m_camera.getZoom() - 0.1f); // Zoom
         }else if(wheelDelta < 0){ // Si la roue de la souris bouge vers le bas
-            if(cam->getZoom() + 0.1f < 2) // Si on est en dessous de 2
-                cam->setZoom(cam->getZoom() + 0.1f); // Dezoom 
+            if(m_camera.getZoom() + 0.1f < 2) // Si on est en dessous de 2
+                m_camera.setZoom(m_camera.getZoom() + 0.1f); // Dezoom 
         }
     }
 
@@ -123,9 +127,15 @@ void Editor::update(float dt){
         }
     }
 
+    m_camera.update(dt);
+
     // Boucle Update des Objets
     for(auto element : m_elements)
         element->update(dt);
+
+    if(auto renderer = getElement<SceneRender>("Renderer")){
+        m_camera.draw(*renderer->getHandle());
+    }
 }
 
 void Editor::registerTextures()
@@ -147,6 +157,7 @@ void Editor::registerTextures()
 void Editor::registerElements()
 {
     // Ajout des element dans l'editor
+    
     addElement(new SceneRender("Renderer", m_engineRef, this));
     addElement(new ToolSelector("Tools", this));
     addElement(new BrushPanel("BrushPanel", this));
