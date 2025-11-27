@@ -5,6 +5,7 @@
 #include <elements/tileSelector.h>
 #include <elements/animationPanel.h>
 #include <elements/sceneInspectorPanel.h>
+#include <elements/consolePanel.h>
 
 // Engine
 #include <tilemap.h>
@@ -50,6 +51,8 @@ void Editor::start()
     registerTextures(); // Enregistre les texture qui vont faire partie de l'editeur
     registerElements(); // Enregistre les elements de l'editor
     registerToolButtons(); // Enregistre les different boutons du ToolSelector
+
+    Debug::Log<std::string>("Editor :: All Register passed");
 
     getElement<BrushPanel>("BrushPanel")->getBrush().texture = placeHolder; // Donne la texture placeHolder a la brush
 
@@ -136,6 +139,7 @@ void Editor::update(float dt){
     if(auto renderer = getElement<SceneRender>("Renderer")){
         m_camera.draw(*renderer->getHandle());
     }
+    Debug::Log<std::string>("Editor :: Update passed");
 }
 
 void Editor::registerTextures()
@@ -164,6 +168,7 @@ void Editor::registerElements()
     addElement(new TileSelector("TileSelector", this));
     addElement(new AnimationPanel("AnimationPanel", this));
     addElement(new SceneInspectorPanel("SceneInspector", this));
+    addElement(new ConsolePanel("Console"));
 }
 
 void Editor::registerToolButtons()
