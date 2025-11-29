@@ -7,6 +7,8 @@
 #include <SFML/Graphics/Texture.hpp>
 
 #include <cmath>
+#include <fstream>
+#include <algorithm>
 
 ProjectFileExplorer::ProjectFileExplorer(std::string _name, Base_Editor *editor)
 {
@@ -34,8 +36,11 @@ void ProjectFileExplorer::update(float dt)
     }
     ImGui::BeginChild("##FileExplorer", ImGui::GetContentRegionAvail(), true);
 
-    int xCountMax = static_cast<int>(std::floor(ImGui::GetContentRegionAvail().x / 74));
+    static bool isMenuOpen = false;
+    static bool onElement = false;
+    static std::string triggeredFile = "";
 
+    int xCountMax = static_cast<int>(std::floor(ImGui::GetContentRegionAvail().x / 74));
     int i = 1;
     for(const auto& entry : std::filesystem::directory_iterator(currentFolderPosition)){
         ImGui::BeginGroup();
@@ -48,6 +53,17 @@ void ProjectFileExplorer::update(float dt)
         }
         ImGui::Text(entry.path().filename().string().c_str());
         ImGui::EndGroup();
+        ImVec2 rMin = ImGui::GetItemRectMin();
+        ImVec2 rMax = ImGui::GetItemRectMax();
+        
+        if(ImGui::IsMouseClicked(1)){
+            isMenuOpen = true;
+            onElement = false;
+            if(ImGui::IsMouseHoveringRect(rMin, rMax)){
+                onElement = true;
+                triggeredFile = entry.path().string();
+            }
+        }
 
         if(xCountMax > 0){
             if(i % xCountMax != 0){
@@ -58,7 +74,40 @@ void ProjectFileExplorer::update(float dt)
         }
         i++;
     }
+    static bool isFileNameMenuOpen = false;
+    if(isMenuOpen){
+        if(ImGui::BeginPopupContextWindow()){
+            if(ImGui::MenuItem("Create")){
+                isFileNameMenuOpen = true;
+                isMenuOpen = false;
+            }
+            if(onElement){
+                if(ImGui::MenuItem("Delete")){
+                    std::remove(triggeredFile.c_str());
+                    triggeredFile = "";
+                    onElement = false;
+                    isMenuOpen = false;
+                }
+            }
+            ImGui::EndPopup();
+        }
+    }
+
+    
 
     ImGui::EndChild();
+
+    if(isFileNameMenuOpen){
+        ImGui::OpenPopup("File name", ImGuiPopupFlags_AnyPopupLevel);
+        if(ImGui::BeginPopupModal("File name")){
+            char buffer[256] = "";
+            if(ImGui::InputText("FileName", buffer, 256, ImGuiInputTextFlags_EnterReturnsTrue)){
+                std::ofstream file(currentFolderPosition.string()+"/"+buffer);
+                isFileNameMenuOpen = false;
+            }
+            ImGui::EndPopup();
+        }
+    }
+
     ImGui::End();
 }

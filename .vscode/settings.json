@@ -74,6 +74,12 @@
         "deque": "cpp",
         "random": "cpp",
         "source_location": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "any": "cpp",
+        "fstream": "cpp",
+        "numeric": "cpp",
+        "ranges": "cpp",
+        "typeindex": "cpp",
+        "valarray": "cpp"
     }
 }
