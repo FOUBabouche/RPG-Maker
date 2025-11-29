@@ -53,14 +53,15 @@ void SceneInspectorPanel::update(float dt)
                             if(ImGui::MenuItem("Auto Tile")){
                                 optionMenu = false;
                             }
-                            if(ImGui::BeginMenu("Entity")){
+                            if(ImGui::BeginMenu("Objects")){
                                 if(ImGui::MenuItem("Player")){
+                                    
                                     optionMenu = false;
                                 }
                                 if(ImGui::MenuItem("NPC")){
                                     optionMenu = false;
                                 }
-                                if(ImGui::MenuItem("New Entity")){
+                                if(ImGui::MenuItem("New Object")){
                                     optionMenu = false;
                                 }
                                 ImGui::EndMenu();

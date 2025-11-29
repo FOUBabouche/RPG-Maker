@@ -6,6 +6,7 @@
 #include <elements/animationPanel.h>
 #include <elements/sceneInspectorPanel.h>
 #include <elements/consolePanel.h>
+#include <elements/projectFileExplorer.h>
 
 // Engine
 #include <tilemap.h>
@@ -139,7 +140,6 @@ void Editor::update(float dt){
     if(auto renderer = getElement<SceneRender>("Renderer")){
         m_camera.draw(*renderer->getHandle());
     }
-    Debug::Log<std::string>("Editor :: Update passed");
 }
 
 void Editor::registerTextures()
@@ -156,6 +156,7 @@ void Editor::registerTextures()
     buttonsTextures["PaintButton"] = new sf::Texture(editorButtonsTexturesPath+"PaintButton.png");
     buttonsTextures["EraseButton"] = new sf::Texture(editorButtonsTexturesPath+"EraseButton.png");
     buttonsTextures["SceneButton"] = new sf::Texture(editorButtonsTexturesPath+"SceneButton.png");
+    Debug::Log("- All Texture Register");
 }
 
 void Editor::registerElements()
@@ -169,6 +170,8 @@ void Editor::registerElements()
     addElement(new AnimationPanel("AnimationPanel", this));
     addElement(new SceneInspectorPanel("SceneInspector", this));
     addElement(new ConsolePanel("Console"));
+    addElement(new ProjectFileExplorer("File Explorer", this));
+    Debug::Log("- All Texture Register");
 }
 
 void Editor::registerToolButtons()
@@ -181,4 +184,5 @@ void Editor::registerToolButtons()
     tools->pushButton(Button("PaintButton", buttonsTextures["PaintButton"]));
     tools->pushButton(Button("EraseButton", buttonsTextures["EraseButton"]));
     tools->pushButton(Button("SceneButton", buttonsTextures["SceneButton"]));
+    Debug::Log("- All Tools Register");
 }
