@@ -22,7 +22,7 @@ Scene *Engine::getCurrentScene(void) const
 
 void Engine::setCurrentScene(std::string sceneName)
 {
-    if(getScene(sceneName)) return;
+    if(!getScene(sceneName)) return;
     for(int i = 0; i < scenes.size(); i++){
         if(scenes[i]->getName() == sceneName){
             currentSceneIndex = i;

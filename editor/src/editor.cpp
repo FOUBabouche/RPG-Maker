@@ -7,6 +7,7 @@
 #include <elements/sceneInspectorPanel.h>
 #include <elements/consolePanel.h>
 #include <elements/projectFileExplorer.h>
+#include <elements/sceneManagerPanel.h>
 
 // Engine
 #include <tilemap.h>
@@ -66,12 +67,6 @@ void Editor::start()
     });
     getElement<ToolSelector>("Tools")->getButton("EraseButton").setAction([&](){
         m_tool = Tools::Erase;
-    });
-    getElement<ToolSelector>("Tools")->getButton("SceneButton").setAction([&](){
-        if(ImGui::Begin("Test")){
-
-            ImGui::End();
-        }
     });
 
     m_camera.start();
@@ -168,8 +163,9 @@ void Editor::registerElements()
     addElement(new TileSelector("TileSelector", this));
     addElement(new AnimationPanel("AnimationPanel", this));
     addElement(new SceneInspectorPanel("SceneInspector", this));
-    addElement(new ConsolePanel("Console"));
+    addElement(new ConsolePanel("Console", this));
     addElement(new ProjectFileExplorer("File Explorer", this));
+    addElement(new SceneManagerPanel("Scene Manager", this));
     Debug::Log("- All Texture Register");
 }
 

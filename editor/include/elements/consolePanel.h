@@ -11,7 +11,7 @@
 class ConsolePanel : public Element{
     public:
         ConsolePanel() =default;
-        ConsolePanel(std::string _name);
+        ConsolePanel(std::string _name, Base_Editor* editor);
         ~ConsolePanel() = default;
 
         template<typename... Args>

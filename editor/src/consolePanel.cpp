@@ -5,8 +5,9 @@
 
 std::vector<std::pair<unsigned int, std::string>> ConsolePanel::m_lines = {};
 
-ConsolePanel::ConsolePanel(std::string _name){
+ConsolePanel::ConsolePanel(std::string _name, Base_Editor* editor){
     name = _name;
+    m_editor = editor;
 }
 
 bool ConsolePanel::lineExist(std::string arg){
