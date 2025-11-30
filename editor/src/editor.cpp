@@ -68,6 +68,12 @@ void Editor::start()
     getElement<ToolSelector>("Tools")->getButton("EraseButton").setAction([&](){
         m_tool = Tools::Erase;
     });
+    getElement<ToolSelector>("Tools")->getButton("PlayStopButton").setAction([&](){
+        isGamePlayed = !isGamePlayed;
+        getElement<ToolSelector>("Tools")->getButton("PlayStopButton").setIcon((!isGamePlayed ? buttonsTextures["PlayButton"] : buttonsTextures["StopButton"]), 
+                                                                                {{0, 0}, {64, 64}}, 
+                                                                                {64, 64});
+    });
 
     m_camera.start();
 }
@@ -151,6 +157,8 @@ void Editor::registerTextures()
     buttonsTextures["PaintButton"] = new sf::Texture(editorButtonsTexturesPath+"PaintButton.png");
     buttonsTextures["EraseButton"] = new sf::Texture(editorButtonsTexturesPath+"EraseButton.png");
     buttonsTextures["SceneButton"] = new sf::Texture(editorButtonsTexturesPath+"SceneButton.png");
+    buttonsTextures["PlayButton"] = new sf::Texture(editorButtonsTexturesPath+"PlayButton.png");
+    buttonsTextures["StopButton"] = new sf::Texture(editorButtonsTexturesPath+"StopButton.png");
     Debug::Log("- All Texture Register");
 }
 
@@ -178,6 +186,6 @@ void Editor::registerToolButtons()
     tools->pushButton(Button("MoveButton", buttonsTextures["MoveButton"]));
     tools->pushButton(Button("PaintButton", buttonsTextures["PaintButton"]));
     tools->pushButton(Button("EraseButton", buttonsTextures["EraseButton"]));
-    tools->pushButton(Button("SceneButton", buttonsTextures["SceneButton"]));
+    tools->pushButton(Button("PlayStopButton", buttonsTextures["PlayButton"]));
     Debug::Log("- All Tools Register");
 }

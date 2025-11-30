@@ -54,6 +54,8 @@ class Editor : public Base_Editor{
 
         std::unordered_map<std::string, sf::Texture*> buttonsTextures;
         sf::Texture* placeHolder;
+
+        bool isGamePlayed = false;
 };
 
 #endif

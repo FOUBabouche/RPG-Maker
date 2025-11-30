@@ -2,7 +2,6 @@
 #include <imgui-SFML.h>
 #include <imgui.h>
 
-
 void SetCustomImGuiTheme()
 {
     ImGuiStyle& style = ImGui::GetStyle();
@@ -56,7 +55,7 @@ Core::Core(){
 
 void Core::Start()
 {
-	window.create(sf::VideoMode({ 800, 600 }), "RPG Maker");
+	window.create(sf::VideoMode::getDesktopMode(), "RPG Maker");
 	ImGui::SFML::Init(window);
     SetCustomImGuiTheme();
 
