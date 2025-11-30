@@ -33,6 +33,8 @@ class Layers{
         void removeLayer(std::string layerName);
         void removeObjectFromLayer(std::string layerName, std::string objectName);
 
+        void clear();
+
     public:
         std::vector<Object*> operator[](const std::string& layerName);
 

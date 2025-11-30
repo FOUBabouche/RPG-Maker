@@ -1,5 +1,10 @@
 #include <engine.h>
 
+std::vector<Scene *> Engine::getScenes(void) const
+{
+    return scenes;
+}
+
 Scene *Engine::getScene(std::string sceneName) const
 {
     for(auto scene : scenes){
@@ -35,6 +40,13 @@ void Engine::addScene(std::string sceneName)
 {
     if(getScene(sceneName)) return;
     scenes.push_back(new Scene(sceneName));
+}
+
+void Engine::clear()
+{
+    for(auto scene : scenes)
+        delete scene;
+    scenes.clear();
 }
 
 void Engine::render(sf::RenderTarget &target)

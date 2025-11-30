@@ -7,7 +7,7 @@ class Scene{
     public:
         Scene() = default;
         Scene(std::string name);
-        ~Scene() = default;
+        ~Scene();
 
         std::string getName(void) const;
         Layers& getLayers(void);

@@ -27,6 +27,14 @@ void Layers::removeObjectFromLayer(std::string layerName, std::string objectName
     }   
 }
 
+void Layers::clear()
+{
+    for(auto layer : layers)
+        for(auto obj: layer.second)
+            delete obj;
+    layers.clear();
+}
+
 std::vector<Object *> Layers::operator[](const std::string &layerName)
 {
     if(layers.count(layerName)==0) return {};

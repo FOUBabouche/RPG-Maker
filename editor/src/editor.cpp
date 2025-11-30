@@ -162,7 +162,6 @@ void Editor::registerTextures()
 void Editor::registerElements()
 {
     // Ajout des element dans l'editor
-    
     addElement(new SceneRender("Renderer", m_engineRef, this));
     addElement(new ToolSelector("Tools", this));
     addElement(new BrushPanel("BrushPanel", this));

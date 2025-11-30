@@ -9,6 +9,11 @@ Scene::Scene(std::string name)
     m_name = name;
 }
 
+Scene::~Scene()
+{
+    layers.clear();
+}
+
 std::string Scene::getName(void) const
 {
     return m_name;

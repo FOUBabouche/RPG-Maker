@@ -12,6 +12,7 @@ class Engine : virtual public BaseEngine{
         Engine() = default;
         ~Engine() = default;
 
+        std::vector<Scene*> getScenes(void) const;
         Scene* getScene(std::string sceneName) const;
         Scene* getCurrentScene(void) const;
 
@@ -19,6 +20,8 @@ class Engine : virtual public BaseEngine{
         void setCurrentScene(size_t sceneIndex);
 
         void addScene(std::string scenename);
+
+        void clear();
 
         void render(sf::RenderTarget& target) override;
     protected:
