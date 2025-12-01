@@ -9,6 +9,7 @@
 #include <cmath>
 #include <fstream>
 #include <algorithm>
+#include <iostream>
 
 ProjectFileExplorer::ProjectFileExplorer(std::string _name, Base_Editor *editor)
 {
@@ -103,7 +104,8 @@ void ProjectFileExplorer::update(float dt)
             }
             if(onElement){
                 if(ImGui::MenuItem("Delete")){
-                    std::filesystem::remove(triggeredFile.c_str());
+                    std::cout << std::filesystem::absolute(triggeredFile) << std::endl;
+                    std::filesystem::remove_all(std::filesystem::absolute(triggeredFile));
                     triggeredFile = "";
                     onElement = false;
                     isMenuOpen = false;

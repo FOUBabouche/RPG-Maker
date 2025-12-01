@@ -4,8 +4,6 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
-#include <windows.h>
-
 #include <concepts>
 #include <string>
 
@@ -13,18 +11,12 @@ class Object
 {
     public:
         Object() = default;
-        Object(std::string _name) : name(_name){};
         Object(Object& b){
             name = b.name;
             position = b.position;
             size = b.size;
         }
-        Object(const Object& b){
-            name = b.name;
-            position = b.position;
-            size = b.size;
-        }
-        ~Object() = default;
+        virtual ~Object() = default;
 
         virtual void start() = 0;
         virtual void update(float dt) = 0;
@@ -32,12 +24,6 @@ class Object
 
     public:
         Object& operator=(Object& b){
-            name = b.name;
-            position = b.position;
-            size = b.size;
-            return *this;
-        }
-        Object& operator=(const Object& b){
             name = b.name;
             position = b.position;
             size = b.size;

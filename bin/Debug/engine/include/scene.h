@@ -17,11 +17,6 @@ class Scene{
         
         void setCurrentLayer(const std::string layerName);
 
-        void addWildObject(Object* obj){
-            if(layers.getHandle().size()>0)
-                layers.addWildObjectToLayer(currentLayerName, obj);
-        }
-
         template<typename T>
         requires std::derived_from<T, Object>
         void addObject(std::string objName){
