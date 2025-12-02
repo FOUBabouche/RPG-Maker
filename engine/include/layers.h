@@ -28,7 +28,6 @@ class Layers{
         }
 
         template<typename T>
-        requires std::derived_from<T, Object>
         void addObjectToLayer(const std::string layerName, std::string objName){
             int count = 0;
             for(auto _obj : layers[layerName]){

@@ -5,6 +5,7 @@
 #include <tile.h>
 
 #include <vector>
+#include <iostream>
 
 class TileMap : public Object{
     public:
@@ -22,7 +23,7 @@ class TileMap : public Object{
         void setTile(sf::Vector2u gridPosition, const Tile& tile);
         void removeTile(sf::Vector2u gridPosition);
 
-        void start() override {};
+        void start() override {std::cout << "Tile map Init" << std::endl;};
         void update(float dt) override;
         void draw(sf::RenderTarget& target) override;
         void drawGrid(sf::RenderTarget& target, sf::Vector2f cameraPos, sf::Vector2f renderSize, float zoom);

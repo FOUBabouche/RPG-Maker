@@ -10,6 +10,8 @@
 #include <imgui-SFML.h>
 
 #include <iostream>
+#include <fstream>
+#include <string>
 
 SceneInspectorPanel::SceneInspectorPanel(std::string _name, Base_Editor* editor)
 {
@@ -25,6 +27,7 @@ void SceneInspectorPanel::update(float dt)
             ImGui::Text(engine->getCurrentScene()->getCurrentLayerName().c_str());
             
             static bool optionMenu = false;
+            static bool nameMenu = false;
             static bool mouseOnOptionMenu = false;
             static std::string objName = "";
 
@@ -62,6 +65,7 @@ void SceneInspectorPanel::update(float dt)
                                     optionMenu = false;
                                 }
                                 if(ImGui::MenuItem("New Object")){
+                                    nameMenu = true;
                                     optionMenu = false;
                                 }
                                 ImGui::EndMenu();

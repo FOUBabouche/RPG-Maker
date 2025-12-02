@@ -9,6 +9,7 @@ class RPGEngine : public Engine{
         ~RPGEngine() = default;
 
         void initObjects();
+        void initPluginObject();
 
         void start() override;
         void update(float dt) override;

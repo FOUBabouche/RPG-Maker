@@ -4,6 +4,8 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
+#include <windows.h>
+
 #include <concepts>
 #include <string>
 
@@ -11,12 +13,20 @@ class Object
 {
     public:
         Object() = default;
+        Object(std::string _name) : name(_name){};
         Object(Object& b){
             name = b.name;
             position = b.position;
             size = b.size;
+            isScripted = b.isScripted;
         }
-        virtual ~Object() = default;
+        Object(const Object& b){
+            name = b.name;
+            position = b.position;
+            size = b.size;
+            isScripted = b.isScripted;
+        }
+        ~Object() = default;
 
         virtual void start() = 0;
         virtual void update(float dt) = 0;
@@ -27,12 +37,21 @@ class Object
             name = b.name;
             position = b.position;
             size = b.size;
+            isScripted = b.isScripted;
+            return *this;
+        }
+        Object& operator=(const Object& b){
+            name = b.name;
+            position = b.position;
+            size = b.size;
+            isScripted = b.isScripted;
             return *this;
         }
     public:
         std::string name;
         sf::Vector2f position;
         sf::Vector2f size;
+        bool isScripted = false;
 };
 
 #endif

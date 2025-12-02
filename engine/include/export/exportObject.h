@@ -6,6 +6,8 @@
 class ObjectExporter{
     public:
         static void Export(std::string className);
+    public:
+        static bool isFinish = false;
 };
 
 #endif

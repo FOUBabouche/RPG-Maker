@@ -47,8 +47,16 @@ void Scene::addlayer(std::string layerName)
 void Scene::start()
 {
     for (auto layer : layers.getHandle())
-        for (auto obj : layer.second)
-            obj->start();
+        for (auto &obj : layer.second)
+            if(obj->isScripted){
+                for(auto &objPlug : objPlugins)
+                    if(objPlug.getNameObject(obj) == obj->name){
+                        objPlug.startObject(obj);
+                        break;
+                    }
+            }
+            else 
+                obj->start();
 }
 
 void Scene::update(float dt)
@@ -56,7 +64,15 @@ void Scene::update(float dt)
     for (auto layer : layers.getHandle())
         for (auto obj : layer.second)
                 if(typeid(obj) != typeid(Camera))
-                    obj->update(dt);
+                    if(obj->isScripted){
+                        for(auto objPlug : objPlugins)
+                            if(objPlug.getNameObject(obj) == obj->name){
+                                objPlug.updateObject(obj, dt);
+                                break;
+                            }
+                    }
+                    else 
+                        obj->update(dt);
 }
 
 void Scene::render(sf::RenderTarget &target)
@@ -64,8 +80,14 @@ void Scene::render(sf::RenderTarget &target)
     for (auto layer : layers.getHandle())
         for (auto obj : layer.second)
             if(typeid(*obj).name() != typeid(Camera).name()){
-                obj->draw(target);
+                if(obj->isScripted){
+                        for(auto objPlug : objPlugins)
+                            if(objPlug.getNameObject(obj) == obj->name){
+                                objPlug.drawObject(obj, target);
+                                break;
+                            }
+                    }
+                    else 
+                        obj->draw(target);
             }
-            else
-                std::cout << "Camera" << std::endl;
 }

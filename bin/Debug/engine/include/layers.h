@@ -16,9 +16,24 @@ class Layers{
         std::map<std::string, std::vector<Object *>>& getHandle(void);
 
         void addLayer(const std::string& name);
+
+        void addWildObjectToLayer(const std::string layerName, Object* obj){
+            if(!obj)return;
+            int count = 0;
+            for(auto _obj : layers[layerName]){
+                if(_obj->name == obj->name) count++;
+            }
+            if(count>0) obj->name += ("("+std::to_string(count)+")");
+            layers[layerName].push_back(obj);
+        }
+
         template<typename T>
-        requires std::derived_from<T, Object>
         void addObjectToLayer(const std::string layerName, std::string objName){
+            int count = 0;
+            for(auto _obj : layers[layerName]){
+                if(_obj->name == objName) count++;
+            }
+            if(count>0) objName += ("("+std::to_string(count)+")");
             layers[layerName].push_back(new T(objName));
         }
 

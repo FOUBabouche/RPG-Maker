@@ -6,12 +6,34 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 
 #include <windows.h>
-
-typedef Object* (*CreateFunc)();
+#include <filesystem>
 
 void RPGEngine::initObjects()
 {
     getCurrentScene()->addObject<TileMap>("TileMap");
+}
+
+void RPGEngine::initPluginObject(){
+    for(auto file : std::filesystem::directory_iterator("./Project/export/dlls/Debug")){
+        if(file.path().extension() == ".dll"){
+            HMODULE plugin = LoadLibraryA(file.path().string().c_str());
+            ObjectPlugin objPlugin = {
+                plugin,
+                (CreateFunc)GetProcAddress(plugin, "CreateObject"),
+                (DeleteFunc)GetProcAddress(plugin, "DestroyObject"),
+                (GetNameFunc)GetProcAddress(plugin, "GetNameObject"),
+                (StartFunc)GetProcAddress(plugin, "StartObject"),
+                (UpdateFunc)GetProcAddress(plugin, "UpdateObject"),
+                (DrawFunc)GetProcAddress(plugin, "DrawObject")
+            };
+            if(objPlugin.createObject == nullptr){
+                FreeLibrary(plugin);
+                continue;
+            }
+            getCurrentScene()->addObjectPlugin(objPlugin);
+            getCurrentScene()->addWildObject(objPlugin.createObject());
+        }
+    }
 }
 
 void RPGEngine::start()
@@ -20,26 +42,15 @@ void RPGEngine::start()
     setCurrentScene("First Scene");
     getCurrentScene()->addlayer("Layer 1");
     getCurrentScene()->setCurrentLayer("Layer 1");
-    initObjects();
-    // Exemple de load entity
     ObjectExporter::Export("Player");
-    if(HMODULE lib = LoadLibraryA(".\\Project\\export\\dlls\\Debug\\Player.dll")){
-        if(CreateFunc create = (CreateFunc)GetProcAddress(lib, "CreateObject"))
-        {
-            getCurrentScene()->addWildObject(create());
-        }
-    }
-    //////////////////////////////////////
-    for(auto &layer : getCurrentScene()->getLayers().getHandle()){
-        for(auto& obj : layer.second)
-            obj->start();
-    }
+    initObjects();
+    if(ObjectExporter::isFinish){
+        initPluginObject();
+    } 
+    getCurrentScene()->start();
 }
 
 void RPGEngine::update(float dt)
 {
-    for(auto &layer : getCurrentScene()->getLayers().getHandle()){
-        for(auto& obj : layer.second)
-            obj->update(dt);
-    }
+    getCurrentScene()->update(dt);
 }

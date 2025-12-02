@@ -3,6 +3,8 @@
 
 #include <layers.h>
 
+#include <export/objectPlugin.h>
+
 class Scene{
     public:
         Scene() = default;
@@ -17,13 +19,16 @@ class Scene{
         
         void setCurrentLayer(const std::string layerName);
 
+        void addObjectPlugin(ObjectPlugin objPlug){
+            objPlugins.push_back(objPlug);
+        }
+
         void addWildObject(Object* obj){
             if(layers.getHandle().size()>0)
                 layers.addWildObjectToLayer(currentLayerName, obj);
         }
 
         template<typename T>
-        requires std::derived_from<T, Object>
         void addObject(std::string objName){
             if(layers.getHandle().size()>0)
                 layers.addObjectToLayer<T>(currentLayerName, objName);
@@ -48,6 +53,7 @@ class Scene{
     private:
         std::string m_name;
         Layers layers;
+        std::vector<ObjectPlugin> objPlugins;
         std::string currentLayerName = "";
 };
 
