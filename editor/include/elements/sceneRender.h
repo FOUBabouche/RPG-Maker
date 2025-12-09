@@ -19,6 +19,8 @@ class SceneRender : public Element{
         SceneRender(const SceneRender& render);
         ~SceneRender();
 
+        void setCurrentShader(sf::Shader* shad);
+
         sf::Vector2f getMousePositionInScene(Camera& camera);
 
         sf::RenderTexture* getHandle(void);
@@ -30,8 +32,10 @@ class SceneRender : public Element{
         SceneRender& operator=(const SceneRender& render);
     private:
         sf::RenderTexture* m_renderer = nullptr;
+        sf::RenderTexture* m_shader_renderer = nullptr;
         sf::Vector2f m_rendererPosition;
         BaseEngine* ref_engine = nullptr;
+        sf::Shader* currentUsedShader = nullptr;
 };
 
 #endif
