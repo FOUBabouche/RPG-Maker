@@ -11,6 +11,7 @@
 #include <elements/shaderEditor.h>
 
 // Engine
+
 #include <tilemap.h>
 #include <camera.h>
 
@@ -32,6 +33,7 @@ Editor::~Editor()
 
 Editor::Editor(Engine *engine)
 {
+    autotile = AutoTile("./Project/assets/Textures/tileset.png");
     m_engineRef = engine;
 }
 
@@ -123,6 +125,8 @@ void Editor::update(float dt){
                                                     static_cast<sf::Vector2f>(tileMap->getTileSize()), // Taille de la tile
                                                     getElement<BrushPanel>("BrushPanel")->currentAnimatedTile().getUVs(), 
                                                     getElement<BrushPanel>("BrushPanel")->currentAnimatedTile().getTextureRef()));
+                    }else if(getElement<BrushPanel>("BrushPanel")->getTileType() == TILE_TYPE::TRANSPARENT_TILE){
+                        autotile.addTile(tileMap, static_cast<sf::Vector2i>(gridPos));
                     }
                 }
             } 
