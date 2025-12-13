@@ -9,6 +9,7 @@
 #include <elements/projectFileExplorer.h>
 #include <elements/sceneManagerPanel.h>
 #include <elements/shaderEditor.h>
+#include <elements/dialogPanel.h>
 
 // Engine
 #include <tilemap.h>
@@ -176,6 +177,7 @@ void Editor::registerElements()
     addElement(new ProjectFileExplorer("File Explorer", this));
     addElement(new SceneManagerPanel("Scene Manager", this));
     addElement(new ShaderEditor("Shader Editor", this, "Project/assets/shaders"));
+    addElement(new DialogPanel("DialogPanel", this));
     Debug::Log("- All Texture Register");
 }
 
