@@ -84,20 +84,25 @@ void SceneRender::setEngine(BaseEngine *engine)
 void SceneRender::update(float dt)
 {
     m_renderer->clear(sf::Color::Black);
-    if(m_shader_renderer && currentUsedShader){
-        sf::Sprite shaderBuffer(m_shader_renderer->getTexture());
-        m_shader_renderer->resize(m_renderer->getSize());
-        currentUsedShader->setUniform("iTime", dt);
-        currentUsedShader->setUniform("iResolution", sf::Vector2i{(int)m_shader_renderer->getSize().x,
-                                                                  (int)m_shader_renderer->getSize().y});
-        m_renderer->draw(shaderBuffer, currentUsedShader);
-    }
     ref_engine->render(*m_renderer);
     if(auto engine = static_cast<Editor*>(m_editor)->getEngine()){
         if(auto tilemap = engine->getCurrentScene()->getObject<TileMap>("TileMap")){
             Camera& camera = static_cast<Editor*>(m_editor)->getCamera();
             tilemap->drawGrid(*m_renderer, camera.position, m_rendererPosition, camera.getZoom());
+            
         }
+    }
+    sf::Sprite shaderBuffer(m_shader_renderer->getTexture());
+    if(m_shader_renderer && currentUsedShader){
+        static float totalTime = 0;
+        totalTime+=dt;
+        m_shader_renderer->resize(m_renderer->getSize());
+        Camera& camera = static_cast<Editor*>(m_editor)->getCamera();
+        shaderBuffer.setPosition(camera.getHandle().getCenter()-sf::Vector2f{camera.getHandle().getSize().x/2, camera.getHandle().getSize().y/2});
+        currentUsedShader->setUniform("iTime", totalTime);
+        currentUsedShader->setUniform("iResolution", sf::Vector2f{(float)m_shader_renderer->getSize().x,
+                                                                  (float)m_shader_renderer->getSize().y});
+        m_renderer->draw(shaderBuffer, currentUsedShader);
     }
     m_renderer->display();
 

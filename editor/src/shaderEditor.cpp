@@ -30,6 +30,12 @@ void ShaderEditor::update(float dt)
                 }
             }
         }
+        if(ImGui::Selectable("No Shader", false)){
+            currentShaderPath = "No Shader";
+            if(auto renderer = static_cast<Editor*>(m_editor)->getElement<SceneRender>("Renderer")){
+                renderer->setCurrentShader(nullptr);
+            }
+        }
         ImGui::EndCombo();
     }
 
