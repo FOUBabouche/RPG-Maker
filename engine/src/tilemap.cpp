@@ -45,6 +45,13 @@ sf::Vector2u TileMap::getCoordToGridPos(sf::Vector2f mousePos)
 	return sf::Vector2u(std::floor(mousePos.x /  m_tileSize.x), std::floor(mousePos.y / m_tileSize.y));
 }
 
+Tile* TileMap::getTile(const sf::Vector2i &gridPos){
+	if(gridPos.x < 0 || gridPos.y < 0) return nullptr;
+	if(gridPos.x >= m_tiles.size()) return nullptr;
+	if(gridPos.y >= m_tiles[gridPos.x].size()) return nullptr;
+	return &m_tiles[gridPos.x][gridPos.y];
+}
+
 void TileMap::setTile(sf::Vector2u gridPosition, const Tile &tile)
 {
 	if (m_tiles.size() <= gridPosition.x) m_tiles.resize(gridPosition.x + 1);

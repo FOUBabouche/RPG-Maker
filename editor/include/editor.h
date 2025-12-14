@@ -6,6 +6,8 @@
 #include <engine.h>
 #include <element.h>
 
+#include <autoTile.h>
+
 #include <SFML/Graphics/Texture.hpp>
 
 #include <unordered_map>
@@ -49,6 +51,8 @@ class Editor : public Base_Editor{
         Camera m_camera;
         std::vector<Element*> m_elements;
         Engine* m_engineRef;
+
+        AutoTile autotile;
 
         Tools m_tool = Tools::Select;
 
