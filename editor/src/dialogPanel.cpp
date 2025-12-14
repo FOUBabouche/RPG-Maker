@@ -20,52 +20,62 @@ DialogPanel::~DialogPanel(){
 void DialogPanel::update(float dt){
     ImGui::Begin("Dialog");
 
-    for(auto dialog : saveDialog){
-        if(!dialog->ownerName.empty()){
+    ImGui::SeparatorText("Dialogs");
+
+    for(auto dialogList : saveDialog){
+        if(ImGui::Button(currentDialogList->name.c_str())){
+            currentDialogList = dialogList;
+        }
+        ImGui::SameLine();
+    }
+    ImGui::NewLine();
+
+    ImGui::SeparatorText("Creator");
+
+    if(currentDialogList){
+        for(auto dialog : currentDialogList->dialogs){
             if(ImGui::Button(dialog->ownerName.c_str())){
                 currentDialog = dialog;
             }
             ImGui::SameLine();
         }
-    }
+        ImGui::NewLine();
 
-    if(saveDialog.size() > 0){
-        if(ImGui::InputText("Owner Name", ownerName, 256, ImGuiInputTextFlags_EnterReturnsTrue)){
-            currentDialog->ownerName = ownerName;
-        }
+        ImGui::SeparatorText("Properties");
 
-        if(ImGui::InputText("Content", content, 1024)){
-            currentDialog->content = content;
-        }
-
-        if(!currentDialog->next){
-            if(ImGui::Button("Add next Dialog")){
-                currentDialog->next = new Dialog;
-                currentDialog= currentDialog->next;
-                strcpy(ownerName, "");
-                strcpy(content, "");
+        if(currentDialog){
+            if(ImGui::InputText("Owner Name", ownerName, 256)){
+                currentDialog->ownerName = ownerName;
             }
-        }else{
-            if(ImGui::Button("Go to Next Dialog")){
-                currentDialog = currentDialog->next;
-                strcpy(ownerName, currentDialog->ownerName.c_str());
-                strcpy(content, currentDialog->content.c_str());
+
+            if(ImGui::InputText("Content", content, 1024)){
+                currentDialog->content = content;
             }
         }
 
-
-        if(ImGui::Button("Save Dialog")){
-            currentDialog->ownerName = ownerName;
-            currentDialog->content = content;
+        if(ImGui::Button("Create new Dialog")){
+            currentDialog = new Dialog;
+            strcpy(ownerName, "");
+            strcpy(content, "");
         }
         ImGui::SameLine();
+        if(ImGui::Button("Save")){
+            currentDialogList->dialogs.push_back(currentDialog);
+        }
     }
 
-    if(ImGui::Button("Create new Dialog")){
-        saveDialog.push_back(new Dialog);
-        currentDialog = saveDialog[saveDialog.size()-1];
+    if(ImGui::InputText("Dialog List Name", dialogListName, 256)){
+        currentDialogList->name = dialogListName;
+    }
+
+    if(ImGui::Button("Create new DialogList")){
+        currentDialogList = new DialogList;
         strcpy(ownerName, "");
         strcpy(content, "");
+    }
+    ImGui::SameLine();
+    if(ImGui::Button("Save DialogList")){
+        saveDialog.push_back(currentDialogList);
     }
 
     ImGui::End();

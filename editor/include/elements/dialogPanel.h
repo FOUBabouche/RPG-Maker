@@ -15,10 +15,12 @@ class DialogPanel : public Element{
 
         void update(float dt) override;
     private:
+        char dialogListName[256] = "";
         char  ownerName[256] = "";
         char content[1024] = "";
-        Dialog* currentDialog;
-        std::vector<Dialog*> saveDialog;
+        Dialog* currentDialog = nullptr;
+        DialogList* currentDialogList = nullptr;
+        std::vector<DialogList*> saveDialog;
 };
 
 #endif
