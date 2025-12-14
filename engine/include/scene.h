@@ -3,8 +3,6 @@
 
 #include <layers.h>
 
-#include <export/objectPlugin.h>
-
 class Scene{
     public:
         Scene() = default;
@@ -18,10 +16,6 @@ class Scene{
         std::vector<Object*> getCurrentLayer(void);
         
         void setCurrentLayer(const std::string layerName);
-
-        void addObjectPlugin(ObjectPlugin objPlug){
-            objPlugins.push_back(objPlug);
-        }
 
         void addWildObject(Object* obj){
             if(layers.getHandle().size()>0)
@@ -53,7 +47,6 @@ class Scene{
     private:
         std::string m_name;
         Layers layers;
-        std::vector<ObjectPlugin> objPlugins;
         std::string currentLayerName = "";
 };
 
