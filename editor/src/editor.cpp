@@ -111,7 +111,7 @@ void Editor::update(float dt){
         }
     }
 
-    if(const auto tileMap = m_engineRef->getCurrentScene()->getObject<TileMap>("TileMap")){ // Recupere la tilemap si elle existe dans la scene
+    if(const auto& tileMap = m_engineRef->getCurrentScene()->getObject<TileMap>("TileMap")){ // Recupere la tilemap si elle existe dans la scene
         if(ImGui::IsMouseClicked(0, true)){ // Si le bouton gauche est appuyer 
             if(m_tool==Tools::Paint){ // Si on a le mode Paint d'actif
                 if(sf::Vector2u gridPos = tileMap->getCoordToGridPos(mousePos); mousePos.x > 0 && mousePos.y > 0){ // Prend la position de la souris sur la grid et si ses coordonees sont supperieur a {0, 0}
@@ -126,7 +126,9 @@ void Editor::update(float dt){
                                                     getElement<BrushPanel>("BrushPanel")->currentAnimatedTile().getUVs(), 
                                                     getElement<BrushPanel>("BrushPanel")->currentAnimatedTile().getTextureRef()));
                     }else if(getElement<BrushPanel>("BrushPanel")->getTileType() == TILE_TYPE::TRANSPARENT_TILE){
-                        autotile.addTile(tileMap, static_cast<sf::Vector2i>(gridPos));
+                        TileMap* buf = tileMap;
+                        sf::Vector2i iPos = static_cast<sf::Vector2i>(gridPos);
+                        autotile.addTile(buf, iPos);
                     }
                 }
             } 

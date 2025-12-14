@@ -22,7 +22,7 @@ class TileMap : public Object{
         void setTile(sf::Vector2u gridPosition, const Tile& tile);
         void removeTile(sf::Vector2u gridPosition);
 
-        Tile* getTile(sf::Vector2i gridPos);
+        Tile* getTile(const sf::Vector2i& gridPos);
 
         void start() override {};
         void update(float dt) override;

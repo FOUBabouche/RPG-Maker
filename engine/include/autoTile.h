@@ -11,9 +11,9 @@ class AutoTile{
         AutoTile(const std::filesystem::path& texturePath);
         ~AutoTile() = default;
 
-        unsigned int getMask(TileMap* tilemap, sf::Vector2i gridPos);
+        unsigned int getMask(TileMap*& tilemap, sf::Vector2i gridPos);
 
-        void addTile(TileMap* tilemap, sf::Vector2i gridPos);
+        void addTile(TileMap*& tilemap, sf::Vector2i gridPos);
     private:
         sf::Texture* texture;
         std::unordered_map<unsigned int, sf::Vector2i> possibilities = {
