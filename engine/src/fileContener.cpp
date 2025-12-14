@@ -35,6 +35,6 @@ void FileContener::show(){
 
 FileContener& FileContener::operator>>(FileContener& b){
     for (auto path : m_contentPaths)
-        addFile(path);
+        b.addFile(path);
     return b;
 }

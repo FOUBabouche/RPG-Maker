@@ -8,11 +8,14 @@
 #include <imgui.h>
 #include <imgui-SFML.h>
 #include <imgui_sfml_fix.h>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Shader.hpp>
 #include <iostream>
 
 SceneRender::SceneRender()
 {
     m_renderer = new sf::RenderTexture;
+    m_shader_renderer = new sf::RenderTexture;
 }
 
 SceneRender::SceneRender(std::string _name, BaseEngine *engine, Base_Editor* editor)
@@ -21,6 +24,7 @@ SceneRender::SceneRender(std::string _name, BaseEngine *engine, Base_Editor* edi
     m_editor = editor;
     ref_engine = engine;
     m_renderer = new sf::RenderTexture;
+    m_shader_renderer = new sf::RenderTexture;
 }
 
 
@@ -29,17 +33,24 @@ SceneRender::SceneRender(BaseEngine *engine, Base_Editor* editor)
     ref_engine = engine;
     m_editor = editor;
     m_renderer = new sf::RenderTexture;
+    m_shader_renderer = new sf::RenderTexture;
 }
 
 SceneRender::SceneRender(const SceneRender &render)
 {
     m_renderer = render.m_renderer;
     ref_engine = render.ref_engine;
+    m_shader_renderer = render.m_shader_renderer;
 }
 
 SceneRender::~SceneRender()
 {
+    delete m_shader_renderer;
     delete m_renderer;
+}
+
+void SceneRender::setCurrentShader(sf::Shader* shader){
+    currentUsedShader = shader;
 }
 
 sf::RenderTexture* SceneRender::getHandle(void){
@@ -73,6 +84,14 @@ void SceneRender::setEngine(BaseEngine *engine)
 void SceneRender::update(float dt)
 {
     m_renderer->clear(sf::Color::Black);
+    if(m_shader_renderer && currentUsedShader){
+        sf::Sprite shaderBuffer(m_shader_renderer->getTexture());
+        m_shader_renderer->resize(m_renderer->getSize());
+        currentUsedShader->setUniform("iTime", dt);
+        currentUsedShader->setUniform("iResolution", sf::Vector2i{(int)m_shader_renderer->getSize().x,
+                                                                  (int)m_shader_renderer->getSize().y});
+        m_renderer->draw(shaderBuffer, currentUsedShader);
+    }
     ref_engine->render(*m_renderer);
     if(auto engine = static_cast<Editor*>(m_editor)->getEngine()){
         if(auto tilemap = engine->getCurrentScene()->getObject<TileMap>("TileMap")){
@@ -97,5 +116,6 @@ SceneRender &SceneRender::operator=(const SceneRender &render)
     std::cout << render.m_renderer << std::endl;
     m_renderer = render.m_renderer;
     ref_engine = render.ref_engine;
+    m_shader_renderer = render.m_shader_renderer;
     return *this;
 }
