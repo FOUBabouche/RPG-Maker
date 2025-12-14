@@ -126,7 +126,7 @@ void Editor::update(float dt){
                                                     static_cast<sf::Vector2f>(tileMap->getTileSize()), // Taille de la tile
                                                     getElement<BrushPanel>("BrushPanel")->currentAnimatedTile().getUVs(), 
                                                     getElement<BrushPanel>("BrushPanel")->currentAnimatedTile().getTextureRef()));
-                    }else if(getElement<BrushPanel>("BrushPanel")->getTileType() == TILE_TYPE::TRANSPARENT_TILE){
+                    }else if(getElement<BrushPanel>("BrushPanel")->getTileType() == TILE_TYPE::AUTO_TILE){
                         TileMap* buf = tileMap;
                         sf::Vector2i iPos = static_cast<sf::Vector2i>(gridPos);
                         autotile.addTile(buf, iPos);

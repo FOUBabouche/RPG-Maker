@@ -78,7 +78,7 @@ void BrushPanel::update(float dt)
     ImGui::Begin("Brush");
     ImGui::SeparatorText("Properties");
     if(ImGui::BeginCombo("Brush Type", EnumToString(tileType).c_str())){
-        for (int i = 0; i < static_cast<int>(TILE_TYPE::TRANSPARENT_TILE)+1; i++)
+        for (int i = 0; i < static_cast<int>(TILE_TYPE::END); i++)
         {
             bool isSelected = (tileType == static_cast<TILE_TYPE>(i));
             if(ImGui::Selectable(EnumToString(static_cast<TILE_TYPE>(i)).c_str(), &isSelected)){

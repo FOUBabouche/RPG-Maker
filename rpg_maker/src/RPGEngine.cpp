@@ -1,9 +1,15 @@
+// Engine
 #include <RPGEngine.h>
 #include <camera.h>
 #include <tilemap.h>
 
+// Scripting API
+
+
+// SFML
 #include <SFML/Graphics/RectangleShape.hpp>
 
+// STL
 #include <windows.h>
 #include <filesystem>
 
@@ -14,6 +20,7 @@ void RPGEngine::initObjects()
 
 void RPGEngine::start()
 {
+    
     addScene("First Scene");
     setCurrentScene("First Scene");
     getCurrentScene()->addlayer("Layer 1");
