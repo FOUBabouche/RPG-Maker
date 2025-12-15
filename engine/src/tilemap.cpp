@@ -52,6 +52,14 @@ Tile* TileMap::getTile(const sf::Vector2i &gridPos){
 	return &m_tiles[gridPos.x][gridPos.y];
 }
 
+bool TileMap::tileIsHere(const sf::Vector2i &gridPos)
+{
+	if(gridPos.x < 0 || gridPos.y < 0) return false;
+	if(gridPos.x >= m_tiles.size()) return false;
+	if(gridPos.y >= m_tiles[gridPos.x].size()) return false;
+    return m_tiles[gridPos.x][gridPos.y].isFilled();
+}
+
 void TileMap::setTile(sf::Vector2u gridPosition, const Tile &tile)
 {
 	if (m_tiles.size() <= gridPosition.x) m_tiles.resize(gridPosition.x + 1);

@@ -5,7 +5,7 @@ find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System)
 include(FetchContent)
 
 FetchContent_Declare(Scripting_API                           # name of the content
-  GIT_REPOSITORY https://github.com/FOUBabouche/ScriptingAPI.git  # the repository
+  GIT_REPOSITORY https://github.com/Zero-Foo/ScriptingAPI-SFML.git  # the repository
   GIT_TAG v1.0
 )
 

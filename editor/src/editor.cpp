@@ -130,6 +130,10 @@ void Editor::update(float dt){
                         TileMap* buf = tileMap;
                         sf::Vector2i iPos = static_cast<sf::Vector2i>(gridPos);
                         autotile.addTile(buf, iPos);
+                        if(tileMap->tileIsHere({iPos.x+1, iPos.y})) autotile.addTile(buf, {iPos.x+1, iPos.y});
+                        if(tileMap->tileIsHere({iPos.x-1, iPos.y})) autotile.addTile(buf, {iPos.x-1, iPos.y});
+                        if(tileMap->tileIsHere({iPos.x, iPos.y+1})) autotile.addTile(buf, {iPos.x, iPos.y+1});
+                        if(tileMap->tileIsHere({iPos.x, iPos.y-1})) autotile.addTile(buf, {iPos.x, iPos.y-1});
                     }
                 }
             } 
