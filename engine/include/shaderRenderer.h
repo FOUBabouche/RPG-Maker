@@ -15,6 +15,7 @@ class ShaderRenderer{
         ShaderRenderer(Object* object);
         
         void addShader(const std::filesystem::path& shaderPath);
+        void removeAll();
         void display(bool state);
 
         void increaseTotalTime(float value);
@@ -24,7 +25,7 @@ class ShaderRenderer{
     private:
         float totalTime = 0;
         Object* holder;
-        std::vector<sf::Shader> shaders;
+        std::vector<sf::Shader*> shaders;
         bool isVisible = false;
 };
 

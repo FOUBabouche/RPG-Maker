@@ -10,7 +10,6 @@ ShaderEditor::ShaderEditor(std::string _name, Base_Editor* editor, const std::fi
     name = _name;
     m_editor = editor;
     shaderFolder = FileContener(path);
-    shader = new sf::Shader;
     if(shaderFolder.getContentPaths().size()> 0)
         currentShaderPath = shaderFolder.getContentPaths()[0];
 }
@@ -24,16 +23,15 @@ void ShaderEditor::update(float dt)
         for(auto shaderPath : shaderFolder.getContentPaths()){
             if(ImGui::Selectable(shaderPath.filename().string().c_str(), false)){
                 currentShaderPath = shaderPath;
-                shader->loadFromFile(currentShaderPath, sf::Shader::Type::Fragment);
                 if(auto renderer = static_cast<Editor*>(m_editor)->getElement<SceneRender>("Renderer")){
-                    renderer->setCurrentShader(shader);
+                    renderer->setCurrentShader(currentShaderPath);
                 }
             }
         }
         if(ImGui::Selectable("No Shader", false)){
             currentShaderPath = "No Shader";
             if(auto renderer = static_cast<Editor*>(m_editor)->getElement<SceneRender>("Renderer")){
-                renderer->setCurrentShader(nullptr);
+                renderer->removeAllShader();
             }
         }
         ImGui::EndCombo();

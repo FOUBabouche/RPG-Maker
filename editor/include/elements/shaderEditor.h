@@ -16,7 +16,6 @@ class ShaderEditor : public Element{
     private:
         std::filesystem::path currentShaderPath;
         FileContener shaderFolder;
-        sf::Shader* shader = nullptr;
 };
 
 #endif

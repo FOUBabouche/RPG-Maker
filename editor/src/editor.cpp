@@ -139,7 +139,17 @@ void Editor::update(float dt){
             } 
             if(m_tool==Tools::Erase){
                 if(sf::Vector2u gridPos = tileMap->getCoordToGridPos(mousePos); mousePos.x > 0 && mousePos.y > 0) // Prend la position de la souris sur la grid et si ses coordonees sont supperieur a {0, 0}
+                {
                     tileMap->removeTile(gridPos);
+                    if(getElement<BrushPanel>("BrushPanel")->getTileType() == TILE_TYPE::AUTO_TILE){
+                        TileMap* buf = tileMap;
+                        sf::Vector2i iPos = static_cast<sf::Vector2i>(gridPos);
+                        if(tileMap->tileIsHere({iPos.x+1, iPos.y})) autotile.addTile(buf, {iPos.x+1, iPos.y});
+                        if(tileMap->tileIsHere({iPos.x-1, iPos.y})) autotile.addTile(buf, {iPos.x-1, iPos.y});
+                        if(tileMap->tileIsHere({iPos.x, iPos.y+1})) autotile.addTile(buf, {iPos.x, iPos.y+1});
+                        if(tileMap->tileIsHere({iPos.x, iPos.y-1})) autotile.addTile(buf, {iPos.x, iPos.y-1});
+                    }
+                }
             }
         }
     }

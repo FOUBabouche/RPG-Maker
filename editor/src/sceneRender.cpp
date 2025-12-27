@@ -25,6 +25,7 @@ SceneRender::SceneRender(std::string _name, BaseEngine *engine, Base_Editor* edi
     ref_engine = engine;
     m_renderer = new sf::RenderTexture;
     m_shader_renderer = new sf::RenderTexture;
+    shaderRenderer = ShaderRenderer(&static_cast<Editor*>(editor)->getCamera());
 }
 
 
@@ -34,6 +35,7 @@ SceneRender::SceneRender(BaseEngine *engine, Base_Editor* editor)
     m_editor = editor;
     m_renderer = new sf::RenderTexture;
     m_shader_renderer = new sf::RenderTexture;
+    shaderRenderer = ShaderRenderer(&static_cast<Editor*>(editor)->getCamera());
 }
 
 SceneRender::SceneRender(const SceneRender &render)
@@ -49,8 +51,13 @@ SceneRender::~SceneRender()
     delete m_renderer;
 }
 
-void SceneRender::setCurrentShader(sf::Shader* shader){
-    currentUsedShader = shader;
+void SceneRender::setCurrentShader(const std::filesystem::path& shaderPath){
+    shaderRenderer.addShader(shaderPath);
+}
+
+void SceneRender::removeAllShader()
+{
+    shaderRenderer.removeAll();
 }
 
 sf::RenderTexture* SceneRender::getHandle(void){
@@ -83,6 +90,7 @@ void SceneRender::setEngine(BaseEngine *engine)
 
 void SceneRender::update(float dt)
 {
+    shaderRenderer.increaseTotalTime(dt);
     m_renderer->clear(sf::Color::Black);
     ref_engine->render(*m_renderer);
     if(auto engine = static_cast<Editor*>(m_editor)->getEngine()){
@@ -92,18 +100,7 @@ void SceneRender::update(float dt)
             
         }
     }
-    sf::Sprite shaderBuffer(m_shader_renderer->getTexture());
-    if(m_shader_renderer && currentUsedShader){
-        static float totalTime = 0;
-        totalTime+=dt;
-        m_shader_renderer->resize(m_renderer->getSize());
-        Camera& camera = static_cast<Editor*>(m_editor)->getCamera();
-        shaderBuffer.setPosition(camera.getHandle().getCenter()-sf::Vector2f{camera.getHandle().getSize().x/2, camera.getHandle().getSize().y/2});
-        currentUsedShader->setUniform("iTime", totalTime);
-        currentUsedShader->setUniform("iResolution", sf::Vector2f{(float)m_shader_renderer->getSize().x,
-                                                                  (float)m_shader_renderer->getSize().y});
-        m_renderer->draw(shaderBuffer, currentUsedShader);
-    }
+    shaderRenderer.draw(*m_renderer);
     m_renderer->display();
 
     ImGui::Begin("Scene");
