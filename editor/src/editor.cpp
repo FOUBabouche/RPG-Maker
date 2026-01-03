@@ -10,6 +10,7 @@
 #include <elements/sceneManagerPanel.h>
 #include <elements/shaderEditor.h>
 #include <elements/dialogPanel.h>
+#include <saveManager.h>
 
 // Engine
 
@@ -77,6 +78,9 @@ void Editor::start()
         getElement<ToolSelector>("Tools")->getButton("PlayStopButton").setIcon((!isGamePlayed ? buttonsTextures["PlayButton"] : buttonsTextures["StopButton"]), 
                                                                                 {{0, 0}, {64, 64}}, 
                                                                                 {64, 64});
+    });
+    getElement<ToolSelector>("Tools")->getButton("SaveButton").setAction([&](){
+        SaveManager::save(m_engineRef->getCurrentScene()->getName(), m_engineRef->getCurrentScene());
     });
 
     m_camera.start();

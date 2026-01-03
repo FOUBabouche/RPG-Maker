@@ -18,13 +18,11 @@ class Object
             name = b.name;
             position = b.position;
             size = b.size;
-            isScripted = b.isScripted;
         }
         Object(const Object& b){
             name = b.name;
             position = b.position;
             size = b.size;
-            isScripted = b.isScripted;
         }
         ~Object() = default;
 
@@ -37,21 +35,18 @@ class Object
             name = b.name;
             position = b.position;
             size = b.size;
-            isScripted = b.isScripted;
             return *this;
         }
         Object& operator=(const Object& b){
             name = b.name;
             position = b.position;
             size = b.size;
-            isScripted = b.isScripted;
             return *this;
         }
     public:
         std::string name;
         sf::Vector2f position;
         sf::Vector2f size;
-        bool isScripted = false;
 };
 
 #endif

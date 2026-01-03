@@ -1,0 +1,28 @@
+{
+    "Contents": {
+        "Layers": {
+            "Layer 1": {
+                "Camera": {
+                    "position": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "size": {
+                        "x": 0.0,
+                        "y": 0.0
+                    }
+                },
+                "TileMap": {
+                    "position": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "size": {
+                        "x": 0.0,
+                        "y": 0.0
+                    }
+                }
+            }
+        }
+    }
+}

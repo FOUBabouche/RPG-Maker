@@ -53,7 +53,7 @@ void ProjectFileExplorer::update(float dt)
                 }
             }else{
                 if(ImGui::ImageButton(entry.path().filename().string().c_str(),*fileIcon, {64, 64})){
-                    std::system(("code "+entry.path().string()).c_str());
+                    std::system(("code \""+entry.path().string()+"\"").c_str());
                 }
             }
             ImGui::Text(entry.path().filename().string().c_str());
