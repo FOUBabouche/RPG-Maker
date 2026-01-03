@@ -12,7 +12,7 @@ namespace ImGui
     [[nodiscard]] ImTextureID convertGLTextureHandleToImTextureID(GLuint glTextureHandle)
     {
         ImTextureID textureID{};
-        std::memcpy(&textureID, &glTextureHandle, sizeof(GLuint));
+        memcpy(&textureID, &glTextureHandle, sizeof(GLuint));
         return textureID;
     }
 

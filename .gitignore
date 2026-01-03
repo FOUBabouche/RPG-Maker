@@ -1,5 +1,2 @@
-out
-out/
-bin/*/*.dll
-bin/*/*.exe
-bin/*/*.pdb
+build
+bin/*.exe

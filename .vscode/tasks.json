@@ -10,16 +10,7 @@
                 "id": "breakpoints-view-icon"
             },
             "type": "shell",
-            "command": "cmake --build out/build --config Debug",
-        },
-        {
-            "label": "Build Release",
-            "icon": {
-                "color": "terminal.ansiGreen",
-                "id": "debug-start"
-            },
-            "type": "shell",
-            "command": "cmake --build out/build --config Release; ./bin/Release/RPG-MAKER.exe",
+            "command": "ninja -C build",
         },
         {
             "label": "Build Cache ",
@@ -27,7 +18,14 @@
                 "id": "multi-diff-editor-label-icon"
             },
             "type": "shell",
-            "command": "if(Test-Path './out') {rm -r './out'}; if(Test-Path './out') {echo 'cant build cache'} else {cmake -G 'Visual Studio 17 2022' -S . -B out/build -DCMAKE_TOOLCHAIN_FILE=\"C:\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake\"}",
+            "command": "cmake",
+            "args": [
+                "-G Ninja",
+                "-S .",
+                "-B build",
+                "-DCMAKE_TOOLCHAIN_FILE='C:\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake'",
+                "-DVCPKG_TARGET_TRIPLET=x64-mingw-static"
+            ],
             "problemMatcher": [],
             "group": {
                 "kind": "build",

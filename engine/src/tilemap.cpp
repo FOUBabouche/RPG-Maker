@@ -66,10 +66,11 @@ void TileMap::removeTile(sf::Vector2u gridPosition)
 
 	Tile& tilePtr = m_tiles[gridPosition.x][gridPosition.y];
 	if (tilePtr.position == sf::Vector2f(gridPosition.x * tilePtr.size.x, gridPosition.y * tilePtr.size.x)) {
-		tilePtr = (Tile&)Tile();
+		Tile emptyTile;
+		tilePtr = emptyTile;
 		bool empty = true;
 		for (auto& t : m_tiles[position.x]) {
-			if (t != (Tile&)Tile()) { empty = false; break; }
+			if (t != emptyTile) { empty = false; break; }
 		}
 		if (empty) {
 			m_tiles[position.x].clear();

@@ -9,10 +9,10 @@
             "type": "cppvsdbg",
             "request": "launch",
             "preLaunchTask": "Build Debug",
-            "program": "${workspaceFolder}/bin/Debug/RPG-MAKER.exe",
+            "program": "${workspaceFolder}/bin/RPG-MAKER.exe",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/bin/Debug",
+            "cwd": "${workspaceFolder}/bin",
             "environment": [],
             "console": "internalConsole"
         }
