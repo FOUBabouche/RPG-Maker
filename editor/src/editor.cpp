@@ -9,6 +9,8 @@
 #include <elements/projectFileExplorer.h>
 #include <elements/sceneManagerPanel.h>
 #include <elements/shaderEditor.h>
+#include <elements/dialogPanel.h>
+#include <saveManager.h>
 
 // Engine
 
@@ -77,6 +79,9 @@ void Editor::start()
                                                                                 {{0, 0}, {64, 64}}, 
                                                                                 {64, 64});
     });
+    getElement<ToolSelector>("Tools")->getButton("SaveButton").setAction([&](){
+        SaveManager::save(m_engineRef->getCurrentScene()->getName(), m_engineRef->getCurrentScene());
+    });
 
     m_camera.start();
 }
@@ -125,16 +130,30 @@ void Editor::update(float dt){
                                                     static_cast<sf::Vector2f>(tileMap->getTileSize()), // Taille de la tile
                                                     getElement<BrushPanel>("BrushPanel")->currentAnimatedTile().getUVs(), 
                                                     getElement<BrushPanel>("BrushPanel")->currentAnimatedTile().getTextureRef()));
-                    }else if(getElement<BrushPanel>("BrushPanel")->getTileType() == TILE_TYPE::TRANSPARENT_TILE){
+                    }else if(getElement<BrushPanel>("BrushPanel")->getTileType() == TILE_TYPE::AUTO_TILE){
                         TileMap* buf = tileMap;
                         sf::Vector2i iPos = static_cast<sf::Vector2i>(gridPos);
                         autotile.addTile(buf, iPos);
+                        if(tileMap->tileIsHere({iPos.x+1, iPos.y})) autotile.addTile(buf, {iPos.x+1, iPos.y});
+                        if(tileMap->tileIsHere({iPos.x-1, iPos.y})) autotile.addTile(buf, {iPos.x-1, iPos.y});
+                        if(tileMap->tileIsHere({iPos.x, iPos.y+1})) autotile.addTile(buf, {iPos.x, iPos.y+1});
+                        if(tileMap->tileIsHere({iPos.x, iPos.y-1})) autotile.addTile(buf, {iPos.x, iPos.y-1});
                     }
                 }
             } 
             if(m_tool==Tools::Erase){
                 if(sf::Vector2u gridPos = tileMap->getCoordToGridPos(mousePos); mousePos.x > 0 && mousePos.y > 0) // Prend la position de la souris sur la grid et si ses coordonees sont supperieur a {0, 0}
+                {
                     tileMap->removeTile(gridPos);
+                    if(getElement<BrushPanel>("BrushPanel")->getTileType() == TILE_TYPE::AUTO_TILE){
+                        TileMap* buf = tileMap;
+                        sf::Vector2i iPos = static_cast<sf::Vector2i>(gridPos);
+                        if(tileMap->tileIsHere({iPos.x+1, iPos.y})) autotile.addTile(buf, {iPos.x+1, iPos.y});
+                        if(tileMap->tileIsHere({iPos.x-1, iPos.y})) autotile.addTile(buf, {iPos.x-1, iPos.y});
+                        if(tileMap->tileIsHere({iPos.x, iPos.y+1})) autotile.addTile(buf, {iPos.x, iPos.y+1});
+                        if(tileMap->tileIsHere({iPos.x, iPos.y-1})) autotile.addTile(buf, {iPos.x, iPos.y-1});
+                    }
+                }
             }
         }
     }
@@ -182,6 +201,7 @@ void Editor::registerElements()
     addElement(new ProjectFileExplorer("File Explorer", this));
     addElement(new SceneManagerPanel("Scene Manager", this));
     addElement(new ShaderEditor("Shader Editor", this, "Project/assets/shaders"));
+    addElement(new DialogPanel("DialogPanel", this));
     Debug::Log("- All Texture Register");
 }
 

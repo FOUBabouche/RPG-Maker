@@ -6,10 +6,10 @@ AutoTile::AutoTile(const std::filesystem::path& texturePath){
 
 unsigned int AutoTile::getMask(TileMap*& tilemap, sf::Vector2i gridPos){
     unsigned int mask = 0;
-    if(tilemap->getTile({gridPos.x+1, gridPos.y})) mask |= 0b0001; // Right
-    if(tilemap->getTile({gridPos.x-1, gridPos.y})) mask |= 0b0010; // Left
-    if(tilemap->getTile({gridPos.x, gridPos.y-1})) mask |= 0b0100; // Up
-    if(tilemap->getTile({gridPos.x, gridPos.y+1})) mask |= 0b1000; // Down
+    if(tilemap->tileIsHere({gridPos.x+1, gridPos.y})) mask |= 0b0001; // Right
+    if(tilemap->tileIsHere({gridPos.x-1, gridPos.y})) mask |= 0b0010; // Left
+    if(tilemap->tileIsHere({gridPos.x, gridPos.y-1})) mask |= 0b0100; // Up
+    if(tilemap->tileIsHere({gridPos.x, gridPos.y+1})) mask |= 0b1000; // Down
     return mask;
 }
 

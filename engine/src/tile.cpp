@@ -16,6 +16,7 @@ Tile::Tile(sf::Vector2f _position, sf::Vector2f _size, sf::IntRect uv, sf::Textu
     position = _position;
     size = _size;
     m_textureRef = texture;
+    m_isFilled = true;
     m_uvs.push_back(uv);
 }
 
@@ -26,6 +27,7 @@ Tile::Tile(sf::Vector2f _position, sf::Vector2f _size, std::vector<sf::IntRect> 
     size = _size;
     m_textureRef = texture;
     m_uvs = uv;
+    m_isFilled = true;
 }
 
 Tile::Tile(Tile &tile)
@@ -35,6 +37,7 @@ Tile::Tile(Tile &tile)
     size = tile.size;
     m_textureRef = tile.m_textureRef;
     m_uvs = tile.m_uvs;
+    m_isFilled = tile.m_isFilled;
 }
 
 Tile::Tile(const Tile& tile){
@@ -43,6 +46,7 @@ Tile::Tile(const Tile& tile){
     size = tile.size;
     m_textureRef = tile.m_textureRef;
     m_uvs = tile.m_uvs;
+    m_isFilled = tile.m_isFilled;
 }
 
 sf::Texture *Tile::getTextureRef(void) const
@@ -58,6 +62,11 @@ sf::IntRect Tile::getUV(void) const
 std::vector<sf::IntRect> Tile::getUVs(void) const
 {
     return m_uvs;
+}
+
+bool Tile::isFilled(void) const
+{
+    return m_isFilled;
 }
 
 void Tile::setTextureRef(sf::Texture *ref)
@@ -108,6 +117,7 @@ Tile &Tile::operator=(Tile &tile)
     size = tile.size;
     m_textureRef = tile.m_textureRef;
     m_uvs = tile.m_uvs;
+    m_isFilled = tile.m_isFilled;
     return *this;
 }
 
@@ -118,6 +128,7 @@ Tile &Tile::operator=(const Tile &tile)
     size = tile.size;
     m_textureRef = tile.m_textureRef;
     m_uvs = tile.m_uvs;
+    m_isFilled = tile.m_isFilled;
     return *this;
 }
 
@@ -127,7 +138,8 @@ bool Tile::operator==(Tile &tile)
         position == tile.position &&
         size == tile.size &&
         m_textureRef == tile.m_textureRef &&
-        m_uvs == tile.m_uvs
+        m_uvs == tile.m_uvs &&
+        m_isFilled != tile.m_isFilled
     );
 }
 
@@ -137,6 +149,7 @@ bool Tile::operator!=(Tile &tile)
         position != tile.position &&
         size != tile.size &&
         m_textureRef != tile.m_textureRef &&
-        m_uvs != tile.m_uvs
+        m_uvs != tile.m_uvs &&
+        m_isFilled != tile.m_isFilled
     );
 }

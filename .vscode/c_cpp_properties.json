@@ -4,6 +4,7 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**/*",
+                "${workspaceFolder}/*/*",
                 "${workspaceFolder}/*/**"
             ],
             "cppStandard": "c++23",

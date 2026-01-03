@@ -21,6 +21,8 @@ class Tile : public Object{
         sf::IntRect getUV(void) const;
         std::vector<sf::IntRect> getUVs(void) const;
 
+        bool isFilled(void) const;
+
         void setTextureRef(sf::Texture* ref);
         void setUV(std::vector<sf::IntRect>& uv);
 
@@ -38,6 +40,7 @@ class Tile : public Object{
         float animationSpeed = 1;
         float totalTime = 0;
         int currentUVIndex = 0;
+        bool m_isFilled = false;
 };
 
 #endif

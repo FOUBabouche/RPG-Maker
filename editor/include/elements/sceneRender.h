@@ -6,10 +6,12 @@
 #include <base_engine.h>
 //Engine
 #include <camera.h>
+#include <shaderRenderer.h>
 //External Lib
 #include <SFML/Graphics/RenderTexture.hpp>
 //STL
 #include <memory>
+#include <filesystem>
 
 class SceneRender : public Element{
     public:
@@ -19,7 +21,8 @@ class SceneRender : public Element{
         SceneRender(const SceneRender& render);
         ~SceneRender();
 
-        void setCurrentShader(sf::Shader* shad);
+        void setCurrentShader(const std::filesystem::path& shaderPath);
+        void removeAllShader();
 
         sf::Vector2f getMousePositionInScene(Camera& camera);
 
@@ -35,7 +38,7 @@ class SceneRender : public Element{
         sf::RenderTexture* m_shader_renderer = nullptr;
         sf::Vector2f m_rendererPosition;
         BaseEngine* ref_engine = nullptr;
-        sf::Shader* currentUsedShader = nullptr;
+        ShaderRenderer shaderRenderer;
 };
 
 #endif

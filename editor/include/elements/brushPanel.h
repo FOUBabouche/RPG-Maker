@@ -12,7 +12,8 @@ enum class TILE_TYPE{
     ANIMATED_TILE,
     COLLISION_TILE,
     TRANSPARENT_TILE,
-    AUTO_TILE
+    AUTO_TILE,
+    END
 };
 
 class BrushPanel : public Element{

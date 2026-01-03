@@ -47,7 +47,7 @@ void Scene::addlayer(std::string layerName)
 void Scene::start()
 {
     for (auto layer : layers.getHandle())
-        for (auto obj : layer.second)
+        for (auto &obj : layer.second)
             obj->start();
 }
 
@@ -66,6 +66,4 @@ void Scene::render(sf::RenderTarget &target)
             if(typeid(*obj).name() != typeid(Camera).name()){
                 obj->draw(target);
             }
-            else
-                std::cout << "Camera" << std::endl;
 }
