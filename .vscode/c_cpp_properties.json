@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**/*",
                 "${workspaceFolder}/*/*",
-                "${workspaceFolder}/*/**"
+                "${workspaceFolder}/*/**",
+                "C:\\vcpkg\\installed\\x64-mingw-static\\include",
             ],
             "cppStandard": "c++23",
             "windowsSdkVersion": "10.0.26100.0",
