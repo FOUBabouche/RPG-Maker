@@ -20,7 +20,15 @@ void ScriptCreator::update(float dt)
     ImGui::InputText("Name", scriptName, 256);
     
     if(ImGui::Button("Create")){
-        Script script(std::string(scriptName), nullptr);
+        Script script(scriptName, static_cast<Editor*>(m_editor)->getProject());
+        script.create()
+                .registerClass(scriptName)
+                .addInclude("object.h")
+                .addMethodeToClass(scriptName,"start()")
+                .addMethodeToClass(scriptName,"update(float dt)")
+                .addMethodeToClass(scriptName,"draw(sf::RenderTarget& target)")
+                .build();
+        script.prepareToExport();
     }
 
     ImGui::End();

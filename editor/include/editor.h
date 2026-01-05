@@ -10,6 +10,8 @@
 
 #include <SFML/Graphics/Texture.hpp>
 
+#include <project.h>
+
 #include <unordered_map>
 #include <vector>
 
@@ -38,6 +40,7 @@ class Editor : public Base_Editor{
 
         Engine* getEngine(void) const;
         Camera& getCamera(void);
+        Project* getProject(void) const;
 
         void start() override;
         void update(float dt) override;
@@ -48,6 +51,7 @@ class Editor : public Base_Editor{
         void registerToolButtons();
 
     private:
+        Project *project = nullptr;
         Camera m_camera;
         std::vector<Element*> m_elements;
         Engine* m_engineRef;

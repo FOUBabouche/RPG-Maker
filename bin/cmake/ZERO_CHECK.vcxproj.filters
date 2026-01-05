@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\babal\source\repos\RPG-Maker\bin\cmake\CMakeFiles\9b7e8a27c6917a21c856e9461ed6f211\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{9C14B1CC-8BC7-3460-97E5-9CEE64868803}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\babal\source\repos\RPG-Maker\bin\Project\engine\src\autoTile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\babal\source\repos\RPG-Maker\bin\Project\engine\src\camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\babal\source\repos\RPG-Maker\bin\Project\engine\src\engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\babal\source\repos\RPG-Maker\bin\Project\engine\src\fileContener.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\babal\source\repos\RPG-Maker\bin\Project\engine\src\layers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\babal\source\repos\RPG-Maker\bin\Project\engine\src\scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\babal\source\repos\RPG-Maker\bin\Project\engine\src\shaderRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\babal\source\repos\RPG-Maker\bin\Project\engine\src\tile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\babal\source\repos\RPG-Maker\bin\Project\engine\src\tilemap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\babal\source\repos\RPG-Maker\bin\Project\engine\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{D463930C-5E8F-31B4-B5B3-26E672DBA740}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

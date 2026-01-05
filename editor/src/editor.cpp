@@ -36,6 +36,7 @@ Editor::~Editor()
 
 Editor::Editor(Engine *engine)
 {
+    project = new Project("./", "Project");
     autotile = AutoTile("./Project/assets/Textures/tileset.png");
     m_engineRef = engine;
 }
@@ -52,6 +53,11 @@ Engine *Editor::getEngine(void) const
 
 Camera& Editor::getCamera(void){
     return m_camera;
+}
+
+Project *Editor::getProject(void) const
+{
+    return project;
 }
 
 void Editor::start()
@@ -82,6 +88,9 @@ void Editor::start()
     });
     getElement<ToolSelector>("Tools")->getButton("SaveButton").setAction([&](){
         SaveManager::save(m_engineRef->getCurrentScene()->getName(), m_engineRef->getCurrentScene());
+    });
+    getElement<ToolSelector>("Tools")->getButton("EntityButton").setAction([&](){
+        project->build();
     });
 
     m_camera.start();
@@ -186,6 +195,7 @@ void Editor::registerTextures()
     buttonsTextures["SceneButton"] = new sf::Texture(editorButtonsTexturesPath+"SceneButton.png");
     buttonsTextures["PlayButton"] = new sf::Texture(editorButtonsTexturesPath+"PlayButton.png");
     buttonsTextures["StopButton"] = new sf::Texture(editorButtonsTexturesPath+"StopButton.png");
+    buttonsTextures["EntityButton"] = new sf::Texture(editorButtonsTexturesPath+"EntityButton.png");
     Debug::Log("- All Texture Register");
 }
 
@@ -217,5 +227,6 @@ void Editor::registerToolButtons()
     tools->pushButton(Button("PaintButton", buttonsTextures["PaintButton"]));
     tools->pushButton(Button("EraseButton", buttonsTextures["EraseButton"]));
     tools->pushButton(Button("PlayStopButton", buttonsTextures["PlayButton"]));
+    tools->pushButton(Button("EntityButton", buttonsTextures["EntityButton"]));
     Debug::Log("- All Tools Register");
 }

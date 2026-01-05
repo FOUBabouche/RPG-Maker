@@ -1,0 +1,10 @@
+^C:\USERS\BABAL\SOURCE\REPOS\RPG-MAKER\BIN\CMAKE\CMAKEFILES\9B7E8A27C6917A21C856E9461ED6F211\GENERATE.STAMP.RULE
+setlocal
+C:\mingw64\bin\cmake.exe -SC:/Users/babal/source/repos/RPG-Maker/bin/Project -BC:/Users/babal/source/repos/RPG-Maker/bin/cmake --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/babal/source/repos/RPG-Maker/bin/cmake/S_API.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

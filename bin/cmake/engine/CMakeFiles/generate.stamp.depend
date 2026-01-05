@@ -1,0 +1,13 @@
+# CMake generation dependency list for this directory.
+C:/Users/babal/source/repos/RPG-Maker/bin/Project/engine/CMakeLists.txt
+C:/vcpkg/installed/x64-windows/share/sfml/SFMLConfig.cmake
+C:/vcpkg/installed/x64-windows/share/sfml/SFMLConfigVersion.cmake
+C:/vcpkg/installed/x64-windows/share/sfml/SFMLGraphicsSharedTargets-debug.cmake
+C:/vcpkg/installed/x64-windows/share/sfml/SFMLGraphicsSharedTargets-release.cmake
+C:/vcpkg/installed/x64-windows/share/sfml/SFMLGraphicsSharedTargets.cmake
+C:/vcpkg/installed/x64-windows/share/sfml/SFMLSystemSharedTargets-debug.cmake
+C:/vcpkg/installed/x64-windows/share/sfml/SFMLSystemSharedTargets-release.cmake
+C:/vcpkg/installed/x64-windows/share/sfml/SFMLSystemSharedTargets.cmake
+C:/vcpkg/installed/x64-windows/share/sfml/SFMLWindowSharedTargets-debug.cmake
+C:/vcpkg/installed/x64-windows/share/sfml/SFMLWindowSharedTargets-release.cmake
+C:/vcpkg/installed/x64-windows/share/sfml/SFMLWindowSharedTargets.cmake

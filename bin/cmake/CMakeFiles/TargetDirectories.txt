@@ -1,0 +1,4 @@
+C:/Users/babal/source/repos/RPG-Maker/bin/cmake/CMakeFiles/S_API.dir
+C:/Users/babal/source/repos/RPG-Maker/bin/cmake/CMakeFiles/ALL_BUILD.dir
+C:/Users/babal/source/repos/RPG-Maker/bin/cmake/CMakeFiles/ZERO_CHECK.dir
+C:/Users/babal/source/repos/RPG-Maker/bin/cmake/engine/CMakeFiles/engine.dir
