@@ -20,6 +20,16 @@ Scene *Engine::getCurrentScene(void) const
     return scenes[currentSceneIndex];
 }
 
+PluginObjectManager *Engine::getPluginObjectManager(void)
+{
+    return pluginObjectManager;
+}
+
+void Engine::addPluginObjectManager(PluginObjectManager *pom)
+{
+    pluginObjectManager = pom;
+}
+
 void Engine::setCurrentScene(std::string sceneName)
 {
     if(!getScene(sceneName)) return;
@@ -39,7 +49,7 @@ void Engine::setCurrentScene(size_t sceneIndex)
 void Engine::addScene(std::string sceneName)
 {
     if(getScene(sceneName)) return;
-    scenes.push_back(new Scene(sceneName));
+    scenes.push_back(new Scene(sceneName, pluginObjectManager));
 }
 
 void Engine::clear()

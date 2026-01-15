@@ -1,5 +1,10 @@
 #include <layers.h>
 
+Layers::Layers(PluginObjectManager *pom)
+{
+    _pom = pom;
+}
+
 std::map<std::string, std::vector<Object *>> &Layers::getHandle(void)
 {
     return layers;
@@ -31,7 +36,8 @@ void Layers::clear()
 {
     for(auto layer : layers)
         for(auto obj: layer.second)
-            delete obj;
+            if(!_pom) _pom->del(obj);
+            else delete obj;
     layers.clear();
 }
 

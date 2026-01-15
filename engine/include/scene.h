@@ -6,7 +6,7 @@
 class Scene{
     public:
         Scene() = default;
-        Scene(std::string name);
+        Scene(std::string name, PluginObjectManager* pom);
         ~Scene();
 
         std::string getName(void) const;
@@ -48,6 +48,7 @@ class Scene{
         std::string m_name;
         Layers layers;
         std::string currentLayerName = "";
+        PluginObjectManager* _pom = nullptr;
 };
 
 #endif

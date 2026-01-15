@@ -29,6 +29,9 @@ void ScriptCreator::update(float dt)
                 .addMethodeToClass(scriptName,"draw(sf::RenderTarget& target)")
                 .build();
         script.prepareToExport();
+        if(std::filesystem::exists(static_cast<Editor*>(m_editor)->getProject()->getName()+"/build/S_API.dll")){
+            static_cast<Editor*>(m_editor)->getEngine()->addPluginObjectManager(new PluginObjectManager(static_cast<Editor*>(m_editor)->getProject()->getName()+"/build/S_API.dll"));
+        }
     }
 
     ImGui::End();

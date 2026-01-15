@@ -2,6 +2,7 @@
 #define __LAYERS_H__
 
 #include <object.h>
+#include <pluginObjectFunctions.h>
 
 #include <string>
 #include <vector>
@@ -11,6 +12,7 @@
 class Layers{
     public:
         Layers() = default;
+        Layers(PluginObjectManager* pom);
         ~Layers() = default;
 
         std::map<std::string, std::vector<Object *>>& getHandle(void);
@@ -55,6 +57,7 @@ class Layers{
 
     private:
         std::map<std::string, std::vector<Object*>> layers;
+        PluginObjectManager* _pom;
 };
 
 #endif

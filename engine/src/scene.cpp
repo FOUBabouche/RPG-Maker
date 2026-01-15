@@ -4,9 +4,10 @@
 #include <iostream>
 #include <typeindex>
 
-Scene::Scene(std::string name)
+Scene::Scene(std::string name, PluginObjectManager* pom)
 {
     m_name = name;
+    _pom = pom;
 }
 
 Scene::~Scene()
@@ -48,7 +49,8 @@ void Scene::start()
 {
     for (auto layer : layers.getHandle())
         for (auto &obj : layer.second)
-            obj->start();
+            if(!_pom) obj->start();
+            else _pom->start(obj);
 }
 
 void Scene::update(float dt)
@@ -56,7 +58,8 @@ void Scene::update(float dt)
     for (auto layer : layers.getHandle())
         for (auto obj : layer.second)
                 if(typeid(obj) != typeid(Camera))
-                    obj->update(dt);
+                    if(!_pom) obj->update(dt);
+                    else _pom->update(obj, dt);
 }
 
 void Scene::render(sf::RenderTarget &target)
@@ -64,6 +67,7 @@ void Scene::render(sf::RenderTarget &target)
     for (auto layer : layers.getHandle())
         for (auto obj : layer.second)
             if(typeid(*obj).name() != typeid(Camera).name()){
-                obj->draw(target);
+                if(!_pom) obj->draw(target);
+                    else _pom->render(obj, target);
             }
 }
